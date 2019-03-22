@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: "application"
+
+group 'LanguageJava'
+version '1.0-SNAPSHOT'
+
+mainClassName="LJ.Main"
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+run {
+    args System.getProperty("exec.args", "").split()
+}
