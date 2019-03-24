@@ -6,6 +6,7 @@ class Compiler {
     static void compile(String input, String output) {
         Lexer lexer = new Lexer(Objects.requireNonNull(Helper.getDataFromFIle(input)));
         lexer.go();
+        lexer.showOutput();
 //        parse.go();
     }
 }
