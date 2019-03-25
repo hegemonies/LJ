@@ -23,6 +23,8 @@ public class Type {
                 "r_parent",
                 "l_brace",
                 "r_brace",
+                "l_square",
+                "r_square",
                 "semi", // ;
                 "colon", // :
                 "numeric_constant",
@@ -64,6 +66,8 @@ public class Type {
                 ")",
                 "{",
                 "}",
+                "[",
+                "]",
                 ";",
                 ":",
                 "+",
@@ -112,6 +116,10 @@ public class Type {
                 return "l_paren";
             case ")":
                 return "r_paren";
+            case "[":
+                return "l_square";
+            case "]":
+                return "r_square";
 
             case "public":
                 return "public";
