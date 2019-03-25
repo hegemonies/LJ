@@ -24,6 +24,6 @@ public class Token {
     }
 
     public String toString() {
-        return type.toString() + "\t" + value + "\t" + location.toString();
+        return type.toString() + " '" + value + "' " + location.toString();
     }
 }

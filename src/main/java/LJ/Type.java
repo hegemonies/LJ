@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
+// todo: refactor: to use HashMap instead of ArrayLists
 public class Type {
     List<String> types = new ArrayList<>();
     List<String> kwords = new ArrayList<>();
@@ -91,7 +93,9 @@ public class Type {
                 "private",
                 "protected",
                 "static",
-                "const"));
+                "const",
+                "void"
+        ));
     }
 
     public boolean isToken(String token) {
@@ -116,6 +120,9 @@ public class Type {
             case "protected":
                 return "protected";
 
+            case "class":
+                return "class";
+
             case "int":
                 return "int";
             case "float":
@@ -134,6 +141,59 @@ public class Type {
                 return "semi";
             case ":":
                 return "colon";
+
+
+            case "+":
+                return "plus";
+            case "-":
+                return "minus";
+            case "*":
+                return "star";
+            case "/":
+                return "slash";
+            case "=":
+                return "equal";
+            case "==":
+                return "equalequal";
+            case "<":
+                return "less";
+            case ">":
+                return "greater";
+            case "!":
+                return "exclaim";
+            case "!= ":
+                return "exclaimequal";
+
+            case ".":
+                return "dot";
+            case "&&":
+                return "ampamp";
+            case "||":
+                return "pipepipe";
+            case "&":
+                return "amp";
+            case "|":
+                return "pipe";
+            case "\"":
+                return "doublequotes";
+            case "\'":
+                return "quotes";
+
+            case "while":
+                return "while";
+            case "for":
+                return "for";
+            case "do":
+                return "do";
+            case "if":
+                return "if";
+
+            case "static":
+                return "static";
+            case "const":
+                return "const";
+            case "void":
+                return "void";
 
             default:
                 return "id";

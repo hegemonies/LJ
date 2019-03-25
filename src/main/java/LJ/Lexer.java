@@ -8,9 +8,12 @@ class Lexer {
     private Type types = new Type();
     private String[] strings;
 
-    Lexer(String data) {
-        System.out.println("src code:\n" + data);
-        strings = data.split("\n");
+    Lexer(String src_code) {
+        strings = src_code.split("\n");
+
+        showSrcCode();
+
+//        System.out.println(strings[0]);
     }
 
     void go() {
@@ -102,8 +105,16 @@ class Lexer {
         ID_or_KWORD
     }
 
+    void showSrcCode() {
+        System.out.println("\tSource code:");
+
+        for (int line_number = 0; line_number < strings.length; line_number++) {
+            System.out.print((line_number + 1) + ". " + strings[line_number] + "\n");
+        }
+    }
+
     void showOutput() {
-        System.out.println("\tlexer output:");
+        System.out.println("\tLexer output:");
         tokenList.forEach((token) -> System.out.println(token));
     }
 }

@@ -18,6 +18,6 @@ public class Location {
     }
 
     public String toString() {
-        return row + " " + col;
+        return row + ":" + col;
     }
 }
