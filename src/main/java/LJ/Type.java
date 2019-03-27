@@ -6,11 +6,11 @@ import java.util.List;
 
 
 // todo: refactor: to use HashMap instead of ArrayLists
-public class Type {
-    List<String> types = new ArrayList<>();
-    List<String> kwords = new ArrayList<>();
+class Type {
+    private List<String> types = new ArrayList<>();
+    private List<String> kwords = new ArrayList<>();
 
-    public Type() {
+    Type() {
         types.addAll(Arrays.asList(
                 "int",
                 "float",
@@ -102,11 +102,25 @@ public class Type {
         ));
     }
 
-    public boolean isToken(String token) {
+    boolean isToken(String token) {
         return kwords.contains(token);
     }
 
-    public String getTypeOfToken(String token) {
+    private boolean isInteger(String token) {
+        try {
+            Integer _int = Integer.parseInt(token);
+        } catch (Exception exc) {
+            return false;
+        }
+
+        return true;
+    }
+
+    String getTypeOfToken(String token) {
+        if (isInteger(token)) {
+            return "numeric_constant";
+        }
+
         switch (token) {
             case "{":
                 return "l_brace";

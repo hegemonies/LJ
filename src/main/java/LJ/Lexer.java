@@ -12,8 +12,6 @@ class Lexer {
         strings = src_code.split("\n");
 
         showSrcCode();
-
-//        System.out.println(strings[0]);
     }
 
     void go() {
@@ -29,19 +27,22 @@ class Lexer {
             for (col = 0; col < chars.length; col++) {
                 char cur_char = chars[col].charAt(0);
 
-                if (token_length == 0) {
+                if (buffer.length() == 0) {
                     buffer.append(cur_char);
-                    token_length++;
 
-                    if (types.isToken(Character.toString(cur_char))) {
-                        token_length = 0;
+                    if (types.isToken(Character.toString(cur_char))
+                            && (col < chars.length - 1)
+                            && chars[col].equals(chars[col + 1])) {
+                        char next_char = chars[col + 1].charAt(0);
+                        buffer.append(next_char);
+                        predicate = PredicationOfTheToken.KWORD;
+                    } else if (types.isToken(Character.toString(cur_char))) {
                         String token = buffer.toString();
                         buffer.setLength(0);
                         tokenList.add(new Token(types.getTypeOfToken(token),
                                 token,
                                 new Location(row + 1, col + 1)));
                     } else if (cur_char == ' ') {
-                        token_length = 0;
                         buffer.setLength(0);
                     } else {
                         if (Character.isDigit(cur_char)){
@@ -55,48 +56,46 @@ class Lexer {
                         }
                     }
                 } else if (cur_char == ' ') {
-                    token_length = 0;
                     String token = buffer.toString();
                     buffer.setLength(0);
                     tokenList.add(new Token(types.getTypeOfToken(token),
                             token,
                             new Location(row + 1, col + 1 - token.length())));
+                    predicate = null;
                 } else {
                     if (predicate == PredicationOfTheToken.NUM_CONST) {
                         if (Character.isDigit(cur_char)) {
                             buffer.append(cur_char);
-                            token_length++;
                         } else {
-                            token_length = 0;
                             String token = buffer.toString();
                             buffer.setLength(0);
                             tokenList.add(new Token("numeric_constant",
                                     token,
                                     new Location(row + 1, col + 1 - token.length())));
+                            predicate = null;
+                            col--;
                         }
                     } else if (predicate == PredicationOfTheToken.KWORD) {
                         if (types.isToken(buffer.toString())) {
-                            token_length = 0;
                             String token = buffer.toString();
                             buffer.setLength(0);
                             tokenList.add(new Token(types.getTypeOfToken(token),
                                     token,
                                     new Location(row + 1, col + 1 - token.length())));
+                            predicate = null;
                         } else if (Character.isLetter(cur_char)) {
                             buffer.append(cur_char);
-                            token_length++;
                         }
                     } else if (predicate == PredicationOfTheToken.ID) {
                         if (Character.isLetterOrDigit(cur_char) || cur_char == '_') {
                             buffer.append(cur_char);
-                            token_length++;
                         } else {
-                            token_length = 0;
                             String token = buffer.toString();
                             buffer.setLength(0);
                             tokenList.add(new Token("id",
                                     token,
                                     new Location(row + 1, col + 1 - token.length())));
+                            predicate = null;
                         }
                     } else if (predicate == PredicationOfTheToken.ID_or_KWORD) {
                         if (Character.isDigit(cur_char) || cur_char == '_') {
@@ -104,14 +103,13 @@ class Lexer {
                             predicate = PredicationOfTheToken.ID;
                         } else if (Character.isLetter(cur_char)) {
                             buffer.append(cur_char);
-                            token_length++;
                         } else {
-                            token_length = 0;
                             String token = buffer.toString();
                             buffer.setLength(0);
                             tokenList.add(new Token(types.getTypeOfToken(token),
                                     token,
                                     new Location(row + 1, col + 1 - token.length())));
+                            predicate = null;
                             col--;
                         }
                     }
@@ -119,7 +117,7 @@ class Lexer {
             }
         }
 
-        tokenList.add(new Token("eof", "", new Location(row, col)));
+        tokenList.add(new Token("eof", "", new Location(row + 1, col + 1)));
     }
 
     enum PredicationOfTheToken {
@@ -129,7 +127,7 @@ class Lexer {
         ID_or_KWORD
     }
 
-    void showSrcCode() {
+    private void showSrcCode() {
         System.out.println("\tSource code:");
 
         for (int line_number = 0; line_number < strings.length; line_number++) {
@@ -139,6 +137,6 @@ class Lexer {
 
     void showOutput() {
         System.out.println("\tLexer output:");
-        tokenList.forEach((token) -> System.out.println(token));
+        tokenList.forEach((token) -> System.out.println(token.toString()));
     }
 }
