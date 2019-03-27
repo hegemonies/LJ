@@ -32,6 +32,7 @@ class Type {
                 "minus", // -
                 "star", // *
                 "slash", // /
+                "percent", // %
                 "equal", // =
                 "equalequal", // ==
                 "less", // <
@@ -74,6 +75,7 @@ class Type {
                 "-",
                 "*",
                 "/",
+                "%",
                 "=",
                 "==",
                 "<",
@@ -117,10 +119,6 @@ class Type {
     }
 
     String getTypeOfToken(String token) {
-        if (isInteger(token)) {
-            return "numeric_constant";
-        }
-
         switch (token) {
             case "{":
                 return "l_brace";
@@ -173,6 +171,8 @@ class Type {
                 return "star";
             case "/":
                 return "slash";
+            case "%":
+                return "percent";
             case "=":
                 return "equal";
             case "==":
