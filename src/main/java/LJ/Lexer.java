@@ -22,7 +22,6 @@ class Lexer {
         for (row = 0; row < strings.length; row++) {
             String[] chars = strings[row].split("");
             StringBuilder buffer = new StringBuilder();
-            int token_length = 0;
             PredicationOfTheToken predicate = null;
 
             for (col = 0; col < chars.length; col++) {
@@ -131,6 +130,7 @@ class Lexer {
                             buffer.append(cur_char);
                         } else if (!isLegalChar(cur_char)) {
                             predicate = PredicationOfTheToken.ILLEGAL;
+                            buffer.append(cur_char);
                         } else {
                             String token = buffer.toString();
                             buffer.setLength(0);
