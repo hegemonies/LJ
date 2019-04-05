@@ -39,11 +39,15 @@ class Lexer {
                         buffer.append(next_char);
                         predicate = PredicationOfTheToken.KWORD;
                     } else if (types.isToken(Character.toString(cur_char))) {
-                        String token = buffer.toString();
-                        buffer.setLength(0);
-                        tokenList.add(new Token(types.getTypeOfToken(token),
-                                token,
-                                new Location(row + 1, col + 1)));
+                        if (cur_char == '\"') {
+                            predicate = PredicationOfTheToken.STR_LITERAL;
+                        } else {
+                            String token = buffer.toString();
+                            buffer.setLength(0);
+                            tokenList.add(new Token(types.getTypeOfToken(token),
+                                    token,
+                                    new Location(row + 1, col + 1)));
+                        }
                     } else if (cur_char == ' ') {
                         buffer.setLength(0);
                     } else {
@@ -56,6 +60,30 @@ class Lexer {
                         } else {
                             predicate = PredicationOfTheToken.KWORD;
                         }
+                    }
+                } else if (predicate == PredicationOfTheToken.STR_LITERAL) {
+                    buffer.append(cur_char);
+
+                    if (col != chars.length - 1) {
+                        if (cur_char == '\"') {
+                            String token = buffer.toString();
+                            buffer.setLength(0);
+                            tokenList.add(new Token("str_literal",
+                                    token,
+                                    new Location(row + 1, col + 1)));
+                        }
+                    } else {
+                        String type = "unknown";
+
+                        if (cur_char == '\"') {
+                            type = "str_literal";
+                        }
+
+                        String token = buffer.toString();
+                        buffer.setLength(0);
+                        tokenList.add(new Token(type,
+                                token,
+                                new Location(row + 1, col + 1)));
                     }
                 } else if (cur_char == ' ') {
                     if (predicate == PredicationOfTheToken.ILLEGAL) {
@@ -174,7 +202,7 @@ class Lexer {
     }
 
     private boolean isLegalChar(Character ch) {
-        if (Character.isLetter(ch)
+        return Character.isLetter(ch)
                 || Character.isDigit(ch)
                 || ch == '_'
                 || ch == '!'
@@ -200,10 +228,7 @@ class Lexer {
                 || ch == '\''
                 || ch == ';'
                 || ch == ':'
-                || ch == ' ') {
-            return true;
-        }
+                || ch == ' ';
 
-        return false;
     }
 }

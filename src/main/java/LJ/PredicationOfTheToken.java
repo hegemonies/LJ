@@ -1,6 +1,7 @@
 package LJ;
 
 enum PredicationOfTheToken {
+    STR_LITERAL,
     NUM_CONST,
     ID,
     KWORD,
