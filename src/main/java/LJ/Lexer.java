@@ -8,11 +8,10 @@ class Lexer {
     private List<Token> tokenList = new ArrayList<>();
     private Type types = new Type();
     private String[] strings;
+    private int index_cur_token = 0;
 
     Lexer(String src_code) {
         strings = src_code.split("\n");
-
-        showSrcCode();
     }
 
     void go() {
@@ -188,15 +187,7 @@ class Lexer {
         tokenList.add(new Token("eof", "", new Location(row + 1, col + 1)));
     }
 
-    private void showSrcCode() {
-        System.out.println("\tSource code:");
-
-        for (int line_number = 0; line_number < strings.length; line_number++) {
-            System.out.print((line_number + 1) + ". " + strings[line_number] + "\n");
-        }
-    }
-
-    void showOutput() {
+    void printOutput() {
         System.out.println("\tLexer output:");
         tokenList.forEach((token) -> System.out.println(token.toString()));
     }
@@ -230,5 +221,17 @@ class Lexer {
                 || ch == ':'
                 || ch == ' ';
 
+    }
+
+    public Token getNextToken() {
+        if (index_cur_token != tokenList.size()) {
+            return tokenList.get(index_cur_token++);
+        }
+
+        return null;
+    }
+
+    public void resetTokenCounter() {
+        index_cur_token = 0;
     }
 }

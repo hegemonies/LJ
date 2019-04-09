@@ -1,12 +1,21 @@
 package LJ;
 
-import java.util.Objects;
-
 class Compiler {
+    private static String src_data = null;
+
     static void compile(String input, String output) {
-        Lexer lexer = new Lexer(Objects.requireNonNull(Helper.getDataFromFIle(input)));
+        src_data = Helper.getDataFromFIle(input);
+
+        assert src_data != null;
+        Lexer lexer = new Lexer(src_data);
         lexer.go();
-        lexer.showOutput();
+        lexer.printOutput();
+
 //        parse.go();
+    }
+
+    private void printSourceCode() {
+        System.out.println("\tSource code:");
+        System.out.println(src_data);
     }
 }
