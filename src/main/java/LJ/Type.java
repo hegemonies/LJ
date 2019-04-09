@@ -1,111 +1,72 @@
 package LJ;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
-// todo: refactor: to use HashMap instead of ArrayLists
 class Type {
-    private List<String> types = new ArrayList<>();
-    private List<String> kwords = new ArrayList<>();
+    private Map<String, String> types = new HashMap<>();
 
     Type() {
-        types.addAll(Arrays.asList(
-                "int",
-                "float",
-                "double",
-                "char",
-                "long",
-                "id",
-                "return",
-                "l_parent",
-                "r_parent",
-                "l_brace",
-                "r_brace",
-                "l_square",
-                "r_square",
-                "semi", // ;
-                "colon", // :
-                "numeric_constant",
-                "plus", // +
-                "minus", // -
-                "star", // *
-                "slash", // /
-                "percent", // %
-                "equal", // =
-                "equalequal", // ==
-                "less", // <
-                "greater", // >
-                "exclaim", // !
-                "exclaimequal ", // !=
-                "",
-                "ampamp", // &&
-                "pipepipe", // ||
-                "amp", // &
-                "pipe", // |
-                "str_literal",
-                "while",
-                "for",
-                "do",
-                "if",
-                "class",
-                "public",
-                "private",
-                "protected",
-                "static",
-                "const",
-                "eof"));
-        kwords.addAll(Arrays.asList(
-                "int",
-                "float",
-                "double",
-                "char",
-                "long",
-                "return",
-                "(",
-                ")",
-                "{",
-                "}",
-                "[",
-                "]",
-                ";",
-                ":",
-                "+",
-                "-",
-                "*",
-                "/",
-                "%",
-                "=",
-                "==",
-                "<",
-                ">",
-                "!",
-                "!= ",
-                "",
-                ".",
-                "&&",
-                "||",
-                "&",
-                "|",
-                "\"",
-                "\'",
-                "while",
-                "for",
-                "do",
-                "if",
-                "class",
-                "public",
-                "private",
-                "protected",
-                "static",
-                "const",
-                "void"
-        ));
+        types.put("{", "l_brace");
+        types.put("}", "r_brace");
+        types.put("(", "l_paren");
+        types.put(")", "r_paren");
+        types.put("[", "l_square");
+        types.put("]", "r_square");
+
+        types.put("public", "public");
+        types.put("private", "private");
+        types.put("protected", "protected");
+
+        types.put("class", "class");
+
+        types.put("int", "int");
+        types.put("float", "float");
+        types.put("double", "double");
+        types.put("char", "char");
+        types.put("long", "long");
+        types.put("boolean", "boolean");
+
+        types.put("return", "return");
+
+        types.put(";", "semi");
+        types.put(":", "colon");
+
+        types.put("+", "plus");
+        types.put("-", "minus");
+        types.put("*", "star");
+        types.put("/", "slash");
+        types.put("%", "percent");
+
+        types.put("=", "equal");
+        types.put("==", "equalequal");
+        types.put("<", "less");
+        types.put(">", "greater");
+        types.put("!", "exclaim");
+        types.put("!=", "exclaimequal");
+
+        types.put(".", "dot");
+        types.put("&&", "ampamp");
+        types.put("||", "pipepipe");
+        types.put("&", "amp");
+        types.put("|", "pipe");
+        types.put("\"", "doublequotes");
+        types.put("\'", "quotes");
+
+        types.put("while", "while");
+        types.put("for", "for");
+        types.put("do", "do");
+        types.put("if", "if");
+
+        types.put("static", "static");
+        types.put("const", "const");
+        types.put("void", "void");
+        types.put("id", "id");
+
     }
 
     boolean isToken(String token) {
-        return kwords.contains(token);
+        return types.containsKey(token);
     }
 
     private boolean isInteger(String token) {
@@ -117,108 +78,15 @@ class Type {
 
         return true;
     }
+    
 
-    String getTypeOfToken(String token) {
-        switch (token) {
-            case "{":
-                return "l_brace";
-            case "}":
-                return "r_brace";
-            case "(":
-                return "l_paren";
-            case ")":
-                return "r_paren";
-            case "[":
-                return "l_square";
-            case "]":
-                return "r_square";
+    public String getTypeOfToken(String token) {
+        String type = types.get(token);
 
-            case "public":
-                return "public";
-            case "private":
-                return "private";
-            case "protected":
-                return "protected";
-
-            case "class":
-                return "class";
-
-            case "int":
-                return "int";
-            case "float":
-                return "float";
-            case "double":
-                return "double";
-            case "char":
-                return "char";
-            case "long":
-                return "long";
-
-            case "return":
-                return "return";
-
-            case ";":
-                return "semi";
-            case ":":
-                return "colon";
-
-
-            case "+":
-                return "plus";
-            case "-":
-                return "minus";
-            case "*":
-                return "star";
-            case "/":
-                return "slash";
-            case "%":
-                return "percent";
-            case "=":
-                return "equal";
-            case "==":
-                return "equalequal";
-            case "<":
-                return "less";
-            case ">":
-                return "greater";
-            case "!":
-                return "exclaim";
-            case "!= ":
-                return "exclaimequal";
-
-            case ".":
-                return "dot";
-            case "&&":
-                return "ampamp";
-            case "||":
-                return "pipepipe";
-            case "&":
-                return "amp";
-            case "|":
-                return "pipe";
-            case "\"":
-                return "doublequotes";
-            case "\'":
-                return "quotes";
-
-            case "while":
-                return "while";
-            case "for":
-                return "for";
-            case "do":
-                return "do";
-            case "if":
-                return "if";
-
-            case "static":
-                return "static";
-            case "const":
-                return "const";
-            case "void":
-                return "void";
-
-            default:
-                return "id";
+        if (type == null) {
+            type = "id";
         }
+
+        return type;
     }
 }
