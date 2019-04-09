@@ -85,35 +85,24 @@ class Lexer {
                                 new Location(row + 1, col + 1)));
                     }
                 } else if (cur_char == ' ') {
+                    String type;
+                    String token = buffer.toString();
+
                     if (predictor == PredicationOfTheToken.ILLEGAL) {
-                        String token = buffer.toString();
-                        buffer.setLength(0);
-                        tokenList.add(new Token("unknown",
-                                token,
-                                new Location(row + 1, col + 1 - token.length())));
-                        predictor = null;
+                        type = "unknown";
                     } else if (predictor == PredicationOfTheToken.NUM_CONST) {
-                        String token = buffer.toString();
-                        buffer.setLength(0);
-                        tokenList.add(new Token("numeric_constant",
-                                token,
-                                new Location(row + 1, col + 1 - token.length())));
-                        predictor = null;
+                        type = "numeric_constant";
                     } else if (predictor == PredicationOfTheToken.ID) {
-                        String token = buffer.toString();
-                        buffer.setLength(0);
-                        tokenList.add(new Token("id",
-                                token,
-                                new Location(row + 1, col + 1 - token.length())));
-                        predictor = null;
+                        type = "id";
                     } else {
-                        String token = buffer.toString();
-                        buffer.setLength(0);
-                        tokenList.add(new Token(types.getTypeOfToken(token),
-                                token,
-                                new Location(row + 1, col + 1 - token.length())));
-                        predictor = null;
+                        type = types.getTypeOfToken(token);
                     }
+
+                    buffer.setLength(0);
+                    tokenList.add(new Token(type,
+                            token,
+                            new Location(row + 1, col + 1 - token.length())));
+                    predictor = null;
                 } else {
                     if (predictor == PredicationOfTheToken.NUM_CONST) {
                         if (Character.isDigit(cur_char)) {
