@@ -1,6 +1,5 @@
 package LJ;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +16,12 @@ class Lexer {
     void go() {
         int row = 0;
         int col = 0;
+        PredicationOfTheToken predictor = null;
+        StringBuilder buffer = new StringBuilder();
 
         for (row = 0; row < strings.length; row++) {
             String[] chars = strings[row].split("");
-            StringBuilder buffer = new StringBuilder();
-            PredicationOfTheToken predictor = null;
+            buffer.setLength(0);
 
             for (col = 0; col < chars.length; col++) {
                 char cur_char = chars[col].charAt(0);
