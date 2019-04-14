@@ -1,0 +1,16 @@
+Program-> <class>
+
+<class>-> <mod_access_class> class <id> { 
+            <mod_access> <statementList>; 
+            <mod_access> <methodList>; 
+        } 
+
+<mod_access_class>-> public | private
+
+<mod_access>-> public | private | protected | default
+
+<id>->
+
+<statementList>-> <statement> | <statement><statementList>
+
+<methodList>-> <method> | <method><methodList>
