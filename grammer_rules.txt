@@ -1,16 +1,54 @@
 Program-> <class>
 
 <class>-> <mod_access_class> class <id> { 
-            <mod_access> <statementList>; 
-            <mod_access> <methodList>; 
+            <mod_access> <statementList>
+            <mod_access> <statementInitList>
+            <mod_access> <methodList>
         } 
 
 <mod_access_class>-> public | private
 
-<mod_access>-> public | private | protected | default
+<mod_access>-> public | private | protected
 
-<id>->
+<id>-> [a-z]<id> | [A-Z]<id> | _[a-z]<id> | _[A-Z]<id> | E
 
-<statementList>-> <statement> | <statement><statementList>
+<statementList>-> <statement> | <statement><statementList> | E
+
+<statementInitList>-> <statementInit> | <statementInit><statementInitList> | E
+
+<statementInit>-> <data_type> <id>; | <data_type> <id> = new <data_type>(); |
+        <data_type> <id> = new <data_type>(<plus_minus> <number>); |
+        <data_type> <id> =  | 
+        <data_type>[] <id>; | <data_type>[] <id> = new <data_type>[<array_size>];
+
+<array_size>-> <number>
+
+<data_type>-> char | boolean | int | float | double
+
+<number>-> 0<number> | 1<number> | 2<number> | 3<number> | 4<number> | 5<number> | 6<number> | 7<number>
+        8<number> | 9<number> | E
+
+<plus_minus>-> + | - | E
+
+<statement>-> <id> = <number>; |
+            <id> = <str_const>; | 
+            <id> = <method>; |
+            <id> = <statement>; |
+            <id>[<number>] = <number>; |
+            <id>[<number>] = <str_const>; | 
+            <id>[<number>] = <method>; |
+            <id>[<number>] = <statement>;
+
+<str_const>-> "([A-Za-z0-9]!@#$%^&*()_+[]{};:'",./?\|`~)+"
 
 <methodList>-> <method> | <method><methodList>
+
+<method>-> <mod_access> <id> (<args_list>) {
+            <statementInitList>
+            <statementList>
+            <methodList>
+        }
+
+<args_list>-> <arg> | <arg>, <args_list>        
+
+<arg>-> <mod_access> <id>
