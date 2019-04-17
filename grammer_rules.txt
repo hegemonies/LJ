@@ -4,29 +4,32 @@ Program-> <class>
             <mod_access> <statementList>
             <mod_access> <statementInitList>
             <mod_access> <methodList>
+            <mod_access> <class>
         } 
 
 <mod_access_class>-> public | private
 
 <mod_access>-> public | private | protected
 
-<id>-> [a-z]<id> | [A-Z]<id> | _[a-z]<id> | _[A-Z]<id> | E
+<id>-> ([_A-Za-z])+
 
-<statementList>-> <statement> | <statement><statementList> | E
+<statementList>-> <statement>; <statementList> | E
 
-<statementInitList>-> <statementInit> | <statementInit><statementInitList> | E
+<statementInitList>-> <statementInit>; <statementInitList> | E
 
-<statementInit>-> <data_type> <id>; | <data_type> <id> = new <data_type>(); |
+<statementInit>-> <data_type> <id>; | 
+        <data_type> <id> = new <data_type>(); |
         <data_type> <id> = new <data_type>(<plus_minus> <number>); |
-        <data_type> <id> =  | 
-        <data_type>[] <id>; | <data_type>[] <id> = new <data_type>[<array_size>];
+        <data_type> <id> = <plus_minus> <number> | 
+        <data_type> <id> = <str_const> | 
+        <data_type>[] <id>; | 
+        <data_type>[] <id> = new <data_type>[<array_size>];
 
 <array_size>-> <number>
 
-<data_type>-> char | boolean | int | float | double
+<data_type>-> char | boolean | int | float | double | <id>
 
-<number>-> 0<number> | 1<number> | 2<number> | 3<number> | 4<number> | 5<number> | 6<number> | 7<number>
-        8<number> | 9<number> | E
+<number>-> ([0-9])+
 
 <plus_minus>-> + | - | E
 
@@ -39,9 +42,9 @@ Program-> <class>
             <id>[<number>] = <method>; |
             <id>[<number>] = <statement>;
 
-<str_const>-> "([A-Za-z0-9]!@#$%^&*()_+[]{};:'",./?\|`~)+"
+<str_const>-> "([A-Za-z0-9]!@#$%^&*()_+-=[]{}<>;:'",./?\|`~ )+"
 
-<methodList>-> <method> | <method><methodList>
+<methodList>-> <method><methodList> | E
 
 <method>-> <mod_access> <id> (<args_list>) {
             <statementInitList>
