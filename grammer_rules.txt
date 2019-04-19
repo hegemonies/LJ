@@ -5,13 +5,14 @@ Program-> <class>
             <mod_access> <statementInitList>
             <mod_access> <methodList>
             <mod_access> <class>
+            <loopList> ?
         } 
 
 <mod_access_class>-> public | private
 
 <mod_access>-> public | private | protected
 
-<id>-> ([_A-Za-z])+
+<id>-> \b[A-Za-z_][A-Za-z0-9]*
 
 <statementList>-> <statement>; <statementList> | E
 
@@ -55,3 +56,7 @@ Program-> <class>
 <args_list>-> <arg> | <arg>, <args_list>        
 
 <arg>-> <mod_access> <id>
+
+<loopsList>-> <loop> <loopList> | E
+
+<loop>-> ?
