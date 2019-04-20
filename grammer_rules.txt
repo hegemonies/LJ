@@ -8,9 +8,9 @@ Program-> <class>
             <loopList> ?
         } 
 
-<mod_access_class>-> public | private
+<mod_access_class>-> public | private | E
 
-<mod_access>-> public | private | protected
+<mod_access>-> public | private | protected | E
 
 <id>-> \b[A-Za-z_][A-Za-z0-9]*
 
@@ -18,30 +18,29 @@ Program-> <class>
 
 <statementInitList>-> <statementInit>; <statementInitList> | E
 
-<statementInit>-> <data_type> <id>; | 
-        <data_type> <id> = new <data_type>(); |
-        <data_type> <id> = new <data_type>(<plus_minus> <number>); |
-        <data_type> <id> = <plus_minus> <number> | 
+<statementInit>-> <data_type> <id> = <plus_minus> <number> | 
         <data_type> <id> = <str_const> | 
-        <data_type>[] <id>; | 
         <data_type>[] <id> = new <data_type>[<array_size>];
 
 <array_size>-> <number>
 
-<data_type>-> char | boolean | int | float | double | <id>
+<data_type>-> int
 
-<number>-> ([0-9])+
+<number>-> <real_numbers><number> | E
+
+<real_numbers>-> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
 <plus_minus>-> + | - | E
 
-<statement>-> <id> = <number>; |
-            <id> = <str_const>; | 
-            <id> = <method>; |
-            <id> = <statement>; |
-            <id>[<number>] = <number>; |
-            <id>[<number>] = <str_const>; | 
-            <id>[<number>] = <method>; |
-            <id>[<number>] = <statement>;
+<statement>-> <id> |
+        <id> = <number>; |
+        <id> = <str_const>; | 
+        <id> = <method>; |
+        <id> = <statement>; |
+        <id>[<number>] = <number>; |
+        <id>[<number>] = <str_const>; | 
+        <id>[<number>] = <method>; |
+        <id>[<number>] = <statement>;
 
 <str_const>-> "([A-Za-z0-9]!@#$%^&*()_+-=[]{}<>;:'",./?\|`~ )+"
 
@@ -51,6 +50,7 @@ Program-> <class>
             <statementInitList>
             <statementList>
             <methodList>
+            <loopList>
         }
 
 <args_list>-> <arg> | <arg>, <args_list>        
@@ -59,4 +59,29 @@ Program-> <class>
 
 <loopsList>-> <loop> <loopList> | E
 
-<loop>-> ?
+<loop>-> while (<expr>) { 
+                <statementInitList>
+                <statementList>
+                <methodList>
+                <loopList> 
+        }
+
+<expr>-> <statement> <condition> <statement> | 
+        <expr> || <expr> | 
+        <expr> && <expr>
+
+<condition>-> < | > | == | != | <= | >=
+
+<arithmetic>-> <arithmetic> + <arithmetic> |
+        <arithmetic> - <arithmetic> | 
+        <arithmetic> * <arithmetic> |
+        <arithmetic> / <arithmetic> | 
+        ( <arithmetic> ) | 
+        <id> | <number>
+
+<conditional_transition>-> if (<expr>) {
+                <statementInitList>
+                <statementList>
+                <methodList>
+                <loopList> 
+        }

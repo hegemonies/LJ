@@ -1,7 +1,7 @@
 package LJ.Grammar.Terminals;
 
-public class Protected implements Terminal {
-    private final static String value = "protected";
+public class Equal implements Terminal {
+    private final static String value = "=";
 
     @Override
     public String getValue() {

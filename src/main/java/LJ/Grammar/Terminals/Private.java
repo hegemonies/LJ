@@ -1,8 +1,10 @@
 package LJ.Grammar.Terminals;
 
 public class Private implements Terminal {
+    private final static String value = "private";
+
     @Override
-    public <T extends Terminal> T getTerminal() {
-        return null;
+    public String getValue() {
+        return value;
     }
 }

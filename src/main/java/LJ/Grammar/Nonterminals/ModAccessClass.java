@@ -16,7 +16,7 @@ public class ModAccessClass implements Nonterminal {
     }
 
     @Override
-    public <T extends Symbol> List<T> getFollow() {
+    public List<Symbol> getFollow() {
         return null;
     }
 }

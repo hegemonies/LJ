@@ -1,5 +1,7 @@
 package LJ.Grammar.Nonterminals;
 
+import LJ.Grammar.Symbol;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,16 +9,16 @@ public class Program implements Nonterminal {
     private final static List<Nonterminal> rules = new ArrayList<>();
 
     static {
-        rules.add(new NTClass(rules));
+        rules.add(new NTClass());
     }
 
     @Override
-    public <T extends Nonterminal> T getFirst() {
+    public List<Symbol> getFirst() {
         return null;
     }
 
     @Override
-    public <T extends Nonterminal> T getFollow() {
+    public List<Symbol> getFollow() {
         return null;
     }
 }

@@ -1,8 +1,10 @@
 package LJ.Grammar.Terminals;
 
 public class TClass implements Terminal {
+    private final static String value = "class";
+
     @Override
-    public <T extends Terminal> T getTerminal() {
-        return null;
+    public String getValue() {
+        return value;
     }
 }

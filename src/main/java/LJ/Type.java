@@ -2,7 +2,6 @@ package LJ;
 
 import java.util.*;
 
-
 class Type {
     private Map<String, String> types = new HashMap<>();
 
