@@ -2,15 +2,17 @@ package LJ.Grammar.Nonterminals;
 
 import LJ.Grammar.E;
 import LJ.Grammar.Symbol;
-import LJ.Grammar.Terminals.Private;
-import LJ.Grammar.Terminals.Protected;
-import LJ.Grammar.Terminals.Public;
+import LJ.Grammar.Terminals.TModeAccess;
+import LJ.Grammar.Terminals.TypeTModAccess;
 
 import java.util.Arrays;
 import java.util.List;
 
 class ModAccess implements Nonterminal {
-    private final static Symbol[] terminals = { new Public(), new Private(), new Protected(), new E()};
+    private final static Symbol[] terminals = { new TModeAccess(TypeTModAccess.PUBLIC),
+            new TModeAccess(TypeTModAccess.PRIVATE),
+            new TModeAccess(TypeTModAccess.PROTECTED),
+            new E()};
 
     @Override
     public List<Symbol> getFirst() {
@@ -21,5 +23,4 @@ class ModAccess implements Nonterminal {
     public List<Symbol> getFollow() {
         return null;
     }
-
 }

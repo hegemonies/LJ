@@ -2,18 +2,17 @@ package LJ.Grammar.Nonterminals;
 
 import LJ.Grammar.E;
 import LJ.Grammar.Symbol;
-import LJ.Grammar.Terminals.Numbers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class NTNumber implements Nonterminal {
-    private static List<List<Symbol>> rules = new ArrayList<>();
+public class MethodList implements Nonterminal {
+    private static final List<List<Symbol>> rules = new ArrayList<>();
 
     static {
-        rules.add(Arrays.asList(new Numbers(), new NTNumber()));
+        rules.add(Arrays.asList(new Method(), new MethodList()));
         rules.add(Collections.singletonList(new E()));
     }
 

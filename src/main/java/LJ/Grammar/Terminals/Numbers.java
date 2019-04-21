@@ -1,9 +1,9 @@
 package LJ.Grammar.Terminals;
 
 public class Numbers implements Terminal {
-    private numbers value;
+    private IRNumbers value;
 
-    public Numbers(numbers value) {
+    public Numbers(IRNumbers value) {
         this.value = value;
     }
 
@@ -36,17 +36,4 @@ public class Numbers implements Terminal {
 
         return null;
     }
-}
-
-enum numbers {
-    ONE,
-    TWO,
-    THREE,
-    FOUR,
-    FIVE,
-    SIX,
-    SEVEN,
-    EIGHT,
-    NINE,
-    ZERO;
 }

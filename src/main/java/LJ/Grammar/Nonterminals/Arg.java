@@ -3,18 +3,20 @@ package LJ.Grammar.Nonterminals;
 import LJ.Grammar.Symbol;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class Program implements Nonterminal {
-    private final static List<Symbol> rules = new ArrayList<>();
+public class Arg implements Nonterminal {
+    private static final List<Symbol> rules = new ArrayList<>();
 
     static {
-        rules.add(new NTClass());
+        rules.add(new ModAccess());
+        rules.add(new ID());
     }
 
     @Override
     public List<Symbol> getFirst() {
-        return rules;
+        return Collections.singletonList(rules.get(0));
     }
 
     @Override

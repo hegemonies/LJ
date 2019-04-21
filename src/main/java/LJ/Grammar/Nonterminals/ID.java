@@ -1,14 +1,19 @@
 package LJ.Grammar.Nonterminals;
 
+import LJ.Grammar.Symbol;
+
+import java.util.List;
+
 public class ID implements Nonterminal {
+    // todo ???
 
     @Override
-    public <T extends Nonterminal> T getFirst() {
+    public List<Symbol> getFirst() {
         return null;
     }
 
     @Override
-    public <T extends Nonterminal> T getFollow() {
+    public List<Symbol> getFollow() {
         return null;
     }
 }

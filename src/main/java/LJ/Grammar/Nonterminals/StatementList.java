@@ -2,18 +2,19 @@ package LJ.Grammar.Nonterminals;
 
 import LJ.Grammar.E;
 import LJ.Grammar.Symbol;
-import LJ.Grammar.Terminals.Numbers;
+import LJ.Grammar.Terminals.Punctuation;
+import LJ.Grammar.Terminals.TypePunctuation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class NTNumber implements Nonterminal {
-    private static List<List<Symbol>> rules = new ArrayList<>();
+public class StatementList implements Nonterminal {
+    private final static List<List<Symbol>> rules = new ArrayList<>();
 
     static {
-        rules.add(Arrays.asList(new Numbers(), new NTNumber()));
+        rules.add(Arrays.asList(new Statement(), new Punctuation(TypePunctuation.SEMICOLON), new StatementList()));
         rules.add(Collections.singletonList(new E()));
     }
 

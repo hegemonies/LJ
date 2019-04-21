@@ -36,15 +36,15 @@ Program-> <class>
         <id> = <number>; |
         <id> = <str_const>; | 
         <id> = <method>; |
-        <id> = <statement>; |
+        <id> = <id>; |
         <id>[<number>] = <number>; |
         <id>[<number>] = <str_const>; | 
         <id>[<number>] = <method>; |
-        <id>[<number>] = <statement>;
+        <id>[<number>] = <id>;
 
 <str_const>-> "([A-Za-z0-9]!@#$%^&*()_+-=[]{}<>;:'",./?\|`~ )+"
 
-<methodList>-> <method><methodList> | E
+<methodList>-> <method> <methodList> | E
 
 <method>-> <mod_access> <id> (<args_list>) {
             <statementInitList>
@@ -53,7 +53,7 @@ Program-> <class>
             <loopList>
         }
 
-<args_list>-> <arg> | <arg>, <args_list>        
+<args_list>-> <arg>, <args_list> | E
 
 <arg>-> <mod_access> <id>
 
