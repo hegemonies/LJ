@@ -1,9 +1,7 @@
 package LJ.Grammar.Nonterminals;
 
 import LJ.Grammar.Symbol;
-import LJ.Grammar.Terminals.Equal;
-import LJ.Grammar.Terminals.Punctuation;
-import LJ.Grammar.Terminals.TypePunctuation;
+import LJ.Grammar.Terminals.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,26 +16,77 @@ public class Statement implements Nonterminal {
 
         prod.clear();
         prod.add(new ID());
-        prod.add(new Equal());
+        prod.add(new Operator(TypeOperator.EQUAL));
         prod.add(new NTNumber());
         prod.add(new Punctuation(TypePunctuation.SEMICOLON));
         rules.add(prod);
 
         prod.clear();
         prod.add(new ID());
-        prod.add(new Equal());
+        prod.add(new Operator(TypeOperator.EQUAL));
         prod.add(new NTString_Const());
         prod.add(new Punctuation(TypePunctuation.SEMICOLON));
         rules.add(prod);
 
         prod.clear();
         prod.add(new ID());
-        prod.add(new Equal());
+        prod.add(new Operator(TypeOperator.EQUAL));
         prod.add(new Method());
         prod.add(new Punctuation(TypePunctuation.SEMICOLON));
         rules.add(prod);
 
-        // todo continue work
+        prod.clear();
+        prod.add(new ID());
+        prod.add(new Operator(TypeOperator.EQUAL));
+        prod.add(new ID());
+        prod.add(new Punctuation(TypePunctuation.SEMICOLON));
+        rules.add(prod);
+
+        prod.add(new ID());
+        prod.add(new Parentheses(TypeParentheses.L_SQUARE));
+        prod.add(new NTNumber());
+        prod.add(new Parentheses(TypeParentheses.R_SQUARE));
+        rules.add(prod);
+
+        prod.clear();
+        prod.add(new ID());
+        prod.add(new Parentheses(TypeParentheses.L_SQUARE));
+        prod.add(new NTNumber());
+        prod.add(new Parentheses(TypeParentheses.R_SQUARE));
+        prod.add(new Operator(TypeOperator.EQUAL));
+        prod.add(new NTNumber());
+        prod.add(new Punctuation(TypePunctuation.SEMICOLON));
+        rules.add(prod);
+
+        prod.clear();
+        prod.add(new ID());
+        prod.add(new Parentheses(TypeParentheses.L_SQUARE));
+        prod.add(new NTNumber());
+        prod.add(new Parentheses(TypeParentheses.R_SQUARE));
+        prod.add(new Operator(TypeOperator.EQUAL));
+        prod.add(new NTString_Const());
+        prod.add(new Punctuation(TypePunctuation.SEMICOLON));
+        rules.add(prod);
+
+        prod.clear();
+        prod.add(new ID());
+        prod.add(new Parentheses(TypeParentheses.L_SQUARE));
+        prod.add(new NTNumber());
+        prod.add(new Parentheses(TypeParentheses.R_SQUARE));
+        prod.add(new Operator(TypeOperator.EQUAL));
+        prod.add(new Method());
+        prod.add(new Punctuation(TypePunctuation.SEMICOLON));
+        rules.add(prod);
+
+        prod.clear();
+        prod.add(new ID());
+        prod.add(new Parentheses(TypeParentheses.L_SQUARE));
+        prod.add(new NTNumber());
+        prod.add(new Parentheses(TypeParentheses.R_SQUARE));
+        prod.add(new Operator(TypeOperator.EQUAL));
+        prod.add(new ID());
+        prod.add(new Punctuation(TypePunctuation.SEMICOLON));
+        rules.add(prod);
     }
 
     @Override

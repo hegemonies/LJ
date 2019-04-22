@@ -7,8 +7,6 @@ public class Numbers implements Terminal {
         this.value = value;
     }
 
-    public Numbers() { }
-
     @Override
     public String getValue() {
         switch (value) {

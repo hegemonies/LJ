@@ -9,10 +9,11 @@ public class Quotes implements Terminal {
 
     @Override
     public String getValue() {
-        if (type == TypeQuotes.SINGLE) {
-            return "\'";
-        } else if (type == TypeQuotes.DOUBLE) {
-            return "\"";
+        switch (type) {
+            case SINGLE:
+                return "\'";
+            case DOUBLE:
+                return "\"";
         }
 
         return null;

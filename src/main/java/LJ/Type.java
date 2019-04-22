@@ -20,11 +20,11 @@ class Type {
         types.put("class", "class");
 
         types.put("int", "int");
-        types.put("float", "float");
-        types.put("double", "double");
-        types.put("char", "char");
-        types.put("long", "long");
-        types.put("boolean", "boolean");
+        // types.put("float", "float");
+        // types.put("double", "double");
+        // types.put("char", "char");
+        // types.put("long", "long");
+        // types.put("boolean", "boolean");
 
         types.put("return", "return");
 
@@ -53,12 +53,12 @@ class Type {
         types.put("\'", "quotes");
 
         types.put("while", "while");
-        types.put("for", "for");
-        types.put("do", "do");
+        // types.put("for", "for");
+        // types.put("do", "do");
         types.put("if", "if");
 
-        types.put("static", "static");
-        types.put("const", "const");
+        // types.put("static", "static");
+        // types.put("const", "const");
         types.put("void", "void");
         types.put("id", "id");
 

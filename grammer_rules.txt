@@ -37,6 +37,7 @@ Program-> <class>
         <id> = <str_const>; | 
         <id> = <method>; |
         <id> = <id>; |
+        <id>[<number]; |
         <id>[<number>] = <number>; |
         <id>[<number>] = <str_const>; | 
         <id>[<number>] = <method>; |
@@ -72,12 +73,13 @@ Program-> <class>
 
 <condition>-> < | > | == | != | <= | >=
 
-<arithmetic>-> <arithmetic> + <arithmetic> |
-        <arithmetic> - <arithmetic> | 
-        <arithmetic> * <arithmetic> |
-        <arithmetic> / <arithmetic> | 
+<arithmetic>-> <arithmetic> <operator> <arithmetic> |
         ( <arithmetic> ) | 
         <id> | <number>
+
+<operator>-> + | - | * | / | %
+
+<logicOperator>-> && | ||
 
 <conditional_transition>-> if (<expr>) {
                 <statementInitList>
