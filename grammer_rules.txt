@@ -18,8 +18,8 @@ Program-> <class>
 
 <statementInitList>-> <statementInit>; <statementInitList> | E
 
-<statementInit>-> <data_type> <id> = <plus_minus> <number> | 
-        <data_type> <id> = <str_const> | 
+<statementInit>-> <data_type> <id> = <plus_minus> <number>; | 
+        <data_type> <id> = <str_const>; | 
         <data_type>[] <id> = new <data_type>[<array_size>];
 
 <array_size>-> <number>

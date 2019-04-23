@@ -20,7 +20,7 @@ public class Method implements Nonterminal {
         rules.add(new Parentheses(TypeParentheses.L_BRACE));
         rules.add(new StatementList());
         rules.add(new MethodList());
-        // rules.add(new LoopList()); todo create LoopList
+        rules.add(new LoopList());
         rules.add(new Parentheses(TypeParentheses.R_BRACE));
     }
 
