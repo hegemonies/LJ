@@ -11,45 +11,45 @@ public class Statement implements Nonterminal {
 
     static {
         List<Symbol> prod = new ArrayList<>();
-        prod.add(new ID());
+        prod.add(new NTID());
         rules.add(prod);
 
         prod.clear();
-        prod.add(new ID());
+        prod.add(new NTID());
         prod.add(new Operator(TypeOperator.EQUAL));
         prod.add(new NTNumber());
         prod.add(new Punctuation(TypePunctuation.SEMICOLON));
         rules.add(prod);
 
         prod.clear();
-        prod.add(new ID());
+        prod.add(new NTID());
         prod.add(new Operator(TypeOperator.EQUAL));
         prod.add(new NTString_Const());
         prod.add(new Punctuation(TypePunctuation.SEMICOLON));
         rules.add(prod);
 
         prod.clear();
-        prod.add(new ID());
+        prod.add(new NTID());
         prod.add(new Operator(TypeOperator.EQUAL));
         prod.add(new Method());
         prod.add(new Punctuation(TypePunctuation.SEMICOLON));
         rules.add(prod);
 
         prod.clear();
-        prod.add(new ID());
+        prod.add(new NTID());
         prod.add(new Operator(TypeOperator.EQUAL));
-        prod.add(new ID());
+        prod.add(new NTID());
         prod.add(new Punctuation(TypePunctuation.SEMICOLON));
         rules.add(prod);
 
-        prod.add(new ID());
+        prod.add(new NTID());
         prod.add(new Parentheses(TypeParentheses.L_SQUARE));
         prod.add(new NTNumber());
         prod.add(new Parentheses(TypeParentheses.R_SQUARE));
         rules.add(prod);
 
         prod.clear();
-        prod.add(new ID());
+        prod.add(new NTID());
         prod.add(new Parentheses(TypeParentheses.L_SQUARE));
         prod.add(new NTNumber());
         prod.add(new Parentheses(TypeParentheses.R_SQUARE));
@@ -59,7 +59,7 @@ public class Statement implements Nonterminal {
         rules.add(prod);
 
         prod.clear();
-        prod.add(new ID());
+        prod.add(new NTID());
         prod.add(new Parentheses(TypeParentheses.L_SQUARE));
         prod.add(new NTNumber());
         prod.add(new Parentheses(TypeParentheses.R_SQUARE));
@@ -69,7 +69,7 @@ public class Statement implements Nonterminal {
         rules.add(prod);
 
         prod.clear();
-        prod.add(new ID());
+        prod.add(new NTID());
         prod.add(new Parentheses(TypeParentheses.L_SQUARE));
         prod.add(new NTNumber());
         prod.add(new Parentheses(TypeParentheses.R_SQUARE));
@@ -79,12 +79,12 @@ public class Statement implements Nonterminal {
         rules.add(prod);
 
         prod.clear();
-        prod.add(new ID());
+        prod.add(new NTID());
         prod.add(new Parentheses(TypeParentheses.L_SQUARE));
         prod.add(new NTNumber());
         prod.add(new Parentheses(TypeParentheses.R_SQUARE));
         prod.add(new Operator(TypeOperator.EQUAL));
-        prod.add(new ID());
+        prod.add(new NTID());
         prod.add(new Punctuation(TypePunctuation.SEMICOLON));
         rules.add(prod);
     }

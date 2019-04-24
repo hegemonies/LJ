@@ -11,7 +11,7 @@ public class Arg implements Nonterminal {
 
     static {
         rules.add(new ModAccess());
-        rules.add(new ID());
+        rules.add(new NTID());
     }
 
     @Override

@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class NTClass implements Nonterminal {
-    private List<Symbol> rules = Arrays.asList(new ModAccessClass(), new TClass(), new ID(), new Parentheses(TypeParentheses.L_BRACE),
+    private List<Symbol> rules = Arrays.asList(new ModAccessClass(), new TClass(), new NTID(), new Parentheses(TypeParentheses.L_BRACE),
                                             new ModAccess());
 
     @Override

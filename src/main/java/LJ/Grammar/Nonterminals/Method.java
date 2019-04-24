@@ -13,7 +13,7 @@ public class Method implements Nonterminal {
 
     static {
         rules.add(new ModAccess());
-        rules.add(new ID());
+        rules.add(new NTID());
         rules.add(new Parentheses(TypeParentheses.L_PARENT));
         rules.add(new ArgsList());
         rules.add(new Parentheses(TypeParentheses.R_PARENT));

@@ -12,7 +12,7 @@ public class Loop implements Terminal {
         switch (type) {
             case WHILE:
                 return "while";
-//            case FOR: todo later
+//            case FOR: todo maybe later
 //                return "for";
 //            case DO-WHILE:
 //                return "do-while";

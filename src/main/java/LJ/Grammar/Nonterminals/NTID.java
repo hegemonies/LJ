@@ -4,7 +4,7 @@ import LJ.Grammar.Symbol;
 
 import java.util.List;
 
-public class ID implements Nonterminal {
+public class NTID implements Nonterminal {
     // todo ???
 
     @Override
