@@ -8,7 +8,7 @@ import LJ.Grammar.Terminals.TypeQuotes;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NTString_Const implements Nonterminal {
+public class NTStringConst implements Nonterminal {
     private final static List<Symbol> rules = new ArrayList<>();
 
     static {

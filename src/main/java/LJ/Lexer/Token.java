@@ -1,4 +1,4 @@
-package LJ;
+package LJ.Lexer;
 
 public class Token {
     private String type;

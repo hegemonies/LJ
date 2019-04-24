@@ -3,7 +3,7 @@ package LJ.Grammar.Terminals;
 public class StringConst implements Terminal {
     private String value;
 
-    public StringConst(String value) {
+    public void setValue(String value) {
         this.value = value;
     }
 

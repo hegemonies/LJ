@@ -1,4 +1,4 @@
-package LJ;
+package LJ.Lexer;
 
 enum PredicationOfTheToken {
     STR_LITERAL,

@@ -20,7 +20,7 @@ public class StatementInit implements Nonterminal {
         rules.add(Arrays.asList(new NTDataType(),
                 new NTID(),
                 new Operator(TypeOperator.EQUAL),
-                new NTString_Const(),
+                new NTStringConst(),
                 new Punctuation(TypePunctuation.SEMICOLON)));
         rules.add(Arrays.asList(new NTDataType(),
                 new Parentheses(TypeParentheses.L_SQUARE),

@@ -1,19 +1,19 @@
-package LJ;
+package LJ.Lexer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class Lexer {
+public class Lexer {
     private List<Token> tokenList = new ArrayList<>();
     private Type types = new Type();
     private String[] strings;
     private int index_cur_token = 0;
 
-    Lexer(String src_code) {
+    public Lexer(String src_code) {
         strings = src_code.split("\n");
     }
 
-    void go() {
+    public void go() {
         int row = 0;
         int col = 0;
         PredicationOfTheToken predictor = null;
@@ -176,7 +176,7 @@ class Lexer {
         tokenList.add(new Token("eof", "", new Location(row + 1, col + 1)));
     }
 
-    void printOutput() {
+    public void printOutput() {
         System.out.println("\tLexer output:");
         tokenList.forEach((token) -> System.out.println(token.toString()));
     }

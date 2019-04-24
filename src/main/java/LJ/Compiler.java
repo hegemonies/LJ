@@ -1,5 +1,7 @@
 package LJ;
 
+import LJ.Lexer.Lexer;
+
 class Compiler {
     private static String src_data = null;
 

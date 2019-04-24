@@ -1,4 +1,4 @@
-package LJ;
+package LJ.Lexer;
 
 public class NumbersToken {
     public static boolean isNumber(String token) {
@@ -7,7 +7,6 @@ public class NumbersToken {
                 return false;
             }
         }
-
 
         return true;
     }
