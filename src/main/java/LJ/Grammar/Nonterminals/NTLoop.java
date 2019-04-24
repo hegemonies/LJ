@@ -17,7 +17,7 @@ public class NTLoop implements Nonterminal {
         rules.add(Arrays.asList(
                 new Loop(TypeLoop.WHILE), new Parentheses(TypeParentheses.L_PARENT), new Expression(), new Parentheses(TypeParentheses.R_PARENT),
                 new Parentheses(TypeParentheses.L_BRACE),
-                // todo new StatementInitList(),
+                new StatementInitList(),
                 new StatementList(),
                 new MethodList(),
                 new LoopList(),
