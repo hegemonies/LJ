@@ -16,28 +16,28 @@ public class Statement implements Nonterminal {
 
         prod.clear();
         prod.add(new NTID());
-        prod.add(new Operator(TypeOperator.EQUAL));
+        prod.add(new Equal());
         prod.add(new NTNumber());
         prod.add(new Punctuation(TypePunctuation.SEMICOLON));
         rules.add(prod);
 
         prod.clear();
         prod.add(new NTID());
-        prod.add(new Operator(TypeOperator.EQUAL));
+        prod.add(new Equal());
         prod.add(new NTStringConst());
         prod.add(new Punctuation(TypePunctuation.SEMICOLON));
         rules.add(prod);
 
         prod.clear();
         prod.add(new NTID());
-        prod.add(new Operator(TypeOperator.EQUAL));
+        prod.add(new Equal());
         prod.add(new Method());
         prod.add(new Punctuation(TypePunctuation.SEMICOLON));
         rules.add(prod);
 
         prod.clear();
         prod.add(new NTID());
-        prod.add(new Operator(TypeOperator.EQUAL));
+        prod.add(new Equal());
         prod.add(new NTID());
         prod.add(new Punctuation(TypePunctuation.SEMICOLON));
         rules.add(prod);
@@ -53,7 +53,7 @@ public class Statement implements Nonterminal {
         prod.add(new Parentheses(TypeParentheses.L_SQUARE));
         prod.add(new NTNumber());
         prod.add(new Parentheses(TypeParentheses.R_SQUARE));
-        prod.add(new Operator(TypeOperator.EQUAL));
+        prod.add(new Equal());
         prod.add(new NTNumber());
         prod.add(new Punctuation(TypePunctuation.SEMICOLON));
         rules.add(prod);
@@ -63,7 +63,7 @@ public class Statement implements Nonterminal {
         prod.add(new Parentheses(TypeParentheses.L_SQUARE));
         prod.add(new NTNumber());
         prod.add(new Parentheses(TypeParentheses.R_SQUARE));
-        prod.add(new Operator(TypeOperator.EQUAL));
+        prod.add(new Equal());
         prod.add(new NTStringConst());
         prod.add(new Punctuation(TypePunctuation.SEMICOLON));
         rules.add(prod);
@@ -73,7 +73,7 @@ public class Statement implements Nonterminal {
         prod.add(new Parentheses(TypeParentheses.L_SQUARE));
         prod.add(new NTNumber());
         prod.add(new Parentheses(TypeParentheses.R_SQUARE));
-        prod.add(new Operator(TypeOperator.EQUAL));
+        prod.add(new Equal());
         prod.add(new Method());
         prod.add(new Punctuation(TypePunctuation.SEMICOLON));
         rules.add(prod);
@@ -83,7 +83,7 @@ public class Statement implements Nonterminal {
         prod.add(new Parentheses(TypeParentheses.L_SQUARE));
         prod.add(new NTNumber());
         prod.add(new Parentheses(TypeParentheses.R_SQUARE));
-        prod.add(new Operator(TypeOperator.EQUAL));
+        prod.add(new Equal());
         prod.add(new NTID());
         prod.add(new Punctuation(TypePunctuation.SEMICOLON));
         rules.add(prod);

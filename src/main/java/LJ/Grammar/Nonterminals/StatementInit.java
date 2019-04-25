@@ -13,20 +13,20 @@ public class StatementInit implements Nonterminal {
     static {
         rules.add(Arrays.asList(new NTDataType(),
                 new NTID(),
-                new Operator(TypeOperator.EQUAL),
+                new Equal(),
                 new NTDigitChar(),
                 new NTNumber(),
                 new Punctuation(TypePunctuation.SEMICOLON)));
         rules.add(Arrays.asList(new NTDataType(),
                 new NTID(),
-                new Operator(TypeOperator.EQUAL),
+                new Equal(),
                 new NTStringConst(),
                 new Punctuation(TypePunctuation.SEMICOLON)));
         rules.add(Arrays.asList(new NTDataType(),
                 new Parentheses(TypeParentheses.L_SQUARE),
                 new Parentheses(TypeParentheses.R_SQUARE),
                 new NTID(),
-                new Operator(TypeOperator.EQUAL),
+                new Equal(),
                 new New(),
                 new NTDataType(),
                 new Parentheses(TypeParentheses.L_SQUARE),

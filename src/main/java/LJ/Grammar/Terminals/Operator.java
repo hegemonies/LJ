@@ -20,8 +20,6 @@ public class Operator implements Terminal {
                 return "/";
             case PERCENT:
                 return "%";
-            case EQUAL:
-                return "=";
         }
 
         return null;

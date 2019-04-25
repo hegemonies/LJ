@@ -4,6 +4,7 @@ import LJ.Grammar.Symbol;
 import LJ.Grammar.Terminals.ID;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NTID implements Nonterminal {
@@ -15,7 +16,7 @@ public class NTID implements Nonterminal {
 
     @Override
     public List<Symbol> getFirst() {
-        return null;
+        return Collections.singletonList(rules.get(0));
     }
 
     @Override

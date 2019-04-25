@@ -1,0 +1,58 @@
+<Program>: <class>
+
+<modAccessClass>: public | private
+
+<class>: <modAccessClass> class <id> {
+        <statementList>
+    }
+
+<id>: \b[A-Za-z_][A-Za-z0-9]*
+
+<loop>: while (<expression>) {
+        <statementList>
+    }
+
+<argsCallList>: <rvalue> | <argsCallList>, <argsCallList>
+
+<expression>: 
+
+<conditionalExpr>: if (<expression>) {
+        <statementList>
+    }
+
+<statementInitList>: <statementInit> <statementInitList> | E
+
+<nativeDataType>: int
+
+<dataType>: <nativeDataType> | <id>
+
+<rvalue>: <number> | <str_const> | <id>
+
+<statementInit>: <dataType> <id> = <rvalueInit>; |
+        <dataType> <id>[<number>] = <rvalueInit>;
+
+<statementList>: <statement> <statementList> | E
+
+<number>: <digit><number> | E
+
+<digit>: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+
+// <str_const>: "([A-Za-z0-9]!@#$%^&*()_+-=[]{}<>;:'",./?\|`~ )+"
+<str_const>: .+
+
+<statement>: { <statement> } |
+    <class> |
+    <id> | 
+    <id>() | 
+    <id>(); | 
+    <id>[<number]; | 
+    <id>[<number] | 
+    <id>(<argsCallList>) | 
+    <id>(<argsCallList>); | 
+    <loop> | 
+    <conditionalExpr> | 
+    <id> = <rvalue>; |
+    <id>[<number>] = <rvalue>; | 
+    <statementInit>; | 
+    
+    

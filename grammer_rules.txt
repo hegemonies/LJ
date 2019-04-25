@@ -81,7 +81,9 @@ Program-> <class>
 
 <logicOperator>-> && | ||
 
-<conditional_transition>-> if (<expr>) {
+<conditionalExprList>-> <conditionalExpr> <conditionalExprList> | E
+
+<conditionalExpr>-> if (<expr>) {
                 <statementInitList>
                 <statementList>
                 <methodList>

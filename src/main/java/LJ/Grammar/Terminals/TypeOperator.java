@@ -5,6 +5,5 @@ public enum TypeOperator {
     MINUS, // -
     STAR, // *
     SLASH, // /
-    PERCENT, // %
-    EQUAL // =
+    PERCENT // %
 }
