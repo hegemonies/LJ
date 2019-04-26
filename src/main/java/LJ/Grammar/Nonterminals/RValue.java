@@ -4,14 +4,16 @@ import LJ.Grammar.Symbol;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class Expression implements Nonterminal {
+public class RValue implements Nonterminal {
     private static final List<List<Symbol>> rules = new ArrayList<>();
 
     static {
-        rules.add(Arrays.asList(new ValueExpr(), new NTCondition(), new ValueExpr()));
-        rules.add(Arrays.asList(new Expression(), new NTLogicOperator(), new Expression()));
+        rules.add(Collections.singletonList(new NTNumber()));
+        rules.add(Collections.singletonList(new NTStringConst()));
+        rules.add(Collections.singletonList(new NTID()));
     }
 
     @Override

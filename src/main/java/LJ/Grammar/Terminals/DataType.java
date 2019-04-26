@@ -12,6 +12,8 @@ public class DataType implements Terminal {
         switch (type) {
             case INT:
                 return "int";
+            case VOID:
+                return "void";
         }
 
         return null;

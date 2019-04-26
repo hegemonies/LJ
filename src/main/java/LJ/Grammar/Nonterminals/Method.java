@@ -15,12 +15,12 @@ public class Method implements Nonterminal {
         rules.add(new ModAccess());
         rules.add(new NTID());
         rules.add(new Parentheses(TypeParentheses.L_PARENT));
-        rules.add(new ArgsList());
+//        rules.add(new ArgsList());
         rules.add(new Parentheses(TypeParentheses.R_PARENT));
         rules.add(new Parentheses(TypeParentheses.L_BRACE));
         rules.add(new StatementList());
         rules.add(new MethodList());
-        rules.add(new LoopList());
+//        rules.add(new LoopList());
         rules.add(new Parentheses(TypeParentheses.R_BRACE));
     }
 

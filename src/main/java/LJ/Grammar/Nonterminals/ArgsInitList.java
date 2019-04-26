@@ -4,18 +4,19 @@ import LJ.Grammar.E;
 import LJ.Grammar.Symbol;
 import LJ.Grammar.Terminals.Punctuation;
 import LJ.Grammar.Terminals.TypePunctuation;
+import com.sun.org.apache.xpath.internal.Arg;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ArgsList implements Nonterminal {
+public class ArgsInitList implements Nonterminal {
     private static final List<List<Symbol>> rules = new ArrayList<>();
 
     static {
-        rules.add(Arrays.asList(new Arg(), new Punctuation(TypePunctuation.COMMA), new ArgsList()));
-        rules.add(Collections.singletonList(new E()));
+        rules.add(Arrays.asList(new ArgsInitList(), new Punctuation(TypePunctuation.COMMA), new ArgsInitList()));
+        rules.add(Arrays.asList(new NTDataType(), new RValue()));
     }
 
     @Override

@@ -1,7 +1,8 @@
 package LJ.Grammar.Terminals;
 
 public enum TypeDataType {
-    INT
+    INT,
+    VOID
     //, DOUBLE,
     //FLOAT,
     //CHAR,

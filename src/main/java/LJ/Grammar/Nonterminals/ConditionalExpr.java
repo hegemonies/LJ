@@ -17,7 +17,7 @@ public class ConditionalExpr implements Nonterminal {
         rules.add(new Expression());
         rules.add(new Parentheses(TypeParentheses.R_PARENT));
         rules.add(new Parentheses(TypeParentheses.L_BRACE));
-
+        rules.add(new StatementInit());
         rules.add(new Parentheses(TypeParentheses.R_BRACE));
     }
 

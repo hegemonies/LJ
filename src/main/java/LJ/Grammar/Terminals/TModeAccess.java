@@ -16,6 +16,10 @@ public class TModeAccess implements Terminal {
                 return "private";
             case PROTECTED:
                 return "protected";
+            case FINAL:
+                return "final";
+            case STATIC:
+                return "static";
         }
 
         return null;

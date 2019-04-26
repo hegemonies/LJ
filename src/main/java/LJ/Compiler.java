@@ -1,6 +1,8 @@
 package LJ;
 
 import LJ.Lexer.Lexer;
+import LJ.Lexer.ListLexer;
+import LJ.Parser.Parser;
 
 class Compiler {
     private static String src_data = null;
@@ -14,7 +16,8 @@ class Compiler {
         lexer.go();
         lexer.printOutput();
 
-//        parse.go();
+        Parser parser = new Parser(new ListLexer(lexer));
+        parser.go();
     }
 
     private static void printSourceCode() {

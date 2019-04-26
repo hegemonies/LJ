@@ -1,19 +1,20 @@
 package LJ.Grammar.Nonterminals;
 
-import LJ.Grammar.E;
 import LJ.Grammar.Symbol;
+import LJ.Grammar.Terminals.Punctuation;
+import LJ.Grammar.Terminals.TypePunctuation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class LoopList implements Nonterminal {
+public class ArgsCallList implements Nonterminal {
     private static final List<List<Symbol>> rules = new ArrayList<>();
 
     static {
-        rules.add(Arrays.asList(new NTLoop(), new LoopList()));
-        rules.add(Collections.singletonList(new E()));
+        rules.add(Arrays.asList(new ArgsCallList(), new Punctuation(TypePunctuation.COMMA), new ArgsCallList()));
+        rules.add(Collections.singletonList(new RValue()));
     }
 
     @Override

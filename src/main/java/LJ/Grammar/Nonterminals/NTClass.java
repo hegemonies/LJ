@@ -10,8 +10,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class NTClass implements Nonterminal {
-    private List<Symbol> rules = Arrays.asList(new ModAccessClass(), new TClass(), new NTID(), new Parentheses(TypeParentheses.L_BRACE),
-                                            new ModAccess());
+    private static final List<Symbol> rules = Arrays.asList(new ModAccessClass(),
+            new TClass(),
+            new NTID(),
+            new Parentheses(TypeParentheses.L_BRACE),
+            new MainMethod(),
+            new StatementList(),
+            new Parentheses(TypeParentheses.R_BRACE));
 
     @Override
     public List<Symbol> getFirst() {
