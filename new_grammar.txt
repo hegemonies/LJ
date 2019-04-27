@@ -7,9 +7,13 @@
         <statementList>
     }
 
-<mainMathod>: public static void main(String[] args) { <statementList> }
+<mainMethod>: public static void main(String[] args) { 
+        <statementList> 
+    }
 
-<id>: \b[A-Za-z_][A-Za-z0-9]*
+<id>: <id_head><id_tail>
+<id_head>: [_A-Za-z]
+<id_tail>: [_A-Za-z0-9]<id_tail> | E
 
 <loop>: while (<expression>) {
         <statementList>
@@ -25,10 +29,40 @@
     <nubmer> |
     <str_const>
 
-// getFirst() возвращает множество терминалов. 
-// если нетерминал возвращае пустое значение, пройтись по всем след нетерминалам и найти первый терминал
+<conditional>: if (<expression>) {
+        <statementList>
+    }
 
-// getFollow() возвращает множество терминалов следующих за Followd
+<nativeDataType>: int
+
+<dataType>: <nativeDataType> | <id>
+
+<initList>: <init> <initList> | E
+
+<rvalue>: <number> | <str_const> | <id>
+
+<init>: <nativeDataType> <id> = <rvalue>; |
+    <nativeDataType> <id>[<number>] = new <nativeDataType>[<number>];
+
+<statementList>: <statement> <statementList> | E
+
+<number>: <number_head><number_tail>
+<number_tail>: [0-9]<number_tail> | E
+<number_head>: [1-9]
+
+<str_const>: .+
+
+<condition>: < | > | == | != | <= | >=
+
+<operator>: + | - | * | / | %
+
+<logicOperator>: && | ||
+
+<statement>: { <statement> } |
+    <loop> |
+    <conditional> |
+    <expression>;
+    <statementInit>; |
 
 <expression>: <valueExpr> <condition> <valueExpr> |
     <expr> <logicOperator> <expr> | 
@@ -39,46 +73,4 @@
     <id> = <expression> | 
     <number> | 
     <str_const> | 
-    <arithmetic> | 
     <expression> <operator> <expression>
-
-<conditional>: if (<expression>) {
-        <statementList>
-    }
-
-<statementInitList>: <statementInit> <statementInitList> | E
-
-<nativeDataType>: int
-
-<dataType>: <nativeDataType> | <id> | E
-
-<rvalue>: <number> | <str_const> | <id>
-
-<statementInit>: <dataType> <id> = <dataType> <rvalue>; |
-    <dataType> <id>[<number>] = <dataType> <rvalue>;
-
-<statementList>: <statement> <statementList> | E
-
-//todo
-<number>: <digit><number> | E
-
-<digit>: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-
-// <str_const>: "([A-Za-z0-9]!@#$%^&*()_+-=[]{}<>;:'",./?\|`~ )+"
-<str_const>: .+
-
-<condition>: < | > | == | != | <= | >=
-
-<arithmetic>: <arithmetic> <operator> <arithmetic> |
-        ( <expression> ) |
-        <id> | <number>
-
-<operator>: + | - | * | / | %
-
-<logicOperator>: && | ||
-
-<statement>: { <statement> } |
-    <loop> |
-    <conditionalExpr> |
-    <expression>;
-    <statementInit>; |

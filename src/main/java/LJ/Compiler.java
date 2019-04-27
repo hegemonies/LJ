@@ -2,7 +2,6 @@ package LJ;
 
 import LJ.Lexer.Lexer;
 import LJ.Lexer.ListLexer;
-import LJ.Parser.Parser;
 
 class Compiler {
     private static String src_data = null;
