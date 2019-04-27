@@ -9,7 +9,7 @@ public class ListLexer {
         consume();
     }
 
-    private void consume() {
+    public void consume() {
         lookahead = lexer.getNextToken();
     }
 
@@ -17,6 +17,14 @@ public class ListLexer {
         if (lookahead.getType().equals(x)) {
             consume();
         } else throw new Error("expecting " + x + "; found "+ lookahead + " in " + lookahead.getLocation());
+    }
+
+    public boolean matchLite(String x) {
+        if (lookahead.getType().equals(x)) {
+            return true;
+        }
+
+        return false;
     }
 
     public Token getLookahead() {

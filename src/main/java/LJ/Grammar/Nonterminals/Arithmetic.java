@@ -14,7 +14,7 @@ public class Arithmetic implements Nonterminal {
 
     static {
         rules.add(Arrays.asList(new Arithmetic(), new NTOperator(), new Arithmetic()));
-        rules.add(Arrays.asList(new Parentheses(TypeParentheses.L_PARENT), new Arithmetic(),new Parentheses(TypeParentheses.L_PARENT)));
+        rules.add(Arrays.asList(new Parentheses(TypeParentheses.L_PARENT), new Arithmetic(),new Parentheses(TypeParentheses.R_PARENT)));
         rules.add(Collections.singletonList(new NTID()));
         rules.add(Collections.singletonList(new NTNumber()));
     }

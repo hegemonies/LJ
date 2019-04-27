@@ -3,11 +3,11 @@
 <modAccessClass>: public | private
 
 <class>: <modAccessClass> class <id> {
-        <mainMathod>
+        <mainMethod>
         <statementList>
     }
 
-<mainMathod>: public static void main(String[] args) { <statementList> } | E
+<mainMathod>: public static void main(String[] args) { <statementList> }
 
 <id>: \b[A-Za-z_][A-Za-z0-9]*
 
@@ -17,7 +17,7 @@
 
 <argsInitList>: <dataType> <rvalue> | <argsInitList>, <argsInitList>
 
-<argsCallList>: <rvalue> | <argsCallList>, <argsCallList>
+<argsCallList>: <rvalue> | <argsCallList>, <argsCallList>  | E
 
 <valueExpr>: <id> |
     <id>[<number>] |
@@ -25,10 +25,24 @@
     <nubmer> |
     <str_const>
 
-<expression>: <valueExpr> <condition> <valueExpr> |
-    <expr> <logicOperator> <expr>
+// getFirst() возвращает множество терминалов. 
+// если нетерминал возвращае пустое значение, пройтись по всем след нетерминалам и найти первый терминал
 
-<conditionalExpr>: if (<expression>) {
+// getFollow() возвращает множество терминалов следующих за Followd
+
+<expression>: <valueExpr> <condition> <valueExpr> |
+    <expr> <logicOperator> <expr> | 
+    <id> | 
+    <id>[<number>] | 
+    <id>() | 
+    <id>(<argsCallList>) |
+    <id> = <expression> | 
+    <number> | 
+    <str_const> | 
+    <arithmetic> | 
+    <expression> <operator> <expression>
+
+<conditional>: if (<expression>) {
         <statementList>
     }
 
@@ -36,7 +50,7 @@
 
 <nativeDataType>: int
 
-<dataType>: <nativeDataType> | <id>
+<dataType>: <nativeDataType> | <id> | E
 
 <rvalue>: <number> | <str_const> | <id>
 
@@ -45,6 +59,7 @@
 
 <statementList>: <statement> <statementList> | E
 
+//todo
 <number>: <digit><number> | E
 
 <digit>: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
@@ -55,26 +70,15 @@
 <condition>: < | > | == | != | <= | >=
 
 <arithmetic>: <arithmetic> <operator> <arithmetic> |
-        ( <arithmetic> ) |
+        ( <expression> ) |
         <id> | <number>
 
 <operator>: + | - | * | / | %
 
 <logicOperator>: && | ||
 
-<statementClass>: { <statement> } |
-    <class> |
-    <id> |
-    <id> = <arithmetic> |
-    <id>() |
-    <id>[<number]; |
-    <id>[<number] |
-    <id>(<argsCallList>) |
-    <id>(<argsCallList>); |
+<statement>: { <statement> } |
     <loop> |
     <conditionalExpr> |
-    <id> = <rvalue>; |
-    <id>[<number>] = <rvalue>; |
+    <expression>;
     <statementInit>; |
-
-    
