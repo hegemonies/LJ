@@ -4,7 +4,7 @@ import LJ.Grammar.Symbol;
 
 import java.util.List;
 
-interface Nonterminal extends Symbol {
+public interface Nonterminal extends Symbol {
     List<Symbol> getFirst();
     List<Symbol> getFollow();
 }

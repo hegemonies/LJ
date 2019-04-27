@@ -3,8 +3,11 @@
 <modAccessClass>: public | private
 
 <class>: <modAccessClass> class <id> {
+        <mainMathod>
         <statementList>
     }
+
+<mainMathod>: public static void main(String[] args) { <statementList> } | E
 
 <id>: \b[A-Za-z_][A-Za-z0-9]*
 
@@ -12,9 +15,18 @@
         <statementList>
     }
 
+<argsInitList>: <dataType> <rvalue> | <argsInitList>, <argsInitList>
+
 <argsCallList>: <rvalue> | <argsCallList>, <argsCallList>
 
-<expression>: 
+<valueExpr>: <id> |
+    <id>[<number>] |
+    <id>() |
+    <nubmer> |
+    <str_const>
+
+<expression>: <valueExpr> <condition> <valueExpr> |
+    <expr> <logicOperator> <expr>
 
 <conditionalExpr>: if (<expression>) {
         <statementList>
@@ -28,8 +40,8 @@
 
 <rvalue>: <number> | <str_const> | <id>
 
-<statementInit>: <dataType> <id> = <rvalueInit>; |
-        <dataType> <id>[<number>] = <rvalueInit>;
+<statementInit>: <dataType> <id> = <dataType> <rvalue>; |
+    <dataType> <id>[<number>] = <dataType> <rvalue>;
 
 <statementList>: <statement> <statementList> | E
 
@@ -40,19 +52,29 @@
 // <str_const>: "([A-Za-z0-9]!@#$%^&*()_+-=[]{}<>;:'",./?\|`~ )+"
 <str_const>: .+
 
-<statement>: { <statement> } |
+<condition>: < | > | == | != | <= | >=
+
+<arithmetic>: <arithmetic> <operator> <arithmetic> |
+        ( <arithmetic> ) |
+        <id> | <number>
+
+<operator>: + | - | * | / | %
+
+<logicOperator>: && | ||
+
+<statementClass>: { <statement> } |
     <class> |
-    <id> | 
-    <id>() | 
-    <id>(); | 
-    <id>[<number]; | 
-    <id>[<number] | 
-    <id>(<argsCallList>) | 
-    <id>(<argsCallList>); | 
-    <loop> | 
-    <conditionalExpr> | 
+    <id> |
+    <id> = <arithmetic> |
+    <id>() |
+    <id>[<number]; |
+    <id>[<number] |
+    <id>(<argsCallList>) |
+    <id>(<argsCallList>); |
+    <loop> |
+    <conditionalExpr> |
     <id> = <rvalue>; |
-    <id>[<number>] = <rvalue>; | 
-    <statementInit>; | 
-    
+    <id>[<number>] = <rvalue>; |
+    <statementInit>; |
+
     

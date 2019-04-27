@@ -26,4 +26,9 @@ public class Token {
     public String toString() {
         return location.toString() + " " + type + " '" + value + "'";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (((String) obj).equals(this.type));
+    }
 }

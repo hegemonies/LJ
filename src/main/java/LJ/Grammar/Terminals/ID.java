@@ -5,6 +5,8 @@ import java.util.regex.Pattern;
 public class ID implements Terminal {
     private String value;
 
+    public ID() {}
+
     public ID(String value) {
         this.value = value;
 
