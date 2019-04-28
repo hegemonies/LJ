@@ -51,7 +51,7 @@ public class Lexer {
                     } else if (cur_char == ' ') {
                         buffer.setLength(0);
                     } else {
-                        if (Character.isDigit(cur_char)){
+                        if (Character.isDigit(cur_char)) {
                             predictor = PredicationOfTheToken.NUM_CONST;
                         } else if (Character.isLetter(cur_char)) {
                             predictor = PredicationOfTheToken.ID_or_KWORD;
@@ -92,6 +92,9 @@ public class Lexer {
                     if (predictor == PredicationOfTheToken.ILLEGAL) {
                         type = "unknown";
                     } else if (predictor == PredicationOfTheToken.NUM_CONST) {
+                        if (Integer.parseInt(buffer.toString().split("")[0]) == 0) {
+                            type = "unknown";
+                        }
                         type = "numeric_constant";
                     } else if (predictor == PredicationOfTheToken.ID) {
                         type = "id";
@@ -108,14 +111,22 @@ public class Lexer {
                     if (predictor == PredicationOfTheToken.NUM_CONST) {
                         if (Character.isDigit(cur_char)) {
                             buffer.append(cur_char);
+                            System.out.println("add digit: " + cur_char);
                         } else {
                             String token = buffer.toString();
-                            buffer.setLength(0);
-                            tokenList.add(new Token("numeric_constant",
+                            String type = "numeric_constant";
+
+                            if (Integer.parseInt(buffer.toString().split("")[0]) == 0) {
+                                type = "unknown";
+                            }
+
+                            tokenList.add(new Token(type,
                                     token,
                                     new Location(row + 1, col + 1 - token.length())));
                             predictor = null;
                             col--;
+
+                            buffer.setLength(0);
                         }
                     } else if (predictor == PredicationOfTheToken.KWORD) {
                         if (types.isToken(buffer.toString())) {
