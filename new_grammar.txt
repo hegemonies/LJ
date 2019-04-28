@@ -3,8 +3,8 @@
 <modAccessClass>: public | private
 
 <class>: <modAccessClass> class <id> {
+        <initList>
         <mainMethod>
-        <statementList>
     }
 
 <mainMethod>: public static void main(String[] args) { 
@@ -19,14 +19,20 @@
         <statementList>
     }
 
+<rvalue>: <number> | <str_const> | <id>
+
+<argsInitListChanger>: <argsInitList> | E
+
 <argsInitList>: <dataType> <rvalue> | <argsInitList>, <argsInitList>
 
-<argsCallList>: <rvalue> | <argsCallList>, <argsCallList>  | E
+<argsCallListChanger>: <argsCallList> | E
+
+<argsCallList>: <rvalue> | <argsCallList>, <argsCallList>
 
 <valueExpr>: <id> |
     <id>[<number>] |
     <id>() |
-    <nubmer> |
+    <number> |
     <str_const>
 
 <conditional>: if (<expression>) {
@@ -35,14 +41,16 @@
 
 <nativeDataType>: int
 
-<dataType>: <nativeDataType> | <id>
-
 <initList>: <init> <initList> | E
 
-<rvalue>: <number> | <str_const> | <id>
+<init>: <nativeDataType> <id> <forkInit>
 
-<init>: <nativeDataType> <id> = <rvalue>; |
-    <nativeDataType> <id>[<number>] = new <nativeDataType>[<number>];
+<forkInit>: 
+    (<argsInitListChanger>) {
+        <statementList>
+    } | 
+    = <valueExpr>; |
+    [<number>] = new <nativeDataType>[<number>];
 
 <statementList>: <statement> <statementList> | E
 
@@ -50,7 +58,7 @@
 <number_tail>: [0-9]<number_tail> | E
 <number_head>: [1-9]
 
-<str_const>: .+
+<str_const>: -\(-_-)/-
 
 <condition>: < | > | == | != | <= | >=
 
@@ -61,15 +69,15 @@
 <statement>: { <statement> } |
     <loop> |
     <conditional> |
-    <expression>;
-    <statementInit>; |
+    <expression>; |
+    <init>; |
 
 <expression>: <valueExpr> <condition> <valueExpr> |
     <expr> <logicOperator> <expr> | 
     <id> | 
     <id>[<number>] | 
     <id>() | 
-    <id>(<argsCallList>) |
+    <id>(<argsCallListChanger>) |
     <id> = <expression> | 
     <number> | 
     <str_const> | 
