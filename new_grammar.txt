@@ -39,7 +39,7 @@
         <statementList>
     }
 
-<nativeDataType>: int
+<nativeDataType>: int | char
 
 <initList>: <init> <initList> | E
 
@@ -58,7 +58,7 @@
 <number_tail>: [0-9]<number_tail> | E
 <number_head>: [1-9]
 
-<str_const>: -\(-_-)/-
+<str_const>: /-\(-_-)/-\
 
 <condition>: < | > | == | != | <= | >=
 

@@ -1,6 +1,8 @@
 package LJ.Parser;
 
 import LJ.Lexer.ListLexer;
+import LJ.Parser.ParserException.CriticalProductionException;
+import LJ.Parser.ParserException.OptionalProductionException;
 
 public class Parser {
     // todo AST
@@ -11,22 +13,49 @@ public class Parser {
     }
 
     public void go() {
-        listLexer.match("program");
+        try {
+            listLexer.match("program");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         parseProgram();
     }
 
     private void parseProgram() {
-        parseModAccessClass();
-    }
-
-    private void parseModAccessClass() {
-        if (listLexer.matchLite("public")) {
-
-        } else if (listLexer.matchLite("private")) {
-
+        try {
+            parseModAccessClass();
+            listLexer.match("class");
+            listLexer.match("id");
+            listLexer.match("l_brace");
+            try {
+                parseInitList();
+            } catch (OptionalProductionException exc) { }
+            parseMainMethod();
+            listLexer.match("r_brace");
+        }  catch (CriticalProductionException exc) {
+            exc.printStackTrace();
         }
     }
 
+    private void parseModAccessClass() throws CriticalProductionException {
+        listLexer.matchOneOf("public", "private");
+    }
 
-    // matchOfOne
+    private void parseInitList() throws OptionalProductionException {
+        try {
+            parseInit();
+            parseInitList();
+        } catch (Exception e) {
+            throw new OptionalProductionException(e.getMessage());
+        }
+    }
+
+    private void parseInit() throws CriticalProductionException {
+        listLexer.matchOneOf("int", "char"); // native data type
+        
+    }
+
+    private void parseMainMethod() throws CriticalProductionException {
+
+    }
 }

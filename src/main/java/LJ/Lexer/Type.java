@@ -22,7 +22,7 @@ class Type {
         types.put("int", "int");
         // types.put("float", "float");
         // types.put("double", "double");
-        // types.put("char", "char");
+         types.put("char", "char");
         // types.put("long", "long");
         // types.put("boolean", "boolean");
 
