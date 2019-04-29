@@ -23,7 +23,7 @@
 
 <argsInitListChanger>: <argsInitList> | E
 
-<argsInitList>: <dataType> <rvalue> | <argsInitList>, <argsInitList>
+<argsInitList>: <nativeDataType> <rvalue> | <argsInitList>, <argsInitList>
 
 <argsCallListChanger>: <argsCallList> | E
 
@@ -76,7 +76,6 @@
     <expr> <logicOperator> <expr> | 
     <id> | 
     <id>[<number>] | 
-    <id>() | 
     <id>(<argsCallListChanger>) |
     <id> = <expression> | 
     <number> | 
