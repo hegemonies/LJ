@@ -62,6 +62,7 @@ class Type {
         types.put("void", "void");
         types.put("id", "id");
 
+        types.put("new", "new");
     }
 
     boolean isToken(String token) {

@@ -134,10 +134,21 @@ public class Parser {
 
     /**
      * <forkInitArray>: <arrayMember> = new <nativeDataType><arrayMember>;
-     * @throws CriticalProductionException
+     * @return
      */
-    private void parseForkInitArrayMember() {
-        // todo
+    private boolean parseForkInitArray() {
+        try {
+            parseArrayMember();
+            listLexer.match("equal");
+            listLexer.match("new");
+            parseNativeDataType();
+            parseArrayMember();
+            listLexer.match("semi");
+        } catch (CriticalProductionException exc) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -225,7 +236,7 @@ public class Parser {
         try {
             parseArrayMember();
             matchAny = true;
-        } catch (OptionalProductionException e) { }
+        } catch (CriticalProductionException e) { }
 
         if (!matchAny) {
             try {
@@ -269,23 +280,78 @@ public class Parser {
      * <arrayMember>: [<number>]
      * @throws OptionalProductionException
      */
-    private void parseArrayMember() throws OptionalProductionException {
-        try {
-            listLexer.match("l_square");
-            parseNumber();
-            listLexer.match("r_square");
-        } catch (CriticalProductionException e) {
-            throw new OptionalProductionException();
-        }
-    }
-
-
-    private boolean parseForkInitArray() {
-        // todo forInitArray
+    private void parseArrayMember() throws CriticalProductionException {
+        listLexer.match("l_square");
+        parseNumber();
+        listLexer.match("r_square");
     }
 
     private void parseStatementList() {
-        // todo statementList
+        parseStatement();
+    }
+
+    /**
+     * <statement>: { <statement> } |
+     *     <loop> |
+     *     <conditional> |
+     *     <expression>; |
+     *     <init>;
+     */
+    private void parseStatement() throws CriticalProductionException { // todo check this again
+        boolean matchAny = false;
+
+        try {
+            listLexer.match("l_brace");
+            parseStatement();
+            listLexer.match("l_brace");
+
+            matchAny = true;
+        } catch (CriticalProductionException exc) { }
+
+        if (!matchAny) {
+            try {
+                parseLoop();
+                matchAny = true;
+            } catch (CriticalProductionException e) { }
+        }
+
+        if (!matchAny) {
+            try {
+                parseConditional();
+                matchAny = true;
+            } catch (CriticalProductionException exc) { }
+        }
+
+        if (!matchAny) {
+            try {
+                parseExpression();
+                listLexer.match("semi");
+                matchAny = true;
+            } catch (CriticalProductionException exc) { }
+        }
+
+        if (!matchAny) {
+            try {
+                parseInit();
+                matchAny = true;
+            } catch (CriticalProductionException exc) { }
+        }
+
+        if (!matchAny) {
+            throw new CriticalProductionException("Found wrong statement?");
+        }
+    }
+
+    private void parseExpression() throws CriticalProductionException {
+        // todo write expression
+    }
+
+    private void parseConditional() throws CriticalProductionException {
+        // todo write conditional
+    }
+
+    private void parseLoop() throws CriticalProductionException {
+        // todo write nonterminal loop
     }
 
     private void parseArgsInitListChanger() throws OptionalProductionException {
