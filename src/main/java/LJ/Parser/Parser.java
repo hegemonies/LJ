@@ -4,6 +4,9 @@ import LJ.Lexer.ListLexer;
 import LJ.Parser.ParserException.CriticalProductionException;
 import LJ.Parser.ParserException.OptionalProductionException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Parser {
     // todo AST
     private ListLexer listLexer;
@@ -21,6 +24,9 @@ public class Parser {
         parseProgram();
     }
 
+    /**
+     * <Program>: <class>
+     */
     private void parseProgram() {
         try {
             parseModAccessClass();
@@ -37,11 +43,19 @@ public class Parser {
         }
     }
 
+    /**
+     * <modAccessClass>: public | private
+     * @throws CriticalProductionException
+     */
     private void parseModAccessClass() throws CriticalProductionException {
         listLexer.matchOneOf("public", "private");
     }
 
-    private void parseInitList() throws OptionalProductionException {
+    /**
+     * <argsInitList>: <nativeDataType> <rvalue> | <argsInitList>, <argsInitList>
+     * @throws OptionalProductionException
+     */
+    private void parseInitList() throws OptionalProductionException { // todo comeback and check this
         try {
             parseInit();
             parseInitList();
@@ -50,22 +64,41 @@ public class Parser {
         }
     }
 
+    /**
+     * <init>: <nativeDataType> <id> <forkInit>
+     * @throws CriticalProductionException
+     */
     private void parseInit() throws CriticalProductionException {
         parseNativeDataType();
         listLexer.match("id");
         parseForkInit();
     }
 
+    /**
+     * <nativeDataType>: int | char
+     * @throws CriticalProductionException
+     */
     private void parseNativeDataType() throws CriticalProductionException {
         listLexer.matchOneOf("int", "char");
     }
 
+    /**
+     * <forkInit>: <forInitFunc> |
+     *     <forkInitVar> |
+     *     <forInitArray>
+     */
     private void parseForkInit() { //todo refactor
         parseForkInitFunc();
         parseForkInitVar();
         parseForkInitArray();
     }
 
+    /**
+     * <forInitFunc>: (<argsInitListChanger>) {
+     *                    <statementList>
+     *                }
+     * @return
+     */
     private boolean parseForkInitFunc() {
         try {
             listLexer.match("l_paren");
@@ -83,6 +116,10 @@ public class Parser {
         return true;
     }
 
+    /**
+     * <forkInitVar>: = <valueExpr>;
+     * @return
+     */
     private boolean parseForkInitVar() {
         try {
             listLexer.match("equal");
@@ -95,12 +132,40 @@ public class Parser {
         return true;
     }
 
-    private void parseValueExpr() { //todo refactor for if
-        parseVExpr();
-        parseNumber();
-        parseStrConst();
+    /**
+     * <forkInitArray>: <arrayMember> = new <nativeDataType><arrayMember>;
+     * @throws CriticalProductionException
+     */
+    private void parseForkInitArrayMember() {
+        // todo
     }
 
+    /**
+     * <valueExpr>: <vExpr> |
+     *     <number> |
+     *     <str_const>
+     * @throws CriticalProductionException
+     */
+    private void parseValueExpr() throws CriticalProductionException { //todo refactor for if
+        boolean matchAny = parseVExpr();
+
+        if (!matchAny) {
+            matchAny = parseNumber();
+        }
+
+        if (!matchAny) {
+            matchAny = parseStrConst();
+        }
+
+        if (!matchAny) {
+            throw new CriticalProductionException("Found wrong value expression");
+        }
+    }
+
+    /**
+     * <str_const>: /-\(-_-)/-\
+     * @return
+     */
     private boolean parseStrConst() {
         // todo
         try {
@@ -112,6 +177,12 @@ public class Parser {
         return true;
     }
 
+    /**
+     * <number>: <number_head><number_tail>
+     * <number_tail>: [0-9]<number_tail> | E
+     * <number_head>: [1-9]
+     * @return
+     */
     private boolean parseNumber() {
         try {
             listLexer.match("numeric_constant");
@@ -122,11 +193,17 @@ public class Parser {
         return true;
     }
 
+    /**
+     * <vExpr>: <id> <vExprChange>
+     * @return
+     */
     private boolean parseVExpr() {
         try {
             listLexer.match("id");
 
-            parseVExprChanger();
+            try {
+                parseVExprChanger();
+            } catch (OptionalProductionException e) { }
 
         } catch (CriticalProductionException e) {
             return false;
@@ -135,27 +212,63 @@ public class Parser {
         return true;
     }
 
-    private void parseVExprChanger() {
+    /**
+     * <vExprChanger>: <arrayMember> |
+     *      () |
+     *      (<argsCallListChanger>) |
+     *      E
+     * @throws OptionalProductionException
+     */
+    private void parseVExprChanger() throws OptionalProductionException {
         boolean matchAny = false;
 
         try {
             parseArrayMember();
             matchAny = true;
-        } catch (OptionalProductionException e) {
-            // todo: what i must throw?
-        }
+        } catch (OptionalProductionException e) { }
 
         if (!matchAny) {
             try {
                 listLexer.match("l_paren");
+
+                try {
+                    parseArgsCallListChanger();
+                } catch (OptionalProductionException e) { }
+
                 listLexer.match("r_paren");
-                matchAny = true;
             } catch (CriticalProductionException exc) {
-                // todo: same question
+                throw new OptionalProductionException();
             }
         }
     }
 
+    /**
+     * <argsCallListChanger>: <argsCallList> | E
+     * @throws OptionalProductionException
+     */
+    private void parseArgsCallListChanger() throws OptionalProductionException {
+        try {
+            parseArgsCallList();
+        } catch (CriticalProductionException exc) {
+            throw new OptionalProductionException();
+        }
+    }
+
+    /**
+     * <argsCallList>: <valueExpr> | <argsCallList>, <argsCallList>
+     * @throws CriticalProductionException
+     */
+    private void parseArgsCallList() throws CriticalProductionException {
+        parseValueExpr();
+
+        listLexer.match(",");
+        parseArgsCallList();
+    }
+
+    /**
+     * <arrayMember>: [<number>]
+     * @throws OptionalProductionException
+     */
     private void parseArrayMember() throws OptionalProductionException {
         try {
             listLexer.match("l_square");
@@ -165,6 +278,7 @@ public class Parser {
             throw new OptionalProductionException();
         }
     }
+
 
     private boolean parseForkInitArray() {
         // todo forInitArray

@@ -27,14 +27,14 @@
 
 <argsCallListChanger>: <argsCallList> | E
 
-<argsCallList>: <rvalue> | <argsCallList>, <argsCallList>
+<argsCallList>: <valueExpr> | <argsCallList>, <argsCallList>
 
 <valueExpr>: <vExpr> |
     <number> |
     <str_const>
 
 <vExpr>: <id> <vExprChange>
-<vExprChanger>: [<number>] | () | E
+<vExprChanger>: <arrayMember> | () | (<argsCallListChanger>) | E
 
 <conditional>: if (<expression>) {
         <statementList>
@@ -47,11 +47,16 @@
 <init>: <nativeDataType> <id> <forkInit>
 
 <forkInit>: 
-    (<argsInitListChanger>) {
-        <statementList>
-    } | 
-    = <valueExpr>; |
-    [<number>] = new <nativeDataType>[<number>];
+    <forkInitFunc> |
+    <forkInitVar> |
+    <forkInitArray>
+
+<forkInitFunc>: (<argsInitListChanger>) {
+                    <statementList>
+             }
+<forkInitVar>: = <valueExpr>;
+<forkInitArray>: <arrayMember> = new <nativeDataType><arrayMember>;
+
 
 <statementList>: <statement> <statementList> | E
 
@@ -67,16 +72,18 @@
 
 <logicOperator>: && | ||
 
+<arrayMember>: [<number>]
+
 <statement>: { <statement> } |
     <loop> |
     <conditional> |
     <expression>; |
-    <init>; |
+    <init>;
 
 <expression>: <valueExpr> <condition> <valueExpr> |
     <expr> <logicOperator> <expr> | 
     <id> | 
-    <id>[<number>] | 
+    <id><arrayMember> | 
     <id>(<argsCallListChanger>) |
     <id> = <expression> | 
     <number> | 
