@@ -29,11 +29,12 @@
 
 <argsCallList>: <rvalue> | <argsCallList>, <argsCallList>
 
-<valueExpr>: <id> |
-    <id>[<number>] |
-    <id>() |
+<valueExpr>: <vExpr> |
     <number> |
     <str_const>
+
+<vExpr>: <id> <vExprChange>
+<vExprChanger>: [<number>] | () | E
 
 <conditional>: if (<expression>) {
         <statementList>

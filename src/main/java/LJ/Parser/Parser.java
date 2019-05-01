@@ -83,6 +83,93 @@ public class Parser {
         return true;
     }
 
+    private boolean parseForkInitVar() {
+        try {
+            listLexer.match("equal");
+            parseValueExpr();
+            listLexer.match("semi");
+        } catch (CriticalProductionException exc) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void parseValueExpr() { //todo refactor for if
+        parseVExpr();
+        parseNumber();
+        parseStrConst();
+    }
+
+    private boolean parseStrConst() {
+        // todo
+        try {
+            listLexer.match("str_literal");
+        } catch (CriticalProductionException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean parseNumber() {
+        try {
+            listLexer.match("numeric_constant");
+        } catch (CriticalProductionException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean parseVExpr() {
+        try {
+            listLexer.match("id");
+
+            parseVExprChanger();
+
+        } catch (CriticalProductionException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void parseVExprChanger() {
+        boolean matchAny = false;
+
+        try {
+            parseArrayMember();
+            matchAny = true;
+        } catch (OptionalProductionException e) {
+            // todo: what i must throw?
+        }
+
+        if (!matchAny) {
+            try {
+                listLexer.match("l_paren");
+                listLexer.match("r_paren");
+                matchAny = true;
+            } catch (CriticalProductionException exc) {
+                // todo: same question
+            }
+        }
+    }
+
+    private void parseArrayMember() throws OptionalProductionException {
+        try {
+            listLexer.match("l_square");
+            parseNumber();
+            listLexer.match("r_square");
+        } catch (CriticalProductionException e) {
+            throw new OptionalProductionException();
+        }
+    }
+
+    private boolean parseForkInitArray() {
+        // todo forInitArray
+    }
+
     private void parseStatementList() {
         // todo statementList
     }
@@ -93,14 +180,6 @@ public class Parser {
 
     private void parseArgsInitList() {
         // todo argsInitList
-    }
-
-    private boolean parseForkInitVar() {
-        // todo forkInitVar
-    }
-
-    private boolean parseForkInitArray() {
-        // todo forInitArray
     }
 
     private void parseMainMethod() throws CriticalProductionException {
