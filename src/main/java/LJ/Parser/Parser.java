@@ -52,15 +52,60 @@ public class Parser {
     }
 
     /**
-     * <argsInitList>: <nativeDataType> <rvalue> | <argsInitList>, <argsInitList>
+     * <argsInitListChanger>: <argsInitList> | E
      * @throws OptionalProductionException
      */
-    private void parseInitList() throws OptionalProductionException { // todo comeback and check this
+    private void parseArgsInitListChanger() throws OptionalProductionException {
+        try {
+            parseArgsInitList();
+        } catch (CriticalProductionException e) {
+            throw new OptionalProductionException();
+        }
+    }
+
+    /**
+     * <initList>: <init> <initList> | E
+     * @throws CriticalProductionException
+     */
+    private void parseInitList() throws OptionalProductionException {
         try {
             parseInit();
             parseInitList();
-        } catch (Exception e) {
-            throw new OptionalProductionException(e.getMessage());
+        } catch (CriticalProductionException e) {
+            throw new OptionalProductionException();
+        }
+    }
+
+    /**
+     * <argInit>: <nativeDataType> <rvalue>
+     */
+    private void parseArgInit() throws CriticalProductionException {
+        parseNativeDataType();
+        parseRValue();
+    }
+
+    /**
+     * <rvalue>: <number> | <str_const> | <id>
+     * @throws CriticalProductionException
+     */
+    private void parseRValue() throws CriticalProductionException {
+        boolean matchAny = parseNumber();
+
+        if (!matchAny) {
+            matchAny = parseStrConst();
+        }
+
+        if (!matchAny) {
+            try {
+                listLexer.match("id");
+                matchAny = true;
+            } catch (CriticalProductionException e) {
+                matchAny = false;
+            }
+        }
+
+        if (!matchAny) {
+            throw new CriticalProductionException("ERROR");
         }
     }
 
@@ -169,7 +214,7 @@ public class Parser {
      *     <str_const>
      * @throws CriticalProductionException
      */
-    private void parseValueExpr() throws CriticalProductionException { //todo refactor for if
+    private void parseValueExpr() throws CriticalProductionException {
         boolean matchAny = parseVExpr();
 
         if (!matchAny) {
@@ -280,11 +325,13 @@ public class Parser {
      * <argsCallList>: <valueExpr> | <argsCallList>, <argsCallList>
      * @throws CriticalProductionException
      */
-    private void parseArgsCallList() throws CriticalProductionException { // todo check this again
+    private void parseArgsCallList() throws CriticalProductionException {
         parseValueExpr();
 
-        listLexer.match(",");
-        parseArgsCallList();
+        try {
+            listLexer.match(",");
+            parseArgsCallList();
+        } catch (CriticalProductionException exc) { }
     }
 
     /**
@@ -303,7 +350,7 @@ public class Parser {
     private void parseStatementList() throws OptionalProductionException {
         try {
             parseStatement();
-            parseStatementList(); // todo ???
+            parseStatementList();
         } catch (CriticalProductionException e) {
             throw new OptionalProductionException();
         }
@@ -316,7 +363,7 @@ public class Parser {
      *     <expression>; |
      *     <init>;
      */
-    private void parseStatement() throws CriticalProductionException { // todo check this again
+    private void parseStatement() throws CriticalProductionException {
         boolean matchAny = false;
 
         try {
@@ -372,7 +419,15 @@ public class Parser {
      * @throws CriticalProductionException
      */
     private void parseConditional() throws CriticalProductionException {
-        // todo write conditional
+        listLexer.match("if");
+        listLexer.match("l_paren");
+        parseExpression();
+        listLexer.match("r_paren");
+        listLexer.match("l_brace");
+        try {
+            parseStatementList();
+        } catch (OptionalProductionException e) { }
+        listLexer.match("r_brace");
     }
 
     /**
@@ -393,12 +448,17 @@ public class Parser {
         listLexer.match("r_brace");
     }
 
-    private void parseArgsInitListChanger() throws OptionalProductionException {
-        parseArgsInitList();
-    }
+    /**
+     * <argsInitList>:  <argInit> | <argsInitList>, <argsInitList>
+     * @throws CriticalProductionException
+     */
+    private void parseArgsInitList() throws CriticalProductionException {
+        parseArgInit();
 
-    private void parseArgsInitList() {
-        // todo argsInitList
+        try {
+            listLexer.match("comma");
+            parseArgsInitList();
+        } catch (CriticalProductionException exc) { }
     }
 
     /**

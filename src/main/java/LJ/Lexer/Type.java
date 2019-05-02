@@ -44,6 +44,7 @@ class Type {
         types.put("!", "exclaim");
         types.put("!=", "exclaimequal");
 
+        types.put(",", "comma");
         types.put(".", "dot");
         types.put("&&", "ampamp");
         types.put("||", "pipepipe");

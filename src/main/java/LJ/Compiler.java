@@ -16,8 +16,8 @@ class Compiler {
         lexer.go();
         lexer.printOutput();
 
-//        Parser parser = new Parser(new ListLexer(lexer));
-//        parser.go();
+        Parser parser = new Parser(new ListLexer(lexer));
+        parser.go();
     }
 
     private static void printSourceCode() {

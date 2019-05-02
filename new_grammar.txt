@@ -22,11 +22,10 @@
 <rvalue>: <number> | <str_const> | <id>
 
 <argsInitListChanger>: <argsInitList> | E
-
-<argsInitList>: <nativeDataType> <rvalue> | <argsInitList>, <argsInitList>
+<argsInitList>:  <argInit> | <argsInitList>, <argsInitList>
+<argInit>: <nativeDataType> <rvalue>
 
 <argsCallListChanger>: <argsCallList> | E
-
 <argsCallList>: <valueExpr> | <argsCallList>, <argsCallList>
 
 <valueExpr>: <vExpr> |
