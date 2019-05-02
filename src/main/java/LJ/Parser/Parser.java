@@ -375,8 +375,22 @@ public class Parser {
         // todo write conditional
     }
 
+    /**
+     * <loop>: while (<expression>) {
+     *         <statementList>
+     *     }
+     * @throws CriticalProductionException
+     */
     private void parseLoop() throws CriticalProductionException {
-        // todo write loop
+        listLexer.match("while");
+        listLexer.match("l_paren");
+        parseExpression();
+        listLexer.match("r_paren");
+        listLexer.match("l_brace");
+        try {
+            parseStatementList();
+        } catch (OptionalProductionException e) { }
+        listLexer.match("r_brace");
     }
 
     private void parseArgsInitListChanger() throws OptionalProductionException {
@@ -414,9 +428,7 @@ public class Parser {
         listLexer.match("l_brace");
         try {
             parseStatementList();
-        } catch (OptionalProductionException e) {
-
-        }
+        } catch (OptionalProductionException e) { }
         listLexer.match("r_brace");
     }
 }
