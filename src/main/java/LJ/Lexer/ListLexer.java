@@ -15,11 +15,22 @@ public class ListLexer {
         lookahead = lexer.getNextToken();
     }
 
-    public void match(String x) throws CriticalProductionException {
-        if (lookahead.getType().equals(x)) {
+    public void match(String type) throws CriticalProductionException {
+        if (lookahead.getType().equals(type)) {
             consume();
         } else {
-            throw new CriticalProductionException("expecting " + x
+            throw new CriticalProductionException("expecting " + type
+                    + "; found "+ lookahead.getType() +
+                    ":" + lookahead.getValue()
+                    + " in " + lookahead.getLocation());
+        }
+    }
+
+    public void matchTypeAndCheckValue(String type, String value) throws CriticalProductionException {
+        if (lookahead.getType().equals(type) && lookahead.getValue().equals(value)) {
+            consume();
+        } else {
+            throw new CriticalProductionException("expecting " + type
                     + "; found "+ lookahead.getType() +
                     ":" + lookahead.getValue()
                     + " in " + lookahead.getLocation());

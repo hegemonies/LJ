@@ -111,7 +111,6 @@ public class Lexer {
                     if (predictor == PredicationOfTheToken.NUM_CONST) {
                         if (Character.isDigit(cur_char)) {
                             buffer.append(cur_char);
-                            System.out.println("add digit: " + cur_char);
                         } else {
                             String token = buffer.toString();
                             String type = "numeric_constant";

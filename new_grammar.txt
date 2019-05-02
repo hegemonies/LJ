@@ -65,7 +65,7 @@
 
 <str_const>: /-\(-_-)/-\
 
-<condition>: < | > | == | != | <= | >=
+<condition>: < | > | == | !=
 
 <operator>: + | - | * | / | %
 

@@ -15,7 +15,7 @@ class Type {
 
         types.put("public", "public");
         types.put("private", "private");
-        types.put("protected", "protected");
+//        types.put("protected", "protected");
 
         types.put("class", "class");
 
@@ -57,7 +57,7 @@ class Type {
         // types.put("do", "do");
         types.put("if", "if");
 
-        // types.put("static", "static");
+         types.put("static", "static");
         // types.put("const", "const");
         types.put("void", "void");
         types.put("id", "id");

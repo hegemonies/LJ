@@ -87,10 +87,20 @@ public class Parser {
      *     <forkInitVar> |
      *     <forInitArray>
      */
-    private void parseForkInit() { //todo refactor
-        parseForkInitFunc();
-        parseForkInitVar();
-        parseForkInitArray();
+    private void parseForkInit() throws CriticalProductionException {
+        boolean matchAny = parseForkInitFunc();
+
+        if (!matchAny) {
+            matchAny = parseForkInitVar();
+        }
+
+        if (!matchAny) {
+            matchAny = parseForkInitArray();
+        }
+
+        if (!matchAny) {
+            throw new CriticalProductionException("Found wrong init token");
+        }
     }
 
     /**
@@ -107,7 +117,9 @@ public class Parser {
             } catch (OptionalProductionException e) { }
             listLexer.match("r_paren");
             listLexer.match("l_brace");
-            parseStatementList();
+            try {
+                parseStatementList();
+            } catch (OptionalProductionException e) { }
             listLexer.match("r_brace");
         } catch (CriticalProductionException e) {
             return false;
@@ -178,7 +190,6 @@ public class Parser {
      * @return
      */
     private boolean parseStrConst() {
-        // todo
         try {
             listLexer.match("str_literal");
         } catch (CriticalProductionException e) {
@@ -269,7 +280,7 @@ public class Parser {
      * <argsCallList>: <valueExpr> | <argsCallList>, <argsCallList>
      * @throws CriticalProductionException
      */
-    private void parseArgsCallList() throws CriticalProductionException {
+    private void parseArgsCallList() throws CriticalProductionException { // todo check this again
         parseValueExpr();
 
         listLexer.match(",");
@@ -286,8 +297,16 @@ public class Parser {
         listLexer.match("r_square");
     }
 
-    private void parseStatementList() {
-        parseStatement();
+    /**
+     * <statementList>: <statement> <statementList> | E
+     */
+    private void parseStatementList() throws OptionalProductionException {
+        try {
+            parseStatement();
+            parseStatementList(); // todo ???
+        } catch (CriticalProductionException e) {
+            throw new OptionalProductionException();
+        }
     }
 
     /**
@@ -346,12 +365,18 @@ public class Parser {
         // todo write expression
     }
 
+    /**
+     * <conditional>: if (<expression>) {
+     *         <statementList>
+     *     }
+     * @throws CriticalProductionException
+     */
     private void parseConditional() throws CriticalProductionException {
         // todo write conditional
     }
 
     private void parseLoop() throws CriticalProductionException {
-        // todo write nonterminal loop
+        // todo write loop
     }
 
     private void parseArgsInitListChanger() throws OptionalProductionException {
@@ -362,7 +387,36 @@ public class Parser {
         // todo argsInitList
     }
 
-    private void parseMainMethod() throws CriticalProductionException {
+    /**
+     * <condition>: < | > | == | != | <= | >=
+     */
+    private void parseConditions() throws CriticalProductionException {
+        listLexer.matchOneOf("less", "greater", "equalequal", "exclaimequal", "lessequal", "greaterequal");
+    }
 
+    /**
+     * <mainMethod>: public static void main(String[] args) {
+     *         <statementList>
+     *     }
+     * @throws CriticalProductionException
+     */
+    private void parseMainMethod() throws CriticalProductionException {
+        listLexer.match("public");
+        listLexer.match("static");
+        listLexer.match("void");
+        listLexer.matchTypeAndCheckValue("id", "main");
+        listLexer.match("l_paren");
+        listLexer.matchTypeAndCheckValue("id", "String");
+        listLexer.match("l_square");
+        listLexer.match("r_square");
+        listLexer.match("id");
+        listLexer.match("r_paren");
+        listLexer.match("l_brace");
+        try {
+            parseStatementList();
+        } catch (OptionalProductionException e) {
+
+        }
+        listLexer.match("r_brace");
     }
 }
