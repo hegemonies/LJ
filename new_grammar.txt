@@ -80,10 +80,12 @@
 
 <expression>: <valueExpr> <condition> <valueExpr> |
     <expr> <logicOperator> <expr> | 
-    <id> | 
-    <id><arrayMember> | 
-    <id>(<argsCallListChanger>) |
-    <id> = <expression> | 
+    <id> <expressionOption> |
     <number> | 
     <str_const> | 
     <expression> <operator> <expression>
+
+<expressionOption>: <arrayMember> | 
+    (<argsCallListChanger>) | 
+     = <expression> | 
+    E

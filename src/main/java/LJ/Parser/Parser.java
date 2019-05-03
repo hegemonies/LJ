@@ -3,6 +3,7 @@ package LJ.Parser;
 import LJ.Lexer.ListLexer;
 import LJ.Parser.ParserException.CriticalProductionException;
 import LJ.Parser.ParserException.OptionalProductionException;
+import jdk.nashorn.internal.ir.debug.ASTWriter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 public class Parser {
     // todo AST
     private ListLexer listLexer;
+    private ASTWriter astWriter = new ASTWriter();
 
     public Parser(ListLexer listLexer) {
         this.listLexer = listLexer;
