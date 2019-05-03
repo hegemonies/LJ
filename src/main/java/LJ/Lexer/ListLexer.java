@@ -4,6 +4,7 @@ import LJ.Parser.ParserException.CriticalProductionException;
 
 public class ListLexer {
     private Lexer lexer;
+    private Token lookback;
     private Token lookahead;
 
     public ListLexer(Lexer lexer) {
@@ -12,6 +13,7 @@ public class ListLexer {
     }
 
     public void consume() {
+        lookback = lookahead;
         lookahead = lexer.getNextToken();
     }
 
@@ -72,5 +74,9 @@ public class ListLexer {
 
     public Token getLookahead() {
         return lookahead;
+    }
+
+    public Token getLookback() {
+        return lookback;
     }
 }

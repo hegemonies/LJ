@@ -1,16 +1,15 @@
 package LJ.Parser;
 
 import LJ.Lexer.ListLexer;
+import LJ.Parser.AST.Node;
 import LJ.Parser.ParserException.CriticalProductionException;
 import LJ.Parser.ParserException.OptionalProductionException;
-import jdk.nashorn.internal.ir.debug.ASTWriter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 public class Parser {
-    // todo AST
     private ListLexer listLexer;
+    Node root = new Node(Objects.requireNonNull(listLexer).getLookahead());
 
     public Parser(ListLexer listLexer) {
         this.listLexer = listLexer;
@@ -19,7 +18,8 @@ public class Parser {
     public void go() {
         try {
             listLexer.match("program");
-        } catch (Exception e) {
+//            root
+        } catch (CriticalProductionException e) {
             e.printStackTrace();
         }
         parseProgram();

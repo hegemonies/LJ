@@ -10,6 +10,10 @@ class Compiler {
 
     static void compile(String input, String output) {
         src_data = Helper.getDataFromFIle(input);
+        if (src_data == null || src_data.length() == 0) {
+            System.out.println("ERROR: empty file");
+            return;
+        }
         printSourceCode();
 
         assert src_data != null;

@@ -9,6 +9,8 @@ public class Node {
     private Token token;
     private List<Node> children;
 
+    public Node() {}
+
     public Node(Token token) {
         this.token = token;
     }
