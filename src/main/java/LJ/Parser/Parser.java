@@ -11,7 +11,6 @@ import java.util.List;
 public class Parser {
     // todo AST
     private ListLexer listLexer;
-    private ASTWriter astWriter = new ASTWriter();
 
     public Parser(ListLexer listLexer) {
         this.listLexer = listLexer;
@@ -410,8 +409,89 @@ public class Parser {
         }
     }
 
+    /**
+     * <expression>: <valueExpr> <condition> <valueExpr> |
+     *     <expression> <expressionOptionOperator> |
+     *     <id> <expressionOption> |
+     *     <number> |
+     *     <str_const>
+     * @throws CriticalProductionException
+     */
     private void parseExpression() throws CriticalProductionException {
-        // todo write expression
+        boolean matchAny = false;
+
+        try {
+            parseValueExpr();
+            parseConditions();
+            parseValueExpr();
+
+            matchAny = true;
+        } catch (CriticalProductionException exc) { }
+
+        if (!matchAny) {
+            try {
+                parseExpression();
+                parseLogicOperator();
+                parseExpression();
+
+                matchAny = true;
+            } catch (CriticalProductionException exc) { }
+        }
+
+        if (!matchAny) {
+            try {
+                listLexer.match("id");
+                try {
+                    parseExpressionOption();
+                } catch (OptionalProductionException e) { }
+
+                matchAny = true;
+            } catch (CriticalProductionException exc) { }
+        }
+
+        if (!matchAny) {
+            matchAny = parseNumber();
+        }
+
+        if (!matchAny) {
+            matchAny = parseStrConst();
+        }
+
+        if (!matchAny) {
+            try {
+                // todo next time
+
+                matchAny = true;
+            } catch (CriticalProductionException exc) { }
+        }
+    }
+
+    /**
+     * <expressionOption>: <arrayMember> |
+     *     (<argsCallListChanger>) |
+     *      = <expression> |
+     *     E
+     * @throws OptionalProductionException
+     */
+    private void parseExpressionOption() throws OptionalProductionException { //todo write this
+
+    }
+
+    /**
+     * <expressionOptionOperator>: <logicOperator> <expression> |
+     *     <operator> <expression>
+     * @throws CriticalProductionException
+     */
+    private void parseExpressionOptionOperator() throws CriticalProductionException { // todo write this
+
+    }
+
+    /**
+     * <logicOperator>: && | ||
+     * @throws CriticalProductionException
+     */
+    private void parseLogicOperator() throws CriticalProductionException {
+        listLexer.matchOneOf("ampamp", "pipepipe");
     }
 
     /**

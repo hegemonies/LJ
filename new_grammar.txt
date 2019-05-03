@@ -79,13 +79,15 @@
     <init>
 
 <expression>: <valueExpr> <condition> <valueExpr> |
-    <expr> <logicOperator> <expr> | 
     <id> <expressionOption> |
     <number> | 
-    <str_const> | 
-    <expression> <operator> <expression>
+    <str_const> |
+    <expression> <expressionOptionOperator>
 
 <expressionOption>: <arrayMember> | 
     (<argsCallListChanger>) | 
      = <expression> | 
     E
+
+<expressionOptionOperator>: <logicOperator> <expression> |
+    <operator> <expression>
