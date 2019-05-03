@@ -10,6 +10,7 @@ import java.util.Objects;
 public class Parser {
     private ListLexer listLexer;
     Node root = new Node(Objects.requireNonNull(listLexer).getLookahead());
+    Node currentNode = root;
 
     public Parser(ListLexer listLexer) {
         this.listLexer = listLexer;
@@ -18,7 +19,6 @@ public class Parser {
     public void go() {
         try {
             listLexer.match("program");
-//            root
         } catch (CriticalProductionException e) {
             e.printStackTrace();
         }
@@ -49,7 +49,25 @@ public class Parser {
      * @throws CriticalProductionException
      */
     private void parseModAccessClass() throws CriticalProductionException {
-        listLexer.matchOneOf("public", "private");
+//        listLexer.matchOneOf("public", "private");
+        boolean matchAny = false;
+
+        try {
+            listLexer.match("public");
+            matchAny = true;
+        } catch (CriticalProductionException exc) { }
+
+        if (!matchAny) {
+            try {
+                listLexer.match("private");
+                matchAny = true;
+            } catch (CriticalProductionException exc) { }
+        }
+
+        if (matchAny) {
+            currentNode.addChild(new Node(listLexer.getLookback())); //todo check
+        }
+
     }
 
     /**
