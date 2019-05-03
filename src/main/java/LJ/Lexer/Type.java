@@ -2,10 +2,10 @@ package LJ.Lexer;
 
 import java.util.*;
 
-class Type {
+public class Type {
     private Map<String, String> types = new HashMap<>();
 
-    Type() {
+    public Type() {
         types.put("{", "l_brace");
         types.put("}", "r_brace");
         types.put("(", "l_paren");
@@ -79,7 +79,6 @@ class Type {
 
         return true;
     }
-    
 
     public String getTypeOfToken(String token) {
         String type = types.get(token);

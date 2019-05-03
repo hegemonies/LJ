@@ -1,6 +1,8 @@
 public class Test {
+    int sum() {
+        int a = 321;
+    }
     public static void main(String[] args) {
         int a = 123;
-        int b = 053;
     }
 }

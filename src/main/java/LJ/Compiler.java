@@ -2,6 +2,7 @@ package LJ;
 
 import LJ.Lexer.Lexer;
 import LJ.Lexer.ListLexer;
+import LJ.Lexer.Type;
 import LJ.Parser.Parser;
 
 class Compiler {

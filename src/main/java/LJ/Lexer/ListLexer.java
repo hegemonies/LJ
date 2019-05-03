@@ -19,10 +19,10 @@ public class ListLexer {
         if (lookahead.getType().equals(type)) {
             consume();
         } else {
-            throw new CriticalProductionException("expecting " + type
-                    + "; found "+ lookahead.getType() +
+            throw new CriticalProductionException("expecting <" + type
+                    + ">, but found is <"+ lookahead.getType() +
                     ":" + lookahead.getValue()
-                    + " in " + lookahead.getLocation());
+                    + "> in " + lookahead.getLocation());
         }
     }
 
@@ -30,10 +30,10 @@ public class ListLexer {
         if (lookahead.getType().equals(type) && lookahead.getValue().equals(value)) {
             consume();
         } else {
-            throw new CriticalProductionException("expecting " + type
-                    + "; found "+ lookahead.getType() +
+            throw new CriticalProductionException("expecting <" + type
+                    + ">, but found is <"+ lookahead.getType() +
                     ":" + lookahead.getValue()
-                    + " in " + lookahead.getLocation());
+                    + "> in " + lookahead.getLocation());
         }
     }
 
@@ -46,15 +46,27 @@ public class ListLexer {
     }
 
     public void matchOneOf(String... tokens) throws CriticalProductionException {
+        boolean matchIs = false;
         for (String token : tokens) {
             if (lookahead.getType().equals(token)) {
                 consume();
-            } else {
-                throw new CriticalProductionException("expecting " + token
-                        + "; found "+ lookahead.getType() +
-                        ":" + lookahead.getValue()
-                        + " in " + lookahead.getLocation());
+                matchIs = true;
             }
+        }
+
+        if (!matchIs) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < tokens.length; i++) {
+                sb.append(tokens[i]);
+                if (i != tokens.length - 1) {
+                    sb.append(" or ");
+                }
+            }
+
+            throw new CriticalProductionException("expecting " + sb.toString()
+                    + "; found "+ lookahead.getType() +
+                    ":" + lookahead.getValue()
+                    + " in " + lookahead.getLocation());
         }
     }
 
