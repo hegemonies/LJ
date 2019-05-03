@@ -417,7 +417,7 @@ public class Parser {
      *     <str_const>
      * @throws CriticalProductionException
      */
-    private void parseExpression() throws CriticalProductionException {
+    private void parseExpression() throws CriticalProductionException { // todo: i dont like this function
         boolean matchAny = false;
 
         try {
@@ -459,7 +459,8 @@ public class Parser {
 
         if (!matchAny) {
             try {
-                // todo next time
+                parseExpression();
+                parseExpressionOptionOperator();
 
                 matchAny = true;
             } catch (CriticalProductionException exc) { }
@@ -473,8 +474,34 @@ public class Parser {
      *     E
      * @throws OptionalProductionException
      */
-    private void parseExpressionOption() throws OptionalProductionException { //todo write this
+    private void parseExpressionOption() throws OptionalProductionException {
+        boolean matchAny = false;
 
+        try {
+            parseArrayMember();
+            matchAny = true;
+        } catch (CriticalProductionException e) { }
+
+        if (!matchAny) {
+            try {
+                listLexer.match("l_paren");
+                parseArgsCallListChanger();
+                listLexer.match("r_paren");
+
+                matchAny = true;
+            } catch (CriticalProductionException e) { }
+        }
+
+        if (!matchAny) {
+            try {
+                listLexer.match("equal");
+                parseExpression();
+            } catch (CriticalProductionException e) { }
+        }
+
+        if (!matchAny) {
+            throw new OptionalProductionException();
+        }
     }
 
     /**
@@ -483,7 +510,27 @@ public class Parser {
      * @throws CriticalProductionException
      */
     private void parseExpressionOptionOperator() throws CriticalProductionException { // todo write this
+        boolean matchAny = false;
 
+        try {
+            parseLogicOperator();
+            parseExpression();
+
+            matchAny = true;
+        } catch (CriticalProductionException exc) { }
+
+        if (!matchAny) {
+            parseOperator();
+            parseExpression();
+        }
+    }
+
+    /**
+     * <operator>: + | - | * | / | %
+     * @throws CriticalProductionException
+     */
+    private void parseOperator() throws CriticalProductionException {
+        listLexer.matchOneOf("plus", "minus", "star", "slash", "percent");
     }
 
     /**
