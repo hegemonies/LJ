@@ -421,9 +421,10 @@ public class Parser {
         boolean matchAny = false;
 
         try {
-            parseValueExpr();
-            parseConditions();
-            parseValueExpr();
+            parseExpression();
+            try {
+                parseExpressionOptionOperator();
+            } catch (CriticalProductionException exc) {}
 
             matchAny = true;
         } catch (CriticalProductionException exc) { }
@@ -459,11 +460,16 @@ public class Parser {
 
         if (!matchAny) {
             try {
-                parseExpression();
-                parseExpressionOptionOperator();
+                parseValueExpr();
+                parseConditions();
+                parseValueExpr();
 
                 matchAny = true;
             } catch (CriticalProductionException exc) { }
+        }
+
+        if (!matchAny) {
+            throw new CriticalProductionException("ERROR");
         }
     }
 
