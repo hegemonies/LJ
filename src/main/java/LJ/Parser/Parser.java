@@ -44,9 +44,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
         listLexer.match("class");
         listLexer.match("id");
         listLexer.match("l_brace");
-        try {
-            parseInitList();
-        } catch (OptionalProductionException exc) { }
+        parseInitList();
         parseMainMethod();
         listLexer.match("r_brace");
     }
@@ -56,25 +54,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      * @throws CriticalProductionException
      */
     private void parseModAccessClass() throws CriticalProductionException {
-//        listLexer.matchOneOf("public", "private");
-        boolean matchAny = false;
-
-        try {
-            listLexer.match("public");
-            matchAny = true;
-        } catch (CriticalProductionException exc) { }
-
-        if (!matchAny) {
-            try {
-                listLexer.match("private");
-                matchAny = true;
-            } catch (CriticalProductionException exc) { }
-        }
-
-        if (matchAny) {
-            currentNode.addChild(new Node(listLexer.getLookback())); //todo check
-        }
-
+        listLexer.matchOneOf("public", "private");
     }
 
     /**
@@ -93,13 +73,17 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      * <initList>: <init> <initList> | E
      * @throws CriticalProductionException
      */
-    private void parseInitList() throws OptionalProductionException {
-        try {
+    private void parseInitList() throws CriticalProductionException {
+        String curTokenType = listLexer.getLookahead().getType();
+
+        if (curTokenType.equals("int") ||
+                curTokenType.equals("char")) {
             parseInit();
-            parseInitList();
-        } catch (CriticalProductionException e) {
-            throw new OptionalProductionException();
+        } else {
+            return;
         }
+
+        parseInitList();
     }
 
     /**
@@ -159,18 +143,14 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      *     <forInitArray>
      */
     private void parseForkInit() throws CriticalProductionException {
-        boolean matchAny = parseForkInitFunc();
+        String curTokenType = listLexer.getLookahead().getType();
 
-        if (!matchAny) {
-            matchAny = parseForkInitVar();
-        }
-
-        if (!matchAny) {
-            matchAny = parseForkInitArray();
-        }
-
-        if (!matchAny) {
-            throw new CriticalProductionException("Found wrong init token");
+        if (curTokenType.equals("l_paren")) {
+            parseForkInitFunc();
+        } else if (curTokenType.equals("equal")) {
+            parseForkInitVar();
+        } else if (curTokenType.equals("l_square")) {
+            parseForkInitArray();
         }
     }
 
@@ -180,23 +160,17 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      *                }
      * @return
      */
-    private boolean parseForkInitFunc() {
+    private void parseForkInitFunc() throws CriticalProductionException {
+        listLexer.match("l_paren");
         try {
-            listLexer.match("l_paren");
-            try {
-                parseArgsInitListChanger();
-            } catch (OptionalProductionException e) { }
-            listLexer.match("r_paren");
-            listLexer.match("l_brace");
-            try {
-                parseStatementList();
-            } catch (OptionalProductionException e) { }
-            listLexer.match("r_brace");
-        } catch (CriticalProductionException e) {
-            return false;
-        }
-
-        return true;
+            parseArgsInitListChanger();
+        } catch (OptionalProductionException e) { }
+        listLexer.match("r_paren");
+        listLexer.match("l_brace");
+        try {
+            parseStatementList();
+        } catch (OptionalProductionException e) { }
+        listLexer.match("r_brace");
     }
 
     /**
@@ -219,19 +193,13 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      * <forkInitArray>: <arrayMember> = new <nativeDataType><arrayMember>;
      * @return
      */
-    private boolean parseForkInitArray() {
-        try {
-            parseArrayMember();
-            listLexer.match("equal");
-            listLexer.match("new");
-            parseNativeDataType();
-            parseArrayMember();
-            listLexer.match("semi");
-        } catch (CriticalProductionException exc) {
-            return false;
-        }
-
-        return true;
+    private void parseForkInitArray() throws CriticalProductionException {
+        parseArrayMember();
+        listLexer.match("equal");
+        listLexer.match("new");
+        parseNativeDataType();
+        parseArrayMember();
+        listLexer.match("semi");
     }
 
     /**

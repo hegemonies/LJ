@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="82d8bc0a-62e4-4d57-a57a-e9d4efc4372e" name="Default Changelist" comment="Fix Lexer and fix Type">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new_grammar.txt" beforeDir="false" afterPath="$PROJECT_DIR$/new_grammar.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grammer_rules.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/new_grammar.txt" beforeDir="false" afterPath="$PROJECT_DIR$/grammar.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -76,8 +77,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="288">
-                  <caret line="25" column="5" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
+                <state relative-caret-position="704">
+                  <caret line="89" column="39" selection-start-line="89" selection-start-column="39" selection-end-line="89" selection-end-column="39" />
                 </state>
               </provider>
             </entry>
@@ -117,8 +118,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Lexer/Type.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="272">
-                  <caret line="29" selection-start-line="29" selection-end-line="29" />
+                <state relative-caret-position="752">
+                  <caret line="59" column="34" selection-start-line="59" selection-start-column="34" selection-end-line="59" selection-end-column="34" />
                   <folding>
                     <element signature="method#isInteger#0;class#Type#0" />
                   </folding>
@@ -161,10 +162,10 @@
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/new_grammar.txt">
+            <entry file="file://$PROJECT_DIR$/grammar.txt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="64">
-                  <caret line="4" selection-start-line="4" selection-end-line="7" selection-end-column="5" />
+                <state relative-caret-position="544">
+                  <caret line="82" column="12" selection-start-line="82" selection-start-column="12" selection-end-line="82" selection-end-column="12" />
                 </state>
               </provider>
             </entry>
@@ -245,6 +246,7 @@
         <option value="$PROJECT_DIR$/src/main/java/LJ/Compiler.java" />
         <option value="$PROJECT_DIR$/test.lj" />
         <option value="$PROJECT_DIR$/new_grammar.txt" />
+        <option value="$PROJECT_DIR$/grammer_rules.txt" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" />
       </list>
     </option>
@@ -263,7 +265,125 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
+      <pane id="Scope">
+        <subPane subId="Scope 'Changed Files'; set:Changed Files; ALL; class com.intellij.packageDependencies.ChangeListScope">
+          <expand>
+            <path>
+              <item name="LJ" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="LanguageJava" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+            </path>
+            <path>
+              <item name="LJ" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="LanguageJava" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="LJ" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+            </path>
+            <path>
+              <item name="LJ" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="LanguageJava" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="LJ" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="main" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+            </path>
+            <path>
+              <item name="LJ" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="LanguageJava" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="LJ" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="main" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="LJ" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="LanguageJava" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="LJ" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="main" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="LJ" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="LJ" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="LanguageJava" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="LJ" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="main" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="LJ" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Parser" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+        <subPane subId="Scope 'Production'; set:Production; class com.intellij.psi.search.scope.ProjectProductionScope">
+          <expand>
+            <path>
+              <item name="LJ" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="LanguageJava" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+            </path>
+            <path>
+              <item name="LJ" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="LanguageJava" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="LJ" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+            </path>
+            <path>
+              <item name="LJ" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="LanguageJava" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="LJ" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="main" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+            </path>
+            <path>
+              <item name="LJ" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="LanguageJava" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="LJ" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="main" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="LJ" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="LanguageJava" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="LJ" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="main" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="LJ" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="LJ" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="LanguageJava" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="LJ" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="main" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="LJ" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Lexer" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="LJ" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="LanguageJava" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="LJ" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="main" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="LJ" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Parser" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="LJ" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="LanguageJava" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="LJ" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="main" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="LJ" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Parser" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="AST" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="LJ" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="LanguageJava" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="LJ" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="main" type="2674bda8:ScopeViewTreeModel$GroupNode" />
+              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="LJ" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="Parser" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="ParserException" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -463,7 +583,7 @@
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4980916" visible="true" weight="0.12953092" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4980916" visible="true" weight="0.12953092" />
       <window_info id="Structure" order="1" sideWeight="0.5019084" side_tool="true" weight="0.19936034" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -538,8 +658,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="Fix Lexer and fix Type" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Grammar/Nonterminals/ValueExpr.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Grammar/Nonterminals/LoopList.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Grammar/Nonterminals/NTLoop.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Grammar/Nonterminals/RValue.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Grammar/Nonterminals/Expression.java" />
@@ -736,18 +854,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Lexer/Type.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="29" selection-start-line="29" selection-end-line="29" />
+        <state relative-caret-position="752">
+          <caret line="59" column="34" selection-start-line="59" selection-start-column="34" selection-end-line="59" selection-end-column="34" />
           <folding>
             <element signature="method#isInteger#0;class#Type#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/new_grammar.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="4" selection-start-line="4" selection-end-line="7" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -758,10 +869,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/grammar.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="82" column="12" selection-start-line="82" selection-start-column="12" selection-end-line="82" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/PredactiveSyntaxTable/SyntaxTable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grammer_rules.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="666">
+          <caret line="79" column="9" selection-start-line="79" selection-start-column="9" selection-end-line="79" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="25" column="5" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
+        <state relative-caret-position="704">
+          <caret line="89" column="39" selection-start-line="89" selection-start-column="39" selection-end-line="89" selection-end-column="39" />
         </state>
       </provider>
     </entry>
