@@ -9,8 +9,8 @@ import java.util.Objects;
 
 public class Parser { // todo edit parser expression, valueExpr, statement
     private ListLexer listLexer;
-    Node root = new Node(Objects.requireNonNull(listLexer).getLookahead());
-    Node currentNode = root;
+//    Node root = new Node(Objects.requireNonNull(listLexer).getLookahead());
+//    Node currentNode = root;
 
     public Parser(ListLexer listLexer) {
         this.listLexer = listLexer;
@@ -167,9 +167,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
         } catch (OptionalProductionException e) { }
         listLexer.match("r_paren");
         listLexer.match("l_brace");
-        try {
-            parseStatementList();
-        } catch (OptionalProductionException e) { }
+        parseStatementList();
         listLexer.match("r_brace");
     }
 
@@ -341,13 +339,24 @@ public class Parser { // todo edit parser expression, valueExpr, statement
     /**
      * <statementList>: <statement> <statementList> | E
      */
-    private void parseStatementList() throws OptionalProductionException {
-        try {
+    private void parseStatementList() throws CriticalProductionException {
+        String curTokenType = listLexer.getLookahead().getType();
+
+        if (curTokenType.equals("l_brace") ||
+                curTokenType.equals("while") ||
+                curTokenType.equals("if") ||
+                curTokenType.equals("numeric_constant") ||
+                curTokenType.equals("str_literal") ||
+                curTokenType.equals("id") ||
+                curTokenType.equals("int") ||
+                curTokenType.equals("char") ||
+                curTokenType.equals("return")) {
             parseStatement();
-            parseStatementList();
-        } catch (CriticalProductionException e) {
-            throw new OptionalProductionException();
+        } else {
+            return;
         }
+
+        parseStatementList();
     }
 
     /**
@@ -568,9 +577,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
         parseExpression();
         listLexer.match("r_paren");
         listLexer.match("l_brace");
-        try {
-            parseStatementList();
-        } catch (OptionalProductionException e) { }
+        parseStatementList();
         listLexer.match("r_brace");
         parseElseFork();
     }
@@ -604,11 +611,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
         }
 
         listLexer.match("l_brace");
-
-        try {
-            parseStatementList();
-        } catch (OptionalProductionException e) { }
-
+        parseStatementList();
         listLexer.match("r_brace");
     }
 
@@ -624,9 +627,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
         parseExpression();
         listLexer.match("r_paren");
         listLexer.match("l_brace");
-        try {
-            parseStatementList();
-        } catch (OptionalProductionException e) { }
+        parseStatementList();
         listLexer.match("r_brace");
     }
 
@@ -668,9 +669,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
         listLexer.match("id");
         listLexer.match("r_paren");
         listLexer.match("l_brace");
-        try {
-            parseStatementList();
-        } catch (OptionalProductionException e) { }
+        parseStatementList();
         listLexer.match("r_brace");
     }
 }
