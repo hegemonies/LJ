@@ -33,7 +33,11 @@
     <str_const>
 
 <vExpr>: <id> <vExprChange>
-<vExprChanger>: <arrayMember> | () | (<argsCallListChanger>) | E
+<vExprChanger>: <arrayMember> | 
+    () | 
+    (<argsCallListChanger>) | 
+    = <expression> | 
+    E
 
 <conditional>: if (<expression>) {
         <statementList>
@@ -72,22 +76,19 @@
 
 <arrayMember>: [<number>]
 
+<return>: return <expression>;
+
 <statement>: { <statement> } |
     <loop> |
     <conditional> |
     <expression>; |
-    <init>
+    <init> |
+    <return>
 
-<expression>: <valueExpr> <condition> <valueExpr> |
-    <id> <expressionOption> |
-    <number> | 
-    <str_const> |
+<expression>: <valueExpr> <valueFork> |
     <expression> <expressionOptionOperator>
 
-<expressionOption>: <arrayMember> | 
-    (<argsCallListChanger>) | 
-     = <expression> | 
-    E
+<valueFork>: <condition> <valueExpr> | E
 
 <expressionOptionOperator>: <logicOperator> <expression> |
     <operator> <expression>

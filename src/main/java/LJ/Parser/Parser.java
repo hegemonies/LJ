@@ -7,7 +7,7 @@ import LJ.Parser.ParserException.OptionalProductionException;
 
 import java.util.Objects;
 
-public class Parser {
+public class Parser { // todo "else" and edit parser expression, valueExpr, statement
     private ListLexer listLexer;
     Node root = new Node(Objects.requireNonNull(listLexer).getLookahead());
     Node currentNode = root;
@@ -19,29 +19,36 @@ public class Parser {
     public void go() {
         try {
             listLexer.match("program");
+            parseProgram();
         } catch (CriticalProductionException e) {
             e.printStackTrace();
         }
-        parseProgram();
     }
 
     /**
      * <Program>: <class>
      */
-    private void parseProgram() {
+    private void parseProgram() throws CriticalProductionException {
+        parseClass();
+    }
+
+    /**
+     * <class>: <modAccessClass> class <id> {
+     *         <initList>
+     *         <mainMethod>
+     *     }
+     * @throws CriticalProductionException
+     */
+    private void parseClass() throws CriticalProductionException {
+        parseModAccessClass();
+        listLexer.match("class");
+        listLexer.match("id");
+        listLexer.match("l_brace");
         try {
-            parseModAccessClass();
-            listLexer.match("class");
-            listLexer.match("id");
-            listLexer.match("l_brace");
-            try {
-                parseInitList();
-            } catch (OptionalProductionException exc) { }
-            parseMainMethod();
-            listLexer.match("r_brace");
-        }  catch (CriticalProductionException exc) {
-            exc.printStackTrace();
-        }
+            parseInitList();
+        } catch (OptionalProductionException exc) { }
+        parseMainMethod();
+        listLexer.match("r_brace");
     }
 
     /**
@@ -423,8 +430,23 @@ public class Parser {
         }
 
         if (!matchAny) {
+            try {
+                parseReturn();
+            } catch (CriticalProductionException exc) { }
+        }
+
+        if (!matchAny) {
             throw new CriticalProductionException("Found wrong statement?");
         }
+    }
+
+    /**
+     * <return>: return <expression>;
+     * @throws CriticalProductionException
+     */
+    private void parseReturn() throws CriticalProductionException {
+        listLexer.match("return");
+        parseExpression();
     }
 
     /**
