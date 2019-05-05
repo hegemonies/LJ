@@ -1,72 +1,109 @@
-<Program>: <class>
+<Program>: 
+    <class>
 
-<modAccessClass>: public | private
+<modAccessClass>: 
+    public | 
+    private
 
-<class>: <modAccessClass> class <id> {
+<class>: 
+    <modAccessClass> class <id> {
         <initList>
         <mainMethod>
     }
 
-<mainMethod>: public static void main(String[] args) { 
+<mainMethod>: 
+    public static void main(String[] args) { 
         <statementList> 
     }
 
-<id>: <id_head><id_tail>
-<id_head>: [_A-Za-z]
-<id_tail>: [_A-Za-z0-9]<id_tail> | E
+<id>: 
+    id
+<number>: 
+    \-/(-_-)\-/
+<str_const>: 
+    /-\(-_-)/-\
 
-<loop>: while (<expression>) {
+<loop>: 
+    while (<expression>) {
         <statementList>
     }
 
-<rvalue>: <number> | <str_const> | <id>
+<rvalue>: 
+    <number> | 
+    <str_const> | 
+    <id>
 
-<argsInitListChanger>: <argsInitList> | E
-<argsInitList>:  <argInit> | <argsInitList>, <argsInitList>
-<argInit>: <nativeDataType> <rvalue>
+<argsInitListChanger>: 
+    <argsInitList> | 
+    E
+<argsInitList>:  
+    <argInit> | 
+    <argsInitList>, <argsInitList>
+<argInit>: 
+    <nativeDataType> <rvalue>
 
-<argsCallListChanger>: <argsCallList> | E
-<argsCallList>: <valueExpr> | <argsCallList>, <argsCallList>
+<argsCallListChanger>: 
+    <argsCallList> | E
+<argsCallList>: 
+    <valueExpr> | 
+    <argsCallList>, <argsCallList>
 
-<valueExpr>: <vExpr> |
+<valueExpr>: 
+    <vExpr> |
     <number> |
     <str_const>
 
-<vExpr>: <id> <vExprChange>
-<vExprChanger>: <arrayMember> | 
+<vExpr>: 
+    <id> <vExprChange>
+<vExprChanger>: 
+    <arrayMember> | 
     () | 
     (<argsCallListChanger>) | 
     = <expression> | 
     E
 
-<conditional>: if (<expression>) {
+<conditional>: 
+    if (<expression>) {
         <statementList>
-    }
+    } <elseFork>
 
-<nativeDataType>: int | char
+<elseFork>: 
+    else <elseFork1> |
+    E
 
-<initList>: <init> <initList> | E
+<elseFork1>:
+    <conditional> |
+    { <statementList> } |
+    E
 
-<init>: <nativeDataType> <id> <forkInit>
+<nativeDataType>: 
+    int | 
+    char
+
+<initList>: 
+    <init> <initList> | 
+    E
+
+<init>: 
+    <nativeDataType> <id> <forkInit>
 
 <forkInit>: 
     <forkInitFunc> |
     <forkInitVar> |
     <forkInitArray>
 
-<forkInitFunc>: (<argsInitListChanger>) {
-                    <statementList>
-             }
-<forkInitVar>: = <valueExpr>;
-<forkInitArray>: <arrayMember> = new <nativeDataType><arrayMember>;
+<forkInitFunc>: 
+    (<argsInitListChanger>) {
+        <statementList>
+    }
+<forkInitVar>: 
+    = <valueExpr>;
+<forkInitArray>: 
+    <arrayMember> = new <nativeDataType><arrayMember>;
 
-<statementList>: <statement> <statementList> | E
-
-<number>: <number_head><number_tail>
-<number_tail>: [0-9]<number_tail> | E
-<number_head>: [1-9]
-
-<str_const>: /-\(-_-)/-\
+<statementList>: 
+    <statement> <statementList> | .
+    E
 
 <condition>: < | > | == | !=
 
@@ -74,21 +111,28 @@
 
 <logicOperator>: && | ||
 
-<arrayMember>: [<number>]
+<arrayMember>: 
+    [<number>]
 
-<return>: return <expression>;
+<return>: 
+    return <expression>;
 
-<statement>: { <statement> } |
+<statement>: 
+    { <statement> } |
     <loop> |
     <conditional> |
     <expression>; |
     <init> |
     <return>
 
-<expression>: <valueExpr> <valueFork> |
+<expression>: 
+    <valueExpr> <valueFork> |
     <expression> <expressionOptionOperator>
 
-<valueFork>: <condition> <valueExpr> | E
+<valueFork>: 
+    <condition> <valueExpr> | 
+    E
 
-<expressionOptionOperator>: <logicOperator> <expression> |
+<expressionOptionOperator>: 
+    <logicOperator> <expression> |
     <operator> <expression>

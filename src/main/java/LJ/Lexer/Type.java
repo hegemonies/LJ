@@ -57,6 +57,7 @@ public class Type {
         // types.put("for", "for");
         // types.put("do", "do");
         types.put("if", "if");
+        types.put("else", "else");
 
          types.put("static", "static");
         // types.put("const", "const");

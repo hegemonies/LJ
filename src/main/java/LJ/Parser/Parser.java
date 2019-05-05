@@ -7,7 +7,7 @@ import LJ.Parser.ParserException.OptionalProductionException;
 
 import java.util.Objects;
 
-public class Parser { // todo "else" and edit parser expression, valueExpr, statement
+public class Parser { // todo edit parser expression, valueExpr, statement
     private ListLexer listLexer;
     Node root = new Node(Objects.requireNonNull(listLexer).getLookahead());
     Node currentNode = root;
@@ -588,9 +588,10 @@ public class Parser { // todo "else" and edit parser expression, valueExpr, stat
     }
 
     /**
-     * <conditional>: if (<expression>) {
+     * <conditional>:
+     *      if (<expression>) {
      *         <statementList>
-     *     }
+     *      }
      * @throws CriticalProductionException
      */
     private void parseConditional() throws CriticalProductionException {
@@ -602,6 +603,44 @@ public class Parser { // todo "else" and edit parser expression, valueExpr, stat
         try {
             parseStatementList();
         } catch (OptionalProductionException e) { }
+        listLexer.match("r_brace");
+        parseElseFork();
+    }
+
+    /**
+     * <elseFork>:
+     *     else <elseFork1> |
+     *     E
+     * @throws CriticalProductionException
+     */
+    private void parseElseFork() throws CriticalProductionException {
+        try {
+            listLexer.match("else");
+        } catch (CriticalProductionException exc) {
+            return; // E
+        }
+
+        parseElseFork1();
+    }
+
+    /**
+     * <elseFork1>:
+     *     <conditional> |
+     *     { <statementList> } |
+     *     E
+     * @throws CriticalProductionException
+     */
+    private void parseElseFork1() throws CriticalProductionException {
+        if (listLexer.getLookahead().getType().equals("if")) {
+            parseConditional();
+        }
+
+        listLexer.match("l_brace");
+
+        try {
+            parseStatementList();
+        } catch (OptionalProductionException e) { }
+
         listLexer.match("r_brace");
     }
 
