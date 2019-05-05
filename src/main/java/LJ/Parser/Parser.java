@@ -58,18 +58,6 @@ public class Parser { // todo edit parser expression, valueExpr, statement
     }
 
     /**
-     * <argsInitListChanger>: <argsInitList> | E
-     * @throws OptionalProductionException
-     */
-    private void parseArgsInitListChanger() throws OptionalProductionException {
-        try {
-            parseArgsInitList();
-        } catch (CriticalProductionException e) {
-            throw new OptionalProductionException();
-        }
-    }
-
-    /**
      * <initList>: <init> <initList> | E
      * @throws CriticalProductionException
      */
@@ -84,6 +72,37 @@ public class Parser { // todo edit parser expression, valueExpr, statement
         }
 
         parseInitList();
+    }
+
+    /**
+     * <argsInitListChanger>: <argsInitList> | E
+     * @throws OptionalProductionException
+     */
+    private void parseArgsInitListChanger() throws CriticalProductionException {
+        String curTokenType = listLexer.getLookahead().getType();
+
+        if (curTokenType.equals("int") ||
+                curTokenType.equals("char")) {
+            parseArgsInitList();
+        }
+    }
+
+    /**
+     * <argsInitList>:  <argInit> | <argsInitList>, <argsInitList>
+     * @throws CriticalProductionException
+     */
+    private void parseArgsInitList() throws CriticalProductionException {
+        parseArgInit();
+
+        boolean matchComma = false;
+        try {
+            listLexer.match("comma");
+            matchComma = true;
+        } catch (CriticalProductionException ignored) { }
+
+        if (matchComma) {
+            parseArgsInitList();
+        }
     }
 
     /**
@@ -106,16 +125,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
         }
 
         if (!matchAny) {
-            try {
-                listLexer.match("id");
-                matchAny = true;
-            } catch (CriticalProductionException e) {
-                matchAny = false;
-            }
-        }
-
-        if (!matchAny) {
-            throw new CriticalProductionException("ERROR");
+            listLexer.match("id");
         }
     }
 
@@ -162,9 +172,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      */
     private void parseForkInitFunc() throws CriticalProductionException {
         listLexer.match("l_paren");
-        try {
-            parseArgsInitListChanger();
-        } catch (OptionalProductionException e) { }
+        parseArgsInitListChanger(); // todo check this
         listLexer.match("r_paren");
         listLexer.match("l_brace");
         parseStatementList();
@@ -629,19 +637,6 @@ public class Parser { // todo edit parser expression, valueExpr, statement
         listLexer.match("l_brace");
         parseStatementList();
         listLexer.match("r_brace");
-    }
-
-    /**
-     * <argsInitList>:  <argInit> | <argsInitList>, <argsInitList>
-     * @throws CriticalProductionException
-     */
-    private void parseArgsInitList() throws CriticalProductionException {
-        parseArgInit();
-
-        try {
-            listLexer.match("comma");
-            parseArgsInitList();
-        } catch (CriticalProductionException exc) { }
     }
 
     /**

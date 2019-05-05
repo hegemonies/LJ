@@ -74,8 +74,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1399">
-                  <caret line="673" column="5" lean-forward="true" selection-start-line="673" selection-start-column="5" selection-end-line="673" selection-end-column="5" />
+                <state relative-caret-position="273">
+                  <caret line="174" column="8" selection-start-line="174" selection-start-column="8" selection-end-line="174" selection-end-column="8" />
                 </state>
               </provider>
             </entry>
@@ -161,7 +161,7 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/grammar.txt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="970">
+                <state relative-caret-position="1792">
                   <caret line="124" column="9" selection-start-line="124" selection-start-column="5" selection-end-line="124" selection-end-column="9" />
                 </state>
               </provider>
@@ -194,6 +194,7 @@
       <find>parseStatement</find>
       <find>parseInitList</find>
       <find>valueExpr</find>
+      <find>parseArgsInitList</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -883,15 +884,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/grammar.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="970">
+        <state relative-caret-position="1792">
           <caret line="124" column="9" selection-start-line="124" selection-start-column="5" selection-end-line="124" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1399">
-          <caret line="673" column="5" lean-forward="true" selection-start-line="673" selection-start-column="5" selection-end-line="673" selection-end-column="5" />
+        <state relative-caret-position="273">
+          <caret line="174" column="8" selection-start-line="174" selection-start-column="8" selection-end-line="174" selection-end-column="8" />
         </state>
       </provider>
     </entry>
