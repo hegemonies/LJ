@@ -172,7 +172,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      */
     private void parseForkInitFunc() throws CriticalProductionException {
         listLexer.match("l_paren");
-        parseArgsInitListChanger(); // todo check this
+        parseArgsInitListChanger();
         listLexer.match("r_paren");
         listLexer.match("l_brace");
         parseStatementList();
@@ -183,16 +183,10 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      * <forkInitVar>: = <valueExpr>;
      * @return
      */
-    private boolean parseForkInitVar() {
-        try {
-            listLexer.match("equal");
-            parseValueExpr();
-            listLexer.match("semi");
-        } catch (CriticalProductionException exc) {
-            return false;
-        }
-
-        return true;
+    private void parseForkInitVar() throws CriticalProductionException {
+        listLexer.match("equal");
+        parseValueExpr();
+        listLexer.match("semi");
     }
 
     /**
@@ -231,7 +225,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
     }
 
     /**
-     * <str_const>: /-\(-_-)/-\
+     * <str_const>: str_literal
      * @return
      */
     private boolean parseStrConst() {
@@ -245,9 +239,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
     }
 
     /**
-     * <number>: <number_head><number_tail>
-     * <number_tail>: [0-9]<number_tail> | E
-     * <number_head>: [1-9]
+     * <number>: numeric_constant
      * @return
      */
     private boolean parseNumber() {
@@ -281,31 +273,21 @@ public class Parser { // todo edit parser expression, valueExpr, statement
 
     /**
      * <vExprChanger>: <arrayMember> |
-     *      () |
      *      (<argsCallListChanger>) |
      *      E
      * @throws OptionalProductionException
      */
-    private void parseVExprChanger() throws OptionalProductionException {
-        boolean matchAny = false;
+    private void parseVExprChanger() throws CriticalProductionException { // todo work this
+        String curTypeToken = listLexer.getLookahead().getType();
 
-        try {
+        if (curTypeToken.equals("l_square")) {
             parseArrayMember();
-            matchAny = true;
-        } catch (CriticalProductionException e) { }
+        } else if (curTypeToken.equals("l_paren")) {
+            listLexer.match("l_paren");
 
-        if (!matchAny) {
-            try {
-                listLexer.match("l_paren");
+            parseArgsCallListChanger();
 
-                try {
-                    parseArgsCallListChanger();
-                } catch (OptionalProductionException e) { }
-
-                listLexer.match("r_paren");
-            } catch (CriticalProductionException exc) {
-                throw new OptionalProductionException();
-            }
+            listLexer.match("r_paren");
         }
     }
 
@@ -313,11 +295,12 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      * <argsCallListChanger>: <argsCallList> | E
      * @throws OptionalProductionException
      */
-    private void parseArgsCallListChanger() throws OptionalProductionException {
-        try {
+    private void parseArgsCallListChanger() throws CriticalProductionException {
+        String curTypeToken = listLexer.getLookahead().getType();
+        if (curTypeToken.equals("id") ||
+            curTypeToken.equals("numeric_constant") ||
+                curTypeToken.equals("str_literal")) {
             parseArgsCallList();
-        } catch (CriticalProductionException exc) {
-            throw new OptionalProductionException();
         }
     }
 
@@ -328,10 +311,16 @@ public class Parser { // todo edit parser expression, valueExpr, statement
     private void parseArgsCallList() throws CriticalProductionException {
         parseValueExpr();
 
+        boolean matchComma = false;
+
         try {
             listLexer.match(",");
-            parseArgsCallList();
+            matchComma = true;
         } catch (CriticalProductionException exc) { }
+
+        if(matchComma) {
+            parseArgsCallList();
+        }
     }
 
     /**

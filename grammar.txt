@@ -56,8 +56,7 @@
 <vExpr>: 
     <id> <vExprChange>
 <vExprChanger>: 
-    <arrayMember> | 
-    () | 
+    <arrayMember> |
     (<argsCallListChanger>) | 
     = <expression> | 
     E
