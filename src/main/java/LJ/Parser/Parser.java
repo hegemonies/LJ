@@ -209,11 +209,11 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      * @throws CriticalProductionException
      */
     private void parseValueExpr() throws CriticalProductionException {
-        boolean matchAny = parseVExpr();
-
-        if (!matchAny) {
-            matchAny = parseNumber();
+        if (listLexer.getLookahead().getType().equals("id")) {
+            parseVExpr();
         }
+
+        boolean matchAny = parseNumber();
 
         if (!matchAny) {
             matchAny = parseStrConst();
@@ -256,19 +256,9 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      * <vExpr>: <id> <vExprChange>
      * @return
      */
-    private boolean parseVExpr() {
-        try {
-            listLexer.match("id");
-
-            try {
-                parseVExprChanger();
-            } catch (OptionalProductionException e) { }
-
-        } catch (CriticalProductionException e) {
-            return false;
-        }
-
-        return true;
+    private void parseVExpr() throws CriticalProductionException {
+        listLexer.match("id");
+        parseVExprChanger();
     }
 
     /**
@@ -277,16 +267,14 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      *      E
      * @throws OptionalProductionException
      */
-    private void parseVExprChanger() throws CriticalProductionException { // todo work this
+    private void parseVExprChanger() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
 
         if (curTypeToken.equals("l_square")) {
             parseArrayMember();
         } else if (curTypeToken.equals("l_paren")) {
             listLexer.match("l_paren");
-
             parseArgsCallListChanger();
-
             listLexer.match("r_paren");
         }
     }
@@ -329,7 +317,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      */
     private void parseArrayMember() throws CriticalProductionException {
         listLexer.match("l_square");
-        parseNumber();
+        listLexer.match("numeric_constant");
         listLexer.match("r_square");
     }
 
@@ -361,56 +349,30 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      *     <loop> |
      *     <conditional> |
      *     <expression>; |
-     *     <init>;
+     *     <init> |
+     *
      */
-    private void parseStatement() throws CriticalProductionException {
-        boolean matchAny = false;
+    private void parseStatement() throws CriticalProductionException { // todo work this
+        String curTypeToken = listLexer.getLookahead().getType();
 
-        try {
+        if (curTypeToken.equals("l_brace")) {
             listLexer.match("l_brace");
             parseStatement();
             listLexer.match("l_brace");
-
-            matchAny = true;
-        } catch (CriticalProductionException exc) { }
-
-        if (!matchAny) {
-            try {
-                parseLoop();
-                matchAny = true;
-            } catch (CriticalProductionException e) { }
-        }
-
-        if (!matchAny) {
-            try {
-                parseConditional();
-                matchAny = true;
-            } catch (CriticalProductionException exc) { }
-        }
-
-        if (!matchAny) {
-            try {
-                parseExpression();
-                listLexer.match("semi");
-                matchAny = true;
-            } catch (CriticalProductionException exc) { }
-        }
-
-        if (!matchAny) {
-            try {
-                parseInit();
-                matchAny = true;
-            } catch (CriticalProductionException exc) { }
-        }
-
-        if (!matchAny) {
-            try {
-                parseReturn();
-            } catch (CriticalProductionException exc) { }
-        }
-
-        if (!matchAny) {
-            throw new CriticalProductionException("Found wrong statement?");
+        } else if (curTypeToken.equals("while")) {
+            parseLoop();
+        } else if (curTypeToken.equals("if")) {
+            parseConditional();
+        } else if (curTypeToken.equals("id") ||
+                curTypeToken.equals("numeric_constant") ||
+                curTypeToken.equals("str_literal")) {
+            parseExpression();
+            listLexer.match("semi"); // todo check this for correction
+        } else if (curTypeToken.equals("int") ||
+                curTypeToken.equals("char")) {
+            parseInit();
+        } else if (curTypeToken.equals("return")) {
+            parseReturn();
         }
     }
 
