@@ -186,7 +186,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
     private void parseForkInitVar() throws CriticalProductionException {
         listLexer.match("equal");
         parseValueExpr();
-        listLexer.match("semi");
+        listLexer.match("semicolon");
     }
 
     /**
@@ -199,7 +199,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
         listLexer.match("new");
         parseNativeDataType();
         parseArrayMember();
-        listLexer.match("semi");
+        listLexer.match("semicolon");
     }
 
     /**
@@ -350,7 +350,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      *     <conditional> |
      *     <expression>; |
      *     <init> |
-     *
+     * @throws CriticalProductionException
      */
     private void parseStatement() throws CriticalProductionException { // todo work this
         String curTypeToken = listLexer.getLookahead().getType();
@@ -367,7 +367,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
                 curTypeToken.equals("numeric_constant") ||
                 curTypeToken.equals("str_literal")) {
             parseExpression();
-            listLexer.match("semi"); // todo check this for correction
+            listLexer.match("semicolon"); // todo check this for correction
         } else if (curTypeToken.equals("int") ||
                 curTypeToken.equals("char")) {
             parseInit();
@@ -383,6 +383,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
     private void parseReturn() throws CriticalProductionException {
         listLexer.match("return");
         parseExpression();
+        listLexer.match("semicolon");
     }
 
     /**

@@ -28,8 +28,10 @@ public class Type {
 
         types.put("return", "return");
 
-        types.put(";", "semi");
+        types.put(";", "semicolon");
         types.put(":", "colon");
+        types.put(",", "comma");
+        types.put(".", "dot");
 
         types.put("+", "plus");
         types.put("-", "minus");
@@ -44,8 +46,6 @@ public class Type {
         types.put("!", "exclaim");
         types.put("!=", "exclaimequal");
 
-        types.put(",", "comma");
-        types.put(".", "dot");
         types.put("&&", "ampamp");
         types.put("||", "pipepipe");
         types.put("&", "amp");
