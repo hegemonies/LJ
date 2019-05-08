@@ -40,7 +40,9 @@
     <argInit> | 
     <argsInitList>, <argsInitList>
 <argInit>: 
-    <nativeDataType> <rvalue>
+    <nativeDataType><rvalueFork> <rvalue>
+
+<rvalueFork>: [] | E
 
 <argsCallListChanger>: 
     <argsCallList> | E
@@ -101,7 +103,7 @@
     <arrayMember> = new <nativeDataType><arrayMember>;
 
 <statementList>: 
-    <statement> <statementList> | .
+    <statement> <statementList> |
     E
 
 <condition>: < | > | == | !=
@@ -111,7 +113,11 @@
 <logicOperator>: && | ||
 
 <arrayMember>: 
-    [<number>]
+    [<arrayMemberFork>]
+
+<arrayMemberFork>:
+    <number> |
+    <id>
 
 <return>: 
     return <expression>;
@@ -122,7 +128,8 @@
     <conditional> |
     <expression> |
     <init> |
-    <return>
+    <return> |
+    ;
 
 <expression>: 
     <valueExpr> <valueFork> |

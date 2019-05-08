@@ -92,10 +92,11 @@ public class Lexer {
                     if (predictor == PredicationOfTheToken.ILLEGAL) {
                         type = "unknown";
                     } else if (predictor == PredicationOfTheToken.NUM_CONST) {
-                        if (Integer.parseInt(buffer.toString().split("")[0]) == 0) {
+                        type = "numeric_constant";
+                        if (Integer.parseInt(token.split("")[0]) == 0 &&
+                                token.length() > 1) {
                             type = "unknown";
                         }
-                        type = "numeric_constant";
                     } else if (predictor == PredicationOfTheToken.ID) {
                         type = "id";
                     } else {
@@ -115,7 +116,8 @@ public class Lexer {
                             String token = buffer.toString();
                             String type = "numeric_constant";
 
-                            if (Integer.parseInt(buffer.toString().split("")[0]) == 0) {
+                            if (Integer.parseInt(token.split("")[0]) == 0 &&
+                                    token.length() > 1) {
                                 type = "unknown";
                             }
 

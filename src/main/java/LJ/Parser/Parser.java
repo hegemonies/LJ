@@ -7,7 +7,7 @@ import LJ.Parser.ParserException.OptionalProductionException;
 
 import java.util.Objects;
 
-public class Parser { // todo edit parser expression, valueExpr, statement
+public class Parser {
     private ListLexer listLexer;
 //    Node root = new Node(Objects.requireNonNull(listLexer).getLookahead());
 //    Node currentNode = root;
@@ -94,27 +94,28 @@ public class Parser { // todo edit parser expression, valueExpr, statement
     private void parseArgsInitList() throws CriticalProductionException {
         parseArgInit();
 
-        boolean matchComma = false;
-        try {
+        if (listLexer.getLookahead().getType().equals("comma")) {
             listLexer.match("comma");
-            matchComma = true;
-        } catch (CriticalProductionException ignored) { }
-
-        if (matchComma) {
             parseArgsInitList();
         }
     }
 
     /**
-     * <argInit>: <nativeDataType> <rvalue>
+     * <argInit>:
+     *     <nativeDataType><rvalueFork> <rvalue>
+     * @throws CriticalProductionException
      */
     private void parseArgInit() throws CriticalProductionException {
         parseNativeDataType();
+        parseRValueFork();
         parseRValue();
     }
 
     /**
-     * <rvalue>: <number> | <str_const> | <id>
+     * <rvalue>:
+     *     <number> |
+     *     <str_const> |
+     *     <id>
      * @throws CriticalProductionException
      */
     private void parseRValue() throws CriticalProductionException {
@@ -131,6 +132,19 @@ public class Parser { // todo edit parser expression, valueExpr, statement
                     + ">, but found is <"+ listLexer.getLookahead().getType() +
                     ":" + listLexer.getLookahead().getValue()
                     + "> in " + listLexer.getLookahead().getLocation());
+        }
+    }
+
+    /**
+     * <rvalueFork>: [] | E
+     * @throws CriticalProductionException
+     */
+    private void parseRValueFork() throws CriticalProductionException {
+        String curTypeToken = listLexer.getLookahead().getType();
+
+        if (curTypeToken.equals("l_square")) {
+            listLexer.match("l_square");
+            listLexer.match("r_square");
         }
     }
 
@@ -213,7 +227,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      *     <str_const>
      * @throws CriticalProductionException
      */
-    private void parseValueExpr() throws CriticalProductionException { // todo check
+    private void parseValueExpr() throws CriticalProductionException {
         boolean matchAny = false;
         if (listLexer.getLookahead().getType().equals("id")) {
             parseVExpr();
@@ -325,13 +339,35 @@ public class Parser { // todo edit parser expression, valueExpr, statement
     }
 
     /**
-     * <arrayMember>: [<number>]
+     * <arrayMember>:
+     *     [<arrayMemberFork>]
      * @throws OptionalProductionException
      */
     private void parseArrayMember() throws CriticalProductionException {
         listLexer.match("l_square");
-        listLexer.match("numeric_constant");
+        parseArrayMemberFork();
         listLexer.match("r_square");
+    }
+
+    /**
+     * <arrayMemberFork>:
+     *     <number> |
+     *     <id>
+     * @throws CriticalProductionException
+     */
+    private void parseArrayMemberFork() throws CriticalProductionException {
+        String curTypeToken = listLexer.getLookahead().getType();
+
+        if (curTypeToken.equals("numeric_constant")) {
+            listLexer.match("numeric_constant");
+        } else if (curTypeToken.equals("id")) {
+            listLexer.match("id");
+        } else {
+            throw new CriticalProductionException("expecting <id or numeric_constant"
+                    + ">, but found is <"+ listLexer.getLookahead().getType() +
+                    ":" + listLexer.getLookahead().getValue()
+                    + "> in " + listLexer.getLookahead().getLocation());
+        }
     }
 
     /**
@@ -348,7 +384,8 @@ public class Parser { // todo edit parser expression, valueExpr, statement
                 curTokenType.equals("id") ||
                 curTokenType.equals("int") ||
                 curTokenType.equals("char") ||
-                curTokenType.equals("return")) {
+                curTokenType.equals("return") ||
+                curTokenType.equals("semicolon")) {
             parseStatement();
         } else {
             return;
@@ -363,9 +400,11 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      *     <conditional> |
      *     <expression>; |
      *     <init> |
+     *     <return> |
+     *     ;
      * @throws CriticalProductionException
      */
-    private void parseStatement() throws CriticalProductionException { // todo work this
+    private void parseStatement() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
 
         if (curTypeToken.equals("l_brace")) {
@@ -383,6 +422,8 @@ public class Parser { // todo edit parser expression, valueExpr, statement
         } else if (curTypeToken.equals("int") ||
                 curTypeToken.equals("char")) {
             parseInit();
+        } else if (curTypeToken.equals("semicolon")) {
+            listLexer.match("semicolon");
         } else if (curTypeToken.equals("return")) {
             parseReturn();
         }
@@ -395,7 +436,6 @@ public class Parser { // todo edit parser expression, valueExpr, statement
     private void parseReturn() throws CriticalProductionException {
         listLexer.match("return");
         parseExpression();
-        listLexer.match("semicolon");
     }
 
     /**
@@ -444,7 +484,8 @@ public class Parser { // todo edit parser expression, valueExpr, statement
         if (curTokenType.equals("less") ||
                 curTokenType.equals("greater") ||
                 curTokenType.equals("equalequal") ||
-                curTokenType.equals("exclaimequal")) {
+                curTokenType.equals("exclaimequal") ||
+                curTokenType.equals("equal")) {
             parseConditions();
             parseValueExpr();
         } else if (curTokenType.equals("semicolon")) {
@@ -518,7 +559,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
         try {
             listLexer.match("else");
         } catch (CriticalProductionException exc) {
-            return; // E
+            return;
         }
 
         parseElseFork1();
@@ -561,7 +602,13 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      * <condition>: < | > | == | != | <= | >=
      */
     private void parseConditions() throws CriticalProductionException {
-        listLexer.matchOneOf("less", "greater", "equalequal", "exclaimequal", "lessequal", "greaterequal");
+        listLexer.matchOneOf("less",
+                "greater",
+                "equalequal",
+                "exclaimequal",
+                "lessequal",
+                "greaterequal",
+                "equal");
     }
 
     /**
