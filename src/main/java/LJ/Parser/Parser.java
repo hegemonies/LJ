@@ -1,11 +1,8 @@
 package LJ.Parser;
 
 import LJ.Lexer.ListLexer;
-import LJ.Parser.AST.Node;
 import LJ.Parser.ParserException.CriticalProductionException;
 import LJ.Parser.ParserException.OptionalProductionException;
-
-import java.util.Objects;
 
 public class Parser {
     private ListLexer listLexer;
