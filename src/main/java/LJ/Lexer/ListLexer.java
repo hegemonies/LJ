@@ -66,10 +66,10 @@ public class ListLexer {
                 }
             }
 
-            throw new CriticalProductionException("expecting " + sb.toString()
-                    + "; found "+ lookahead.getType() +
+            throw new CriticalProductionException("expecting <" + sb.toString()
+                    + ">, but found is <"+ lookahead.getType() +
                     ":" + lookahead.getValue()
-                    + " in " + lookahead.getLocation());
+                    + "> in " + lookahead.getLocation());
         }
     }
 

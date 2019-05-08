@@ -118,14 +118,19 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      * @throws CriticalProductionException
      */
     private void parseRValue() throws CriticalProductionException {
-        boolean matchAny = parseNumber();
+        String curTypeToken = listLexer.getLookahead().getType();
 
-        if (!matchAny) {
-            matchAny = parseStrConst();
-        }
-
-        if (!matchAny) {
+        if (curTypeToken.equals("id")) {
             listLexer.match("id");
+        } else if (curTypeToken.equals("numeric_constant")) {
+            listLexer.match("numeric_constant");
+        } else if (curTypeToken.equals("str_literal")) {
+            listLexer.match("str_literal");
+        } else {
+            throw new CriticalProductionException("expecting <" + "id or numeric_constant or str_literal"
+                    + ">, but found is <"+ listLexer.getLookahead().getType() +
+                    ":" + listLexer.getLookahead().getValue()
+                    + "> in " + listLexer.getLookahead().getLocation());
         }
     }
 
@@ -209,18 +214,25 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      * @throws CriticalProductionException
      */
     private void parseValueExpr() throws CriticalProductionException { // todo check
+        boolean matchAny = false;
         if (listLexer.getLookahead().getType().equals("id")) {
             parseVExpr();
+            matchAny = true;
         }
 
-        boolean matchAny = parseNumber();
+        if (!matchAny) {
+            matchAny = parseNumber();
+        }
 
         if (!matchAny) {
             matchAny = parseStrConst();
         }
 
         if (!matchAny) {
-            throw new CriticalProductionException("Found wrong value expression");
+            throw new CriticalProductionException("expecting <" + "id or numeric_constant or str_literal"
+                    + ">, but found is <"+ listLexer.getLookahead().getType() +
+                    ":" + listLexer.getLookahead().getValue()
+                    + "> in " + listLexer.getLookahead().getLocation());
         }
     }
 
@@ -252,9 +264,10 @@ public class Parser { // todo edit parser expression, valueExpr, statement
         return true;
     }
 
+
     /**
      * <vExpr>: <id> <vExprChange>
-     * @return
+     * @throws CriticalProductionException
      */
     private void parseVExpr() throws CriticalProductionException {
         listLexer.match("id");
@@ -384,31 +397,37 @@ public class Parser { // todo edit parser expression, valueExpr, statement
         parseExpression();
         listLexer.match("semicolon");
     }
-// todo check valueExpr
+
     /**
      * <expression>:
      *     <valueExpr> <valueFork> |
      *     <expression> <expressionOptionOperator>
      * @throws CriticalProductionException
      */
-    private void parseExpression() throws CriticalProductionException { // todo work this
+    private void parseExpression() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
 
         if (curTypeToken.equals("id") ||
                 curTypeToken.equals("numeric_constant") ||
                 curTypeToken.equals("str_literal")) {
-            String nextTypeToken = listLexer.getLooknext().getType();
-            if (nextTypeToken.equals("ampamp") ||
-                    nextTypeToken.equals("pipepipe") ||
-                    nextTypeToken.equals("plus") ||
-                    nextTypeToken.equals("minus") ||
-                    nextTypeToken.equals("star") ||
-                    nextTypeToken.equals("slash") ||
-                    nextTypeToken.equals("percent")) {
-                parseValueExpr();
-                parseValueFork();
+            parseValueExpr();
+            parseValueFork();
+
+            curTypeToken = listLexer.getLookahead().getType();
+            if (curTypeToken.equals("ampamp") ||
+                    curTypeToken.equals("pipepipe") ||
+                    curTypeToken.equals("plus") ||
+                    curTypeToken.equals("minus") ||
+                    curTypeToken.equals("star") ||
+                    curTypeToken.equals("slash") ||
+                    curTypeToken.equals("percent")) {
                 parseExpressionOptionOperator();
             }
+        } else {
+            throw new CriticalProductionException("expecting <" + "id or numeric_constant or str_literal"
+                    + ">, but found is <"+ listLexer.getLookahead().getType() +
+                    ":" + listLexer.getLookahead().getValue()
+                    + "> in " + listLexer.getLookahead().getLocation());
         }
     }
 
@@ -438,17 +457,18 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      *     <operator> <expression>
      * @throws CriticalProductionException
      */
-    private void parseExpressionOptionOperator() throws CriticalProductionException { // todo rewrite this
-        boolean matchAny = false;
+    private void parseExpressionOptionOperator() throws CriticalProductionException {
+        String curTypeToken = listLexer.getLookahead().getType();
 
-        try {
+        if (curTypeToken.equals("ampamp") ||
+                curTypeToken.equals("pipepipe")) {
             parseLogicOperator();
             parseExpression();
-
-            matchAny = true;
-        } catch (CriticalProductionException exc) { }
-
-        if (!matchAny) {
+        } else if (curTypeToken.equals("plus") ||
+                curTypeToken.equals("minus") ||
+                curTypeToken.equals("star") ||
+                curTypeToken.equals("slash") ||
+                curTypeToken.equals("percent")) {
             parseOperator();
             parseExpression();
         }
