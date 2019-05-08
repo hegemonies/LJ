@@ -5,17 +5,17 @@ import LJ.Lexer.Token;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Node {
+public class GenericASTNode {
     private Token token;
-    private List<Node> children;
+    private List<GenericASTNode> children;
 
-    public Node() {}
+    public GenericASTNode() {}
 
-    public Node(Token token) {
+    public GenericASTNode(Token token) {
         this.token = token;
     }
 
-    public void addChild(Node t) {
+    public void addChild(GenericASTNode t) {
         if (children == null) {
             children = new ArrayList<>();
         }
@@ -45,7 +45,7 @@ public class Node {
         }
 
         for (int i = 0; i < children.size(); i++) {
-            Node t = (Node)children.get(i);
+            GenericASTNode t = (GenericASTNode)children.get(i);
             if (i > 0) buf.append(' ');
             buf.append(t.toStringTree());
         }
