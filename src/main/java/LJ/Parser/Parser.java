@@ -86,7 +86,9 @@ public class Parser {
             return node;
         }
 
-        parseInitList();
+        node.addChild(parseInitList());
+
+        return node;
     }
 
     /**
@@ -109,13 +111,18 @@ public class Parser {
      * <argsInitList>:  <argInit> | <argsInitList>, <argsInitList>
      * @throws CriticalProductionException
      */
-    private void parseArgsInitList() throws CriticalProductionException {
-        parseArgInit();
+    private GenericASTNode parseArgsInitList() throws CriticalProductionException {
+        GenericASTNode node = new GenericASTNode();
+        node.addChild(parseArgInit());
 
         if (listLexer.getLookahead().getType().equals("comma")) {
+            node.addChild(new GenericASTNode(listLexer.getLookahead()));
             listLexer.match("comma");
-            parseArgsInitList();
+
+            node.addChild(parseArgsInitList());
         }
+
+        return node;
     }
 
     /**
@@ -123,10 +130,14 @@ public class Parser {
      *     <nativeDataType><rvalueFork> <rvalue>
      * @throws CriticalProductionException
      */
-    private void parseArgInit() throws CriticalProductionException {
-        parseNativeDataType();
-        parseRValueFork();
-        parseRValue();
+    private GenericASTNode parseArgInit() throws CriticalProductionException {
+        GenericASTNode node = new GenericASTNode();
+
+        node.addChild(parseNativeDataType());
+        node.addChild(parseRValueFork());
+        node.addChild(parseRValue());
+
+        return node;
     }
 
     /**
@@ -136,14 +147,18 @@ public class Parser {
      *     <id>
      * @throws CriticalProductionException
      */
-    private void parseRValue() throws CriticalProductionException {
+    private GenericASTNode parseRValue() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
+        GenericASTNode node = new GenericASTNode();
 
         if (curTypeToken.equals("id")) {
+            node.addChild(new GenericASTNode(listLexer.getLookahead()));
             listLexer.match("id");
         } else if (curTypeToken.equals("numeric_constant")) {
+            node.addChild(new GenericASTNode(listLexer.getLookahead()));
             listLexer.match("numeric_constant");
         } else if (curTypeToken.equals("str_literal")) {
+            node.addChild(new GenericASTNode(listLexer.getLookahead()));
             listLexer.match("str_literal");
         } else {
             throw new CriticalProductionException("expecting <" + "id or numeric_constant or str_literal"
@@ -151,19 +166,27 @@ public class Parser {
                     ":" + listLexer.getLookahead().getValue()
                     + "> in " + listLexer.getLookahead().getLocation());
         }
+
+        return node;
     }
 
     /**
      * <rvalueFork>: [] | E
      * @throws CriticalProductionException
      */
-    private void parseRValueFork() throws CriticalProductionException {
+    private GenericASTNode parseRValueFork() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
+        GenericASTNode node = new GenericASTNode();
 
         if (curTypeToken.equals("l_square")) {
+            node.addChild(new GenericASTNode(listLexer.getLookahead()));
             listLexer.match("l_square");
+
+            node.addChild(new GenericASTNode(listLexer.getLookahead()));
             listLexer.match("r_square");
         }
+
+        return node;
     }
 
     /**
@@ -256,6 +279,8 @@ public class Parser {
 
         node.addChild(new GenericASTNode(listLexer.getLookahead()));
         listLexer.match("semicolon");
+
+        return node;
     }
 
     /**
@@ -288,19 +313,29 @@ public class Parser {
      *     <str_const>
      * @throws CriticalProductionException
      */
-    private void parseValueExpr() throws CriticalProductionException {
+    private GenericASTNode parseValueExpr() throws CriticalProductionException {
         boolean matchAny = false;
+        GenericASTNode node = new GenericASTNode();
+
         if (listLexer.getLookahead().getType().equals("id")) {
-            parseVExpr();
+            node.addChild(parseVExpr());
             matchAny = true;
         }
 
         if (!matchAny) {
-            matchAny = parseNumber();
+            try {
+                node.addChild(new GenericASTNode(listLexer.getLookahead()));
+                listLexer.match("numeric_constant");
+                matchAny = true;
+            } catch (CriticalProductionException ignored) { }
         }
 
         if (!matchAny) {
-            matchAny = parseStrConst();
+            try {
+                node.addChild(new GenericASTNode(listLexer.getLookahead()));
+                listLexer.match("str_literal");
+                matchAny = true;
+            } catch (CriticalProductionException ignored) { }
         }
 
         if (!matchAny) {
@@ -309,6 +344,8 @@ public class Parser {
                     ":" + listLexer.getLookahead().getValue()
                     + "> in " + listLexer.getLookahead().getLocation());
         }
+
+        return node;
     }
 
     /**
@@ -344,9 +381,15 @@ public class Parser {
      * <vExpr>: <id> <vExprChange>
      * @throws CriticalProductionException
      */
-    private void parseVExpr() throws CriticalProductionException {
+    private GenericASTNode parseVExpr() throws CriticalProductionException {
+        GenericASTNode node = new GenericASTNode();
+
+        node.addChild(new GenericASTNode(listLexer.getLookahead()));
         listLexer.match("id");
-        parseVExprChanger();
+
+        node.addChild(parseVExprChanger());
+
+        return node;
     }
 
     /**
@@ -355,48 +398,59 @@ public class Parser {
      *      E
      * @throws OptionalProductionException
      */
-    private void parseVExprChanger() throws CriticalProductionException {
+    private GenericASTNode parseVExprChanger() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
+        GenericASTNode node = new GenericASTNode();
 
         if (curTypeToken.equals("l_square")) {
-            parseArrayMember();
+            node.addChild(parseArrayMember());
         } else if (curTypeToken.equals("l_paren")) {
+            node.addChild(new GenericASTNode(listLexer.getLookahead()));
             listLexer.match("l_paren");
-            parseArgsCallListChanger();
+
+            node.addChild(parseArgsCallListChanger());
+
+            node.addChild(new GenericASTNode(listLexer.getLookahead()));
             listLexer.match("r_paren");
         }
+
+        return node;
     }
 
     /**
      * <argsCallListChanger>: <argsCallList> | E
      * @throws OptionalProductionException
      */
-    private void parseArgsCallListChanger() throws CriticalProductionException {
+    private GenericASTNode parseArgsCallListChanger() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
+        GenericASTNode node = new GenericASTNode();
+
         if (curTypeToken.equals("id") ||
             curTypeToken.equals("numeric_constant") ||
                 curTypeToken.equals("str_literal")) {
-            parseArgsCallList();
+            node.addChild(parseArgsCallList());
         }
+
+        return node;
     }
 
     /**
      * <argsCallList>: <valueExpr> | <argsCallList>, <argsCallList>
      * @throws CriticalProductionException
      */
-    private void parseArgsCallList() throws CriticalProductionException {
-        parseValueExpr();
+    private GenericASTNode parseArgsCallList() throws CriticalProductionException {
+        GenericASTNode node = new GenericASTNode();
 
-        boolean matchComma = false;
+        node.addChild(parseValueExpr());
 
-        try {
+        if (listLexer.getLookahead().getType().equals("comma")) {
+            node.addChild(new GenericASTNode(listLexer.getLookahead()));
             listLexer.match(",");
-            matchComma = true;
-        } catch (CriticalProductionException exc) { }
 
-        if(matchComma) {
-            parseArgsCallList();
+            node.addChild(parseArgsCallList());
         }
+
+        return node;
     }
 
     /**
@@ -424,12 +478,15 @@ public class Parser {
      *     <id>
      * @throws CriticalProductionException
      */
-    private void parseArrayMemberFork() throws CriticalProductionException {
+    private GenericASTNode parseArrayMemberFork() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
+        GenericASTNode node = new GenericASTNode();
 
         if (curTypeToken.equals("numeric_constant")) {
+            node.addChild(new GenericASTNode(listLexer.getLookahead()));
             listLexer.match("numeric_constant");
         } else if (curTypeToken.equals("id")) {
+            node.addChild(new GenericASTNode(listLexer.getLookahead()));
             listLexer.match("id");
         } else {
             throw new CriticalProductionException("expecting <id or numeric_constant"
@@ -437,13 +494,16 @@ public class Parser {
                     ":" + listLexer.getLookahead().getValue()
                     + "> in " + listLexer.getLookahead().getLocation());
         }
+
+        return node;
     }
 
     /**
      * <statementList>: <statement> <statementList> | E
      */
-    private void parseStatementList() throws CriticalProductionException {
+    private GenericASTNode parseStatementList() throws CriticalProductionException {
         String curTokenType = listLexer.getLookahead().getType();
+        GenericASTNode node = new GenericASTNode();
 
         if (curTokenType.equals("l_brace") ||
                 curTokenType.equals("while") ||
@@ -455,12 +515,14 @@ public class Parser {
                 curTokenType.equals("char") ||
                 curTokenType.equals("return") ||
                 curTokenType.equals("semicolon")) {
-            parseStatement();
+            node.addChild(parseStatement());
         } else {
-            return;
+            return node;
         }
 
-        parseStatementList();
+        node.addChild(parseStatementList());
+
+        return node;
     }
 
     /**
@@ -473,29 +535,37 @@ public class Parser {
      *     ;
      * @throws CriticalProductionException
      */
-    private void parseStatement() throws CriticalProductionException {
+    private GenericASTNode parseStatement() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
+        GenericASTNode node = new GenericASTNode();
 
         if (curTypeToken.equals("l_brace")) {
+            node.addChild(new GenericASTNode(listLexer.getLookahead()));
             listLexer.match("l_brace");
-            parseStatement();
+
+            node.addChild(parseStatement());
+
+            node.addChild(new GenericASTNode(listLexer.getLookahead()));
             listLexer.match("l_brace");
         } else if (curTypeToken.equals("while")) {
-            parseLoop();
+            node.addChild(parseLoop());
         } else if (curTypeToken.equals("if")) {
-            parseConditional();
+            node.addChild(parseConditional());
         } else if (curTypeToken.equals("id") ||
                 curTypeToken.equals("numeric_constant") ||
                 curTypeToken.equals("str_literal")) {
-            parseExpression();
+            node.addChild(parseExpression());
         } else if (curTypeToken.equals("int") ||
                 curTypeToken.equals("char")) {
-            parseInit();
+            node.addChild(parseInit());
         } else if (curTypeToken.equals("semicolon")) {
+            node.addChild(new GenericASTNode(listLexer.getLookahead()));
             listLexer.match("semicolon");
         } else if (curTypeToken.equals("return")) {
-            parseReturn();
+            node.addChild(parseReturn());
         }
+
+        return node;
     }
 
     /**
