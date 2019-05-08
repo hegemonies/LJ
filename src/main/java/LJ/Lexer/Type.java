@@ -43,7 +43,7 @@ public class Type {
         types.put("==", "equalequal");
         types.put("<", "less");
         types.put(">", "greater");
-        types.put("!", "exclaim");
+//        types.put("!", "exclaim");
         types.put("!=", "exclaimequal");
 
         types.put("&&", "ampamp");

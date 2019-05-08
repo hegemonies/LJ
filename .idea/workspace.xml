@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="82d8bc0a-62e4-4d57-a57a-e9d4efc4372e" name="Default Changelist" comment="Fix Lexer and fix Type">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grammar.txt" beforeDir="false" afterPath="$PROJECT_DIR$/grammar.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Lexer/ListLexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Lexer/ListLexer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Lexer/Type.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Lexer/Type.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" afterDir="false" />
     </list>
@@ -61,7 +62,7 @@
     </system>
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5566442">
+    <splitter split-orientation="horizontal" split-proportion="0.56827927">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
@@ -73,11 +74,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="469">
-                  <caret line="370" column="48" lean-forward="true" selection-start-line="370" selection-start-column="48" selection-end-line="370" selection-end-column="48" />
+                <state relative-caret-position="544">
+                  <caret line="411" column="9" selection-start-line="411" selection-start-column="9" selection-end-line="411" selection-end-column="9" />
                 </state>
               </provider>
             </entry>
@@ -103,22 +104,22 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Lexer/ListLexer.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="835">
-                  <caret line="78" column="32" selection-start-line="78" selection-start-column="32" selection-end-line="78" selection-end-column="32" />
+                <state relative-caret-position="575">
+                  <caret line="79" column="32" selection-start-line="79" selection-start-column="32" selection-end-line="79" selection-end-column="32" />
                   <folding>
                     <element signature="e#2307#2308#0" expanded="true" />
                     <element signature="e#2339#2340#0" expanded="true" />
-                    <element signature="e#2404#2405#0" expanded="true" />
+                    <element signature="e#2422#2423#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Lexer/Type.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="240">
-                  <caret line="33" column="30" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
+                <state relative-caret-position="400">
+                  <caret line="49" column="33" selection-start-line="49" selection-start-column="25" selection-end-line="49" selection-end-column="33" />
                   <folding>
                     <element signature="method#isInteger#0;class#Type#0" />
                   </folding>
@@ -163,8 +164,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/grammar.txt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1750">
-                  <caret line="127" column="4" selection-start-line="127" selection-start-column="4" selection-end-line="127" selection-end-column="14" />
+                <state relative-caret-position="486">
+                  <caret line="130" selection-start-line="130" selection-end-line="133" selection-end-column="5" />
                 </state>
               </provider>
             </entry>
@@ -201,7 +202,15 @@
       <find>parseNumber</find>
       <find>parseInit</find>
       <find>parseArgsInitList</find>
+      <find>semi</find>
+      <find>expression</find>
+      <find>statement</find>
+      <find>statementList</find>
+      <find>parseValue</find>
     </findStrings>
+    <replaceStrings>
+      <replace>semicolon</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -245,15 +254,15 @@
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/ParserException/OptionalProductionException.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Lexer/Lexer.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Тщву.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Lexer/ListLexer.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Node.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Compiler.java" />
         <option value="$PROJECT_DIR$/test.lj" />
         <option value="$PROJECT_DIR$/new_grammar.txt" />
         <option value="$PROJECT_DIR$/grammer_rules.txt" />
         <option value="$PROJECT_DIR$/grammar.txt" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Lexer/Type.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Lexer/ListLexer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" />
       </list>
     </option>
   </component>
@@ -837,18 +846,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Lexer/ListLexer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="835">
-          <caret line="78" column="32" selection-start-line="78" selection-start-column="32" selection-end-line="78" selection-end-column="32" />
-          <folding>
-            <element signature="e#2307#2308#0" expanded="true" />
-            <element signature="e#2339#2340#0" expanded="true" />
-            <element signature="e#2404#2405#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Node.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
@@ -890,13 +887,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/grammer_rules.txt" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Lexer/Lexer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="768">
-          <caret line="97" column="48" selection-start-line="97" selection-start-column="32" selection-end-line="97" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test.lj">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
@@ -904,27 +894,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grammar.txt">
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Lexer/Lexer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1750">
-          <caret line="127" column="4" selection-start-line="127" selection-start-column="4" selection-end-line="127" selection-end-column="14" />
+        <state relative-caret-position="768">
+          <caret line="97" column="48" selection-start-line="97" selection-start-column="32" selection-end-line="97" selection-end-column="48" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java">
+    <entry file="file://$PROJECT_DIR$/grammar.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="469">
-          <caret line="370" column="48" lean-forward="true" selection-start-line="370" selection-start-column="48" selection-end-line="370" selection-end-column="48" />
+        <state relative-caret-position="486">
+          <caret line="130" selection-start-line="130" selection-end-line="133" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Lexer/ListLexer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="79" column="32" selection-start-line="79" selection-start-column="32" selection-end-line="79" selection-end-column="32" />
+          <folding>
+            <element signature="e#2307#2308#0" expanded="true" />
+            <element signature="e#2339#2340#0" expanded="true" />
+            <element signature="e#2422#2423#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Lexer/Type.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="33" column="30" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
+        <state relative-caret-position="400">
+          <caret line="49" column="33" selection-start-line="49" selection-start-column="25" selection-end-line="49" selection-end-column="33" />
           <folding>
             <element signature="method#isInteger#0;class#Type#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="411" column="9" selection-start-line="411" selection-start-column="9" selection-end-line="411" selection-end-column="9" />
         </state>
       </provider>
     </entry>

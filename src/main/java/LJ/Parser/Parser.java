@@ -208,7 +208,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      *     <str_const>
      * @throws CriticalProductionException
      */
-    private void parseValueExpr() throws CriticalProductionException {
+    private void parseValueExpr() throws CriticalProductionException { // todo check
         if (listLexer.getLookahead().getType().equals("id")) {
             parseVExpr();
         }
@@ -367,7 +367,6 @@ public class Parser { // todo edit parser expression, valueExpr, statement
                 curTypeToken.equals("numeric_constant") ||
                 curTypeToken.equals("str_literal")) {
             parseExpression();
-            listLexer.match("semicolon"); // todo check this for correction
         } else if (curTypeToken.equals("int") ||
                 curTypeToken.equals("char")) {
             parseInit();
@@ -385,105 +384,52 @@ public class Parser { // todo edit parser expression, valueExpr, statement
         parseExpression();
         listLexer.match("semicolon");
     }
-
+// todo check valueExpr
     /**
-     * <expression>: <valueExpr> <condition> <valueExpr> |
-     *     <expression> <expressionOptionOperator> |
-     *     <id> <expressionOption> |
-     *     <number> |
-     *     <str_const>
+     * <expression>:
+     *     <valueExpr> <valueFork> |
+     *     <expression> <expressionOptionOperator>
      * @throws CriticalProductionException
      */
-    private void parseExpression() throws CriticalProductionException { // todo: i dont like this function
-        boolean matchAny = false;
+    private void parseExpression() throws CriticalProductionException { // todo work this
+        String curTypeToken = listLexer.getLookahead().getType();
 
-        try {
-            parseExpression();
-            try {
+        if (curTypeToken.equals("id") ||
+                curTypeToken.equals("numeric_constant") ||
+                curTypeToken.equals("str_literal")) {
+            String nextTypeToken = listLexer.getLooknext().getType();
+            if (nextTypeToken.equals("ampamp") ||
+                    nextTypeToken.equals("pipepipe") ||
+                    nextTypeToken.equals("plus") ||
+                    nextTypeToken.equals("minus") ||
+                    nextTypeToken.equals("star") ||
+                    nextTypeToken.equals("slash") ||
+                    nextTypeToken.equals("percent")) {
+                parseValueExpr();
+                parseValueFork();
                 parseExpressionOptionOperator();
-            } catch (CriticalProductionException exc) {}
-
-            matchAny = true;
-        } catch (CriticalProductionException exc) { }
-
-        if (!matchAny) {
-            try {
-                parseExpression();
-                parseLogicOperator();
-                parseExpression();
-
-                matchAny = true;
-            } catch (CriticalProductionException exc) { }
-        }
-
-        if (!matchAny) {
-            try {
-                listLexer.match("id");
-                try {
-                    parseExpressionOption();
-                } catch (OptionalProductionException e) { }
-
-                matchAny = true;
-            } catch (CriticalProductionException exc) { }
-        }
-
-        if (!matchAny) {
-            matchAny = parseNumber();
-        }
-
-        if (!matchAny) {
-            matchAny = parseStrConst();
-        }
-
-        if (!matchAny) {
-            try {
-                parseValueExpr();
-                parseConditions();
-                parseValueExpr();
-
-                matchAny = true;
-            } catch (CriticalProductionException exc) { }
-        }
-
-        if (!matchAny) {
-            throw new CriticalProductionException("ERROR");
+            }
         }
     }
 
     /**
-     * <expressionOption>: <arrayMember> |
-     *     (<argsCallListChanger>) |
-     *      = <expression> |
+     * <valueFork>:
+     *     <condition> <valueExpr> |
+     *     ; |
      *     E
-     * @throws OptionalProductionException
+     * @throws CriticalProductionException
      */
-    private void parseExpressionOption() throws OptionalProductionException {
-        boolean matchAny = false;
+    private void parseValueFork() throws CriticalProductionException {
+        String curTokenType = listLexer.getLookahead().getType();
 
-        try {
-            parseArrayMember();
-            matchAny = true;
-        } catch (CriticalProductionException e) { }
-
-        if (!matchAny) {
-            try {
-                listLexer.match("l_paren");
-                parseArgsCallListChanger();
-                listLexer.match("r_paren");
-
-                matchAny = true;
-            } catch (CriticalProductionException e) { }
-        }
-
-        if (!matchAny) {
-            try {
-                listLexer.match("equal");
-                parseExpression();
-            } catch (CriticalProductionException e) { }
-        }
-
-        if (!matchAny) {
-            throw new OptionalProductionException();
+        if (curTokenType.equals("less") ||
+                curTokenType.equals("greater") ||
+                curTokenType.equals("equalequal") ||
+                curTokenType.equals("exclaimequal")) {
+            parseConditions();
+            parseValueExpr();
+        } else if (curTokenType.equals("semicolon")) {
+            listLexer.match("semicolon");
         }
     }
 
@@ -492,7 +438,7 @@ public class Parser { // todo edit parser expression, valueExpr, statement
      *     <operator> <expression>
      * @throws CriticalProductionException
      */
-    private void parseExpressionOptionOperator() throws CriticalProductionException { // todo write this
+    private void parseExpressionOptionOperator() throws CriticalProductionException { // todo rewrite this
         boolean matchAny = false;
 
         try {

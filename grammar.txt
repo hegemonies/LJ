@@ -120,7 +120,7 @@
     { <statement> } |
     <loop> |
     <conditional> |
-    <expression>; |
+    <expression> |
     <init> |
     <return>
 
@@ -129,7 +129,8 @@
     <expression> <expressionOptionOperator>
 
 <valueFork>: 
-    <condition> <valueExpr> | 
+    <condition> <valueExpr> |
+    ; |
     E
 
 <expressionOptionOperator>: 
