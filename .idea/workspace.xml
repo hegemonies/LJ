@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="82d8bc0a-62e4-4d57-a57a-e9d4efc4372e" name="Default Changelist" comment="Fix Lexer and fix Type">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/grammar.txt" beforeDir="false" afterPath="$PROJECT_DIR$/grammar.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/GenericASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ASTNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ASTNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -77,8 +76,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="688">
-                  <caret line="745" column="9" lean-forward="true" selection-start-line="745" selection-start-column="9" selection-end-line="745" selection-end-column="9" />
+                <state relative-caret-position="390">
+                  <caret line="626" column="48" lean-forward="true" selection-start-line="626" selection-start-column="48" selection-end-line="626" selection-end-column="48" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#354#355#0" expanded="true" />
@@ -93,10 +92,14 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ASTNode.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="656">
-                  <caret line="47" column="19" selection-start-line="47" selection-start-column="19" selection-end-line="47" selection-end-column="19" />
+                <state relative-caret-position="432">
+                  <caret line="29" column="10" selection-start-line="29" selection-start-column="10" selection-end-line="29" selection-end-column="10" />
                   <folding>
                     <element signature="imports" expanded="true" />
+                    <element signature="e#479#480#0" expanded="true" />
+                    <element signature="e#513#514#0" expanded="true" />
+                    <element signature="e#498#499#0" expanded="true" />
+                    <element signature="e#534#535#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -166,8 +169,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/grammar.txt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="842">
-                  <caret line="155" column="14" lean-forward="true" selection-start-line="155" selection-start-column="14" selection-end-line="155" selection-end-column="14" />
+                <state relative-caret-position="746">
+                  <caret line="148" lean-forward="true" selection-start-line="148" selection-end-line="148" />
                 </state>
               </provider>
             </entry>
@@ -186,16 +189,8 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>add d</find>
-      <find>argsinitlistc</find>
-      <find>expr</find>
-      <find>parseInitList</find>
-      <find>valueExpr</find>
-      <find>parseVExpr</find>
       <find>parseStrConst</find>
-      <find>parseNumber</find>
       <find>parseInit</find>
-      <find>parseArgsInitList</find>
       <find>semi</find>
       <find>expression</find>
       <find>statement</find>
@@ -211,16 +206,27 @@
       <find>parseStatement</find>
       <find>parseReturn</find>
       <find>parseArgsInitListChanger</find>
-      <find>parseStatementList</find>
       <find>GenericASTNode</find>
       <find>parseOperator</find>
-      <find>parseExpression</find>
       <find>-&gt;</find>
+      <find>`</find>
+      <find>number</find>
+      <find>parseNumber</find>
+      <find>parseValueExpr</find>
+      <find>parseExpression</find>
+      <find>parseStatementList</find>
+      <find>List</find>
+      <find>parseArgsInitList</find>
+      <find>numeric_constant</find>
+      <find>term</find>
     </findStrings>
     <replaceStrings>
       <replace>semicolon</replace>
-      <replace>ASTNode</replace>
       <replace>:</replace>
+      <replace>_\</replace>
+      <replace>ASTNode</replace>
+      <replace>_</replace>
+      <replace>arithmetic</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -274,8 +280,8 @@
         <option value="$PROJECT_DIR$/src/main/java/LJ/Compiler.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/GenericASTNode.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ASTNode.java" />
-        <option value="$PROJECT_DIR$/grammar.txt" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" />
+        <option value="$PROJECT_DIR$/grammar.txt" />
       </list>
     </option>
   </component>
@@ -884,16 +890,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ASTNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="656">
-          <caret line="47" column="19" selection-start-line="47" selection-start-column="19" selection-end-line="47" selection-end-column="19" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test.lj">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="128">
@@ -901,10 +897,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ASTNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="29" column="10" selection-start-line="29" selection-start-column="10" selection-end-line="29" selection-end-column="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#479#480#0" expanded="true" />
+            <element signature="e#513#514#0" expanded="true" />
+            <element signature="e#498#499#0" expanded="true" />
+            <element signature="e#534#535#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="688">
-          <caret line="745" column="9" lean-forward="true" selection-start-line="745" selection-start-column="9" selection-end-line="745" selection-end-column="9" />
+        <state relative-caret-position="390">
+          <caret line="626" column="48" lean-forward="true" selection-start-line="626" selection-start-column="48" selection-end-line="626" selection-end-column="48" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#354#355#0" expanded="true" />
@@ -917,8 +927,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/grammar.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="842">
-          <caret line="155" column="14" lean-forward="true" selection-start-line="155" selection-start-column="14" selection-end-line="155" selection-end-column="14" />
+        <state relative-caret-position="746">
+          <caret line="148" lean-forward="true" selection-start-line="148" selection-end-line="148" />
         </state>
       </provider>
     </entry>

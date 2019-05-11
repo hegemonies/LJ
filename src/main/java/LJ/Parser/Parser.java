@@ -161,9 +161,9 @@ public class Parser {
         if (curTypeToken.equals("id")) {
             node.addChild(new ASTNode(listLexer.getLookahead()));
             listLexer.match("id");
-        } else if (curTypeToken.equals("numeric_constant")) {
-            node.addChild(new ASTNode(listLexer.getLookahead()));
-            listLexer.match("numeric_constant");
+        } else if (curTypeToken.equals("numeric_constant") ||
+                        curTypeToken.equals("minus")) {
+            node.addChild(parseNumber());
         } else if (curTypeToken.equals("str_literal")) {
             node.addChild(new ASTNode(listLexer.getLookahead()));
             listLexer.match("str_literal");
@@ -322,27 +322,24 @@ public class Parser {
      */
     private ASTNode parseValueExpr() throws CriticalProductionException {
         boolean matchAny = false;
+        String curTypeToken = listLexer.getLookahead().getType();
         ASTNode node = new ASTNode();
 
-        if (listLexer.getLookahead().getType().equals("id")) {
+        if (curTypeToken.equals("id")) {
             node.addChild(parseVExpr());
             matchAny = true;
         }
 
-        if (!matchAny) {
-            try {
-                node.addChild(new ASTNode(listLexer.getLookahead()));
-                listLexer.match("numeric_constant");
-                matchAny = true;
-            } catch (CriticalProductionException ignored) { }
+        if (curTypeToken.equals("numeric_constant") ||
+                curTypeToken.equals("minus")) {
+            node.addChild(parseNumber());
+            matchAny = true;
         }
 
-        if (!matchAny) {
-            try {
-                node.addChild(new ASTNode(listLexer.getLookahead()));
-                listLexer.match("str_literal");
-                matchAny = true;
-            } catch (CriticalProductionException ignored) { }
+        if (curTypeToken.equals("str_literal")) {
+            node.addChild(new ASTNode(listLexer.getLookahead()));
+            listLexer.match("str_literal");
+            matchAny = true;
         }
 
         if (!matchAny) {
@@ -359,29 +356,41 @@ public class Parser {
      * <str_const>: str_literal
      * @throws CriticalProductionException
      */
-    private void parseStrConst() throws CriticalProductionException {
+    private ASTNode parseStrConst() throws CriticalProductionException {
+        ASTNode node = new ASTNode(listLexer.getLookahead());
         listLexer.match("str_literal");
+
+        return node;
     }
 
     /**
      * <number>: <sign> numeric_constant
      * @throws CriticalProductionException
      */
-    private void parseNumber() throws CriticalProductionException {
+    private ASTNode parseNumber() throws CriticalProductionException {
+        ASTNode node = new ASTNode();
+
+        if (listLexer.getLookahead().getType().equals("minus")) {
+            node.setToken(listLexer.getLookahead());
+        }
         parseSign();
+
+        if (node.isNull()) {
+            node.setToken(listLexer.getLookahead());
+        }
         listLexer.match("numeric_constant");
+
+        return node;
     }
 
     /**
-     * <sign>: + | - | E
+     * <sign>: - | E
      * @throws CriticalProductionException
      */
     private void parseSign() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
 
-        if (curTypeToken.equals("plus")) {
-            listLexer.match("plus");
-        } else if (curTypeToken.equals("minus")) {
+        if (curTypeToken.equals("minus")) {
             listLexer.match("minus");
         }
     }
@@ -435,7 +444,8 @@ public class Parser {
         ASTNode node = new ASTNode();
 
         if (curTypeToken.equals("id") ||
-            curTypeToken.equals("numeric_constant") ||
+                curTypeToken.equals("numeric_constant") ||
+                curTypeToken.equals("minus") ||
                 curTypeToken.equals("str_literal")) {
             node.addChild(parseArgsCallList());
         }
@@ -491,9 +501,9 @@ public class Parser {
         String curTypeToken = listLexer.getLookahead().getType();
         ASTNode node = new ASTNode();
 
-        if (curTypeToken.equals("numeric_constant")) {
-            node.addChild(new ASTNode(listLexer.getLookahead()));
-            listLexer.match("numeric_constant");
+        if (curTypeToken.equals("numeric_constant") ||
+                curTypeToken.equals("minus")) {
+            node.addChild(parseNumber());
         } else if (curTypeToken.equals("id")) {
             node.addChild(new ASTNode(listLexer.getLookahead()));
             listLexer.match("id");
@@ -519,6 +529,7 @@ public class Parser {
                 curTokenType.equals("while") ||
                 curTokenType.equals("if") ||
                 curTokenType.equals("numeric_constant") ||
+                curTokenType.equals("minus") ||
                 curTokenType.equals("str_literal") ||
                 curTokenType.equals("id") ||
                 curTokenType.equals("int") ||
@@ -567,6 +578,7 @@ public class Parser {
             node.addChild(parseConditional());
         } else if (curTypeToken.equals("id") ||
                 curTypeToken.equals("numeric_constant") ||
+                curTypeToken.equals("minus") ||
                 curTypeToken.equals("str_literal")) {
             node.addChild(parseExpression());
         } else if (curTypeToken.equals("int") ||

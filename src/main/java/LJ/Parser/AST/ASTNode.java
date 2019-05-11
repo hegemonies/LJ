@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ASTNode {
-    private Token token;
+    private Token token = null;
     private List<ASTNode> children;
 
     public ASTNode() {}
@@ -23,7 +23,11 @@ public class ASTNode {
         children.add(t);
     }
 
-    private boolean isNull() {
+    public void setToken(Token token) {
+        this.token = token;
+    }
+
+    public boolean isNull() {
         return token == null;
     }
 

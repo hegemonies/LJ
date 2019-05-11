@@ -23,17 +23,12 @@
 <str_const>: 
     str_literal
 
-<sign>: + | - | E
+<sign>: - | E
 
 <loop>: 
     while (<expression>) {
         <statementList>
     }
-
-<rvalue>: 
-    <number> | 
-    <str_const> | 
-    <id>
 
 <argsInitListChanger>: 
     <argsInitList> | 
@@ -42,7 +37,7 @@
     <argInit> | 
     <argsInitList>, <argsInitList>
 <argInit>: 
-    <nativeDataType><rvalueFork> <rvalue>
+    <nativeDataType><rvalueFork> <id> // todo rewrite in parser
 
 <rvalueFork>: [] | E
 
@@ -132,8 +127,12 @@
     <return> |
     ;
 
-<expression>: 
-    <term> <valueFork> |
+<expression>:
+    <valueExpr> <valueFork> |
+    <expressionForkParen>
+
+<expressionForkParen>:
+    (<expression>) <expressionOptionOperator> |
     <expression> <expressionOptionOperator>
 
 <valueFork>: 
@@ -141,16 +140,19 @@
     ; |
     E
 
-<expressionOptionOperator>: 
+<expressionOptionOperator>: // todo rewriting this
     <logicOperator> <expression> |
-    <operator> <expression>
+    <condition> <expression> |
+    E
 
-<term>: <addPrior>
+<arithmetic>: <addPrior>
 
-<addPrior> : <multPrior><addPrior`>
-<addPrior`> : <addPriorOper><multPrior><addPrior`>  | E
+<addPrior> : <multPrior><addPrior_>
+<addPrior_> : <addPriorOper><multPrior><addPrior_>  | E
 
-<multPrior> : <group><multPrior`>
-<multPrior`> : <multPriorOper><group><multPrior`> | E
+<multPrior> : <group><multPrior_>
+<multPrior_> : <multPriorOper><group><multPrior_> | E
 
-<group> : (<term>) | <valueExpr>
+<group> : (<arithmetic>) | <valueExpr>
+<multPriorOper> -> * | -
+<addPriorOper> -> + | -
