@@ -5,6 +5,8 @@ import LJ.Parser.AST.GenericASTNode;
 import LJ.Parser.ParserException.CriticalProductionException;
 import LJ.Parser.ParserException.OptionalProductionException;
 
+// todo: refactor AST on HeterogenAST
+
 public class Parser {
     private ListLexer listLexer;
     GenericASTNode root;
@@ -21,6 +23,10 @@ public class Parser {
         } catch (CriticalProductionException e) {
             e.printStackTrace();
         }
+    }
+
+    public void showTree() {
+        System.out.println(root.toStringTree());
     }
 
     /**
@@ -505,6 +511,7 @@ public class Parser {
         String curTokenType = listLexer.getLookahead().getType();
         GenericASTNode node = new GenericASTNode();
 
+
         if (curTokenType.equals("l_brace") ||
                 curTokenType.equals("while") ||
                 curTokenType.equals("if") ||
@@ -516,11 +523,15 @@ public class Parser {
                 curTokenType.equals("return") ||
                 curTokenType.equals("semicolon")) {
             node.addChild(parseStatement());
-        } else {
-            return node;
+            node.addChild(parseStatementList());
+            // st = parseStatement
+            // return st ++ parseStatementList()
         }
+        //else {
+        //    return node;
+        //}
 
-        node.addChild(parseStatementList());
+        //node.addChild(parseStatementList());
 
         return node;
     }
@@ -572,9 +583,13 @@ public class Parser {
      * <return>: return <expression>;
      * @throws CriticalProductionException
      */
-    private void parseReturn() throws CriticalProductionException {
+    private GenericASTNode parseReturn() throws CriticalProductionException {
+        GenericASTNode node = new GenericASTNode(listLexer.getLookahead());
         listLexer.match("return");
-        parseExpression();
+
+        node.addChild(parseExpression());
+
+        return node;
     }
 
     /**
@@ -583,14 +598,15 @@ public class Parser {
      *     <expression> <expressionOptionOperator>
      * @throws CriticalProductionException
      */
-    private void parseExpression() throws CriticalProductionException {
+    private GenericASTNode parseExpression() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
+        GenericASTNode node = new GenericASTNode();
 
         if (curTypeToken.equals("id") ||
                 curTypeToken.equals("numeric_constant") ||
                 curTypeToken.equals("str_literal")) {
-            parseValueExpr();
-            parseValueFork();
+            node.addChild(parseValueExpr());
+            node.addChild(parseValueFork());
 
             curTypeToken = listLexer.getLookahead().getType();
             if (curTypeToken.equals("ampamp") ||
@@ -608,6 +624,8 @@ public class Parser {
                     ":" + listLexer.getLookahead().getValue()
                     + "> in " + listLexer.getLookahead().getLocation());
         }
+
+        return node;
     }
 
     /**
@@ -617,19 +635,23 @@ public class Parser {
      *     E
      * @throws CriticalProductionException
      */
-    private void parseValueFork() throws CriticalProductionException {
+    private GenericASTNode parseValueFork() throws CriticalProductionException {
         String curTokenType = listLexer.getLookahead().getType();
+        GenericASTNode node = new GenericASTNode();
 
         if (curTokenType.equals("less") ||
                 curTokenType.equals("greater") ||
                 curTokenType.equals("equalequal") ||
                 curTokenType.equals("exclaimequal") ||
                 curTokenType.equals("equal")) {
-            parseConditions();
-            parseValueExpr();
+            node.addChild(parseConditions());
+            node.addChild(parseValueExpr());
         } else if (curTokenType.equals("semicolon")) {
+            node.addChild(new GenericASTNode(listLexer.getLookahead()));
             listLexer.match("semicolon");
         }
+
+        return node;
     }
 
     /**
@@ -677,15 +699,31 @@ public class Parser {
      *      }
      * @throws CriticalProductionException
      */
-    private void parseConditional() throws CriticalProductionException {
+    private GenericASTNode parseConditional() throws CriticalProductionException {
+        GenericASTNode node = new GenericASTNode();
+
+        node.addChild(new GenericASTNode(listLexer.getLookahead()));
         listLexer.match("if");
+
+        node.addChild(new GenericASTNode(listLexer.getLookahead()));
         listLexer.match("l_paren");
-        parseExpression();
+
+        node.addChild(parseExpression());
+
+        node.addChild(new GenericASTNode(listLexer.getLookahead()));
         listLexer.match("r_paren");
+
+        node.addChild(new GenericASTNode(listLexer.getLookahead()));
         listLexer.match("l_brace");
-        parseStatementList();
+
+        node.addChild(parseStatementList());
+
+        node.addChild(new GenericASTNode(listLexer.getLookahead()));
         listLexer.match("r_brace");
-        parseElseFork();
+
+        node.addChild(parseElseFork());
+
+        return node;
     }
 
     /**
@@ -694,14 +732,19 @@ public class Parser {
      *     E
      * @throws CriticalProductionException
      */
-    private void parseElseFork() throws CriticalProductionException {
-        try {
+    private GenericASTNode parseElseFork() throws CriticalProductionException {
+        GenericASTNode node = new GenericASTNode();
+
+        if (listLexer.getLookahead().getType().equals("else")) {
+            node.addChild(new GenericASTNode(listLexer.getLookahead()));
             listLexer.match("else");
-        } catch (CriticalProductionException exc) {
-            return;
+        } else {
+            return node;
         }
 
-        parseElseFork1();
+        node.addChild(parseElseFork1());
+
+        return node;
     }
 
     /**
@@ -711,14 +754,22 @@ public class Parser {
      *     E
      * @throws CriticalProductionException
      */
-    private void parseElseFork1() throws CriticalProductionException {
+    private GenericASTNode parseElseFork1() throws CriticalProductionException {
+        GenericASTNode node = new GenericASTNode();
+
         if (listLexer.getLookahead().getType().equals("if")) {
-            parseConditional();
+            node.addChild(parseConditional());
         }
 
+        node.addChild(new GenericASTNode(listLexer.getLookahead()));
         listLexer.match("l_brace");
-        parseStatementList();
+
+        node.addChild(parseStatementList());
+
+        node.addChild(new GenericASTNode(listLexer.getLookahead()));
         listLexer.match("r_brace");
+
+        return node;
     }
 
     /**
@@ -727,20 +778,37 @@ public class Parser {
      *     }
      * @throws CriticalProductionException
      */
-    private void parseLoop() throws CriticalProductionException {
+    private GenericASTNode parseLoop() throws CriticalProductionException {
+        GenericASTNode node = new GenericASTNode();
+
+        node.addChild(new GenericASTNode(listLexer.getLookahead()));
         listLexer.match("while");
+
+        node.addChild(new GenericASTNode(listLexer.getLookahead()));
         listLexer.match("l_paren");
-        parseExpression();
+
+        node.addChild(parseExpression());
+
+        node.addChild(new GenericASTNode(listLexer.getLookahead()));
         listLexer.match("r_paren");
+
+        node.addChild(new GenericASTNode(listLexer.getLookahead()));
         listLexer.match("l_brace");
-        parseStatementList();
+
+        node.addChild(parseStatementList());
+
+        node.addChild(new GenericASTNode(listLexer.getLookahead()));
         listLexer.match("r_brace");
+
+        return node;
     }
 
     /**
      * <condition>: < | > | == | != | <= | >=
      */
-    private void parseConditions() throws CriticalProductionException {
+    private GenericASTNode parseConditions() throws CriticalProductionException {
+        GenericASTNode node = new GenericASTNode(listLexer.getLookahead());
+
         listLexer.matchOneOf("less",
                 "greater",
                 "equalequal",
@@ -748,6 +816,8 @@ public class Parser {
                 "lessequal",
                 "greaterequal",
                 "equal");
+
+        return node;
     }
 
     /**

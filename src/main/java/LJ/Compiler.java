@@ -23,6 +23,7 @@ class Compiler {
 
         Parser parser = new Parser(new ListLexer(lexer));
         parser.go();
+        parser.showTree();
     }
 
     private static void printSourceCode() {

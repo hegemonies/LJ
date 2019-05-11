@@ -47,7 +47,9 @@ public class GenericASTNode {
         for (int i = 0; i < children.size(); i++) {
             GenericASTNode t = (GenericASTNode)children.get(i);
             if (i > 0) buf.append(' ');
-            buf.append(t.toStringTree());
+            try {
+                buf.append(t.toStringTree());
+            } catch (Exception exc) { }
         }
 
         if (!isNull()) {
