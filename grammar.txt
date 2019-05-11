@@ -19,9 +19,11 @@
 <id>: 
     id
 <number>: 
-    \-/(-_-)\-/
+    <sign> numeric_constant
 <str_const>: 
-    /-\(-_-)/-\
+    str_literal
+
+<sign>: + | - | E
 
 <loop>: 
     while (<expression>) {
@@ -74,8 +76,7 @@
 
 <elseFork1>:
     <conditional> |
-    { <statementList> } |
-    E
+    { <statementList> }
 
 <nativeDataType>: 
     int | 
@@ -108,7 +109,7 @@
 
 <condition>: < | > | == | !=
 
-<operator>: + | - | * | / | %
+<operator>: + | - | * | / | =
 
 <logicOperator>: && | ||
 
@@ -132,7 +133,7 @@
     ;
 
 <expression>: 
-    <valueExpr> <valueFork> |
+    <term> <valueFork> |
     <expression> <expressionOptionOperator>
 
 <valueFork>: 
@@ -143,3 +144,13 @@
 <expressionOptionOperator>: 
     <logicOperator> <expression> |
     <operator> <expression>
+
+<term>: <addPrior>
+
+<addPrior> : <multPrior><addPrior`>
+<addPrior`> : <addPriorOper><multPrior><addPrior`>  | E
+
+<multPrior> : <group><multPrior`>
+<multPrior`> : <multPriorOper><group><multPrior`> | E
+
+<group> : (<term>) | <valueExpr>
