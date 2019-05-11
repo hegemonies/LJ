@@ -154,7 +154,7 @@ public class Parser {
      *     <id>
      * @throws CriticalProductionException
      */
-    private ASTNode parseRValue() throws CriticalProductionException {
+    private ASTNode parseRValue() throws CriticalProductionException { // todo maybe delete, need check
         String curTypeToken = listLexer.getLookahead().getType();
         ASTNode node = new ASTNode();
 
@@ -501,8 +501,7 @@ public class Parser {
         String curTypeToken = listLexer.getLookahead().getType();
         ASTNode node = new ASTNode();
 
-        if (curTypeToken.equals("numeric_constant") ||
-                curTypeToken.equals("minus")) {
+        if (curTypeToken.equals("numeric_constant")) {
             node.addChild(parseNumber());
         } else if (curTypeToken.equals("id")) {
             node.addChild(new ASTNode(listLexer.getLookahead()));
@@ -610,10 +609,12 @@ public class Parser {
     /**
      * <expression>:
      *     <valueExpr> <valueFork> |
-     *     <expression> <expressionOptionOperator>
+     *     <expressionForkParen> |
+     *     <arithmetic>
+     * @return
      * @throws CriticalProductionException
      */
-    private ASTNode parseExpression() throws CriticalProductionException {
+    private ASTNode parseExpression() throws CriticalProductionException { // todo: refactor this
         String curTypeToken = listLexer.getLookahead().getType();
         ASTNode node = new ASTNode();
 
@@ -644,8 +645,18 @@ public class Parser {
     }
 
     /**
+     * <expressionForkParen>:
+     *     (<expression>) <expressionOptionOperator> |
+     *     <expression> <expressionOptionOperator>
+     * @throws CriticalProductionException
+     */
+    private void ExpressionForkParen() throws CriticalProductionException { // todo: write
+
+    }
+
+    /**
      * <valueFork>:
-     *     <condition> <valueExpr> |
+     *     <condition> <expression> |
      *     ; |
      *     E
      * @throws CriticalProductionException
@@ -660,7 +671,7 @@ public class Parser {
                 curTokenType.equals("exclaimequal") ||
                 curTokenType.equals("equal")) {
             node.addChild(parseConditions());
-            node.addChild(parseValueExpr());
+            node.addChild(parseExpression());
         } else if (curTokenType.equals("semicolon")) {
             node.addChild(new ASTNode(listLexer.getLookahead()));
             listLexer.match("semicolon");
@@ -670,8 +681,10 @@ public class Parser {
     }
 
     /**
-     * <expressionOptionOperator>: <logicOperator> <expression> |
-     *     <operator> <expression>
+     * <expressionOptionOperator>:
+     *     <logicOperator> <expression> |
+     *     <condition> <expression> |
+     *     E
      * @throws CriticalProductionException
      */
     private void parseExpressionOptionOperator() throws CriticalProductionException {
@@ -681,14 +694,40 @@ public class Parser {
                 curTypeToken.equals("pipepipe")) {
             parseLogicOperator();
             parseExpression();
-        } else if (curTypeToken.equals("plus") ||
-                curTypeToken.equals("minus") ||
-                curTypeToken.equals("star") ||
-                curTypeToken.equals("slash") ||
-                curTypeToken.equals("percent")) {
-            parseOperator();
+        } else if (curTypeToken.equals("less") ||
+                curTypeToken.equals("greater") ||
+                curTypeToken.equals("equalequal") ||
+                curTypeToken.equals("exclaimequal")) {
+            parseConditions();
             parseExpression();
         }
+    }
+
+    /**
+     * <arithmetic>:
+     *      <addPrior>
+     * @throws CriticalProductionException
+     */
+    private void parseArithmetic() throws CriticalProductionException { // todo first work here
+        parseAddPrior();
+    }
+
+    /**
+     * <addPrior>:
+     * <multPrior><addPrior_>
+     * @throws CriticalProductionException
+     */
+    private void parseAddPrior() throws CriticalProductionException {
+        parseMultPrior();
+        parseAddPrior_();
+    }
+
+    private void parseAddPrior_() {
+        
+    }
+
+    private void parseMultPrior() {
+
     }
 
     /**

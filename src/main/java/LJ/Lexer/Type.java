@@ -40,7 +40,7 @@ public class Type {
         types.put("%", "percent");
 
         types.put("=", "equal");
-        types.put("==", "equalequal");
+        types.put("==", "equalequal"); // todo refctor equalequal to attachment
         types.put("<", "less");
         types.put(">", "greater");
 //        types.put("!", "exclaim");

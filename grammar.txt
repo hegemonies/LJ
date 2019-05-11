@@ -129,30 +129,31 @@
 
 <expression>:
     <valueExpr> <valueFork> |
-    <expressionForkParen>
+    <expressionForkParen> |
+    <arithmetic>
 
 <expressionForkParen>:
     (<expression>) <expressionOptionOperator> |
     <expression> <expressionOptionOperator>
 
 <valueFork>: 
-    <condition> <valueExpr> |
+    <condition> <expression> |
     ; |
     E
 
-<expressionOptionOperator>: // todo rewriting this
+<expressionOptionOperator>:
     <logicOperator> <expression> |
     <condition> <expression> |
     E
 
 <arithmetic>: <addPrior>
 
-<addPrior> : <multPrior><addPrior_>
-<addPrior_> : <addPriorOper><multPrior><addPrior_>  | E
+<addPrior>: <multPrior><addPrior_>
+<addPrior_>: <addPriorOper><multPrior><addPrior_>  | E
 
-<multPrior> : <group><multPrior_>
-<multPrior_> : <multPriorOper><group><multPrior_> | E
+<multPrior>: <group><multPrior_>
+<multPrior_>: <multPriorOper><group><multPrior_> | E
 
-<group> : (<arithmetic>) | <valueExpr>
-<multPriorOper> -> * | -
-<addPriorOper> -> + | -
+<group>: (<arithmetic>) | <valueExpr>
+<multPriorOper>: * | -
+<addPriorOper>: + | -
