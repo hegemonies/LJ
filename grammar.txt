@@ -128,9 +128,12 @@
     ;
 
 <expression>:
-    <valueExpr> <valueFork> |
-    <expressionForkParen> |
-    <arithmetic>
+    <arithmetic> <valueFork> |
+    <expressionForkParen>
+
+<expression2>:
+    <arithmetic> <valueFork> <expressionOptionOperator>
+
 
 <expressionForkParen>:
     (<expression>) <expressionOptionOperator> |
@@ -156,4 +159,4 @@
 
 <group>: (<arithmetic>) | <valueExpr>
 <firstPriorOper>: * | -
-<secondPriorOper>: + | -
+<secondPriorOper>: + | - | =

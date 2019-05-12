@@ -1,5 +1,6 @@
 package LJ.Parser;
 
+import LJ.Lexer.Lexer;
 import LJ.Lexer.ListLexer;
 import LJ.Parser.AST.ASTNode;
 import LJ.Parser.ParserException.CriticalProductionException;
@@ -579,9 +580,8 @@ public class Parser {
 
     /**
      * <expression>:
-     *     <valueExpr> <valueFork> |
-     *     <expressionForkParen> |
-     *     <arithmetic>
+     *     <arithmetic> <valueFork> |
+     *     <expressionForkParen>
      * @return
      * @throws CriticalProductionException
      */
@@ -589,20 +589,25 @@ public class Parser {
         String curTypeToken = listLexer.getLookahead().getType();
         ASTNode node = new ASTNode();
 
-        if (curTypeToken.equals("id") ||
+        if (curTypeToken.equals("l_paren")) {
+            listLexer.match("l_paren");
+            parseExpression();
+            listLexer.match("r_paren");
+            parseExpressionOptionOperator();
+        } else if (curTypeToken.equals("id") ||
                 curTypeToken.equals("numeric_constant") ||
                 curTypeToken.equals("str_literal")) {
-            node.addChild(parseValueExpr());
-            node.addChild(parseValueFork());
+
+            parseArithmetic();
+            parseValueFork();
 
             curTypeToken = listLexer.getLookahead().getType();
             if (curTypeToken.equals("ampamp") ||
                     curTypeToken.equals("pipepipe") ||
-                    curTypeToken.equals("plus") ||
-                    curTypeToken.equals("minus") ||
-                    curTypeToken.equals("star") ||
-                    curTypeToken.equals("slash") ||
-                    curTypeToken.equals("equal")) {
+                    curTypeToken.equals("less") ||
+                    curTypeToken.equals("greater") ||
+                    curTypeToken.equals("equalequal") ||
+                    curTypeToken.equals("exclaimequal")) {
                 parseExpressionOptionOperator();
             }
         } else {
@@ -616,12 +621,52 @@ public class Parser {
     }
 
     /**
+     * <expression2>:
+     *     <arithmetic> <valueFork> <expressionOptionOperator>
+     * @throws CriticalProductionException
+     */
+    private void parseExpression2() throws CriticalProductionException {
+        String curTypeToken = listLexer.getLookahead().getType();
+
+        if (curTypeToken.equals("id") ||
+                curTypeToken.equals("numeric_constant") ||
+                curTypeToken.equals("str_literal") ||
+                curTypeToken.equals("l_paren")) {
+
+            parseArithmetic();
+            parseValueFork();
+            parseExpressionOptionOperator();
+        } else {
+            throw new CriticalProductionException("expecting <" + "id or numeric_constant or str_literal or l_paren"
+                    + ">, but found is <"+ listLexer.getLookahead().getType() +
+                    ":" + listLexer.getLookahead().getValue()
+                    + "> in " + listLexer.getLookahead().getLocation());
+        }
+    }
+
+    public static void main(String... args) {
+//        String code = "((a + 1) - 2) == (b + 2)";
+        String code = "(a > 1) == (b < 1)";
+        Lexer lexer = new Lexer(code);
+        lexer.go();
+        lexer.printOutput();
+        Parser parser = new Parser(new ListLexer(lexer));
+        try {
+            parser.parseExpression2();
+            System.out.println("Compile ok");
+        } catch (CriticalProductionException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
      * <expressionForkParen>:
      *     (<expression>) <expressionOptionOperator> |
      *     <expression> <expressionOptionOperator>
      * @throws CriticalProductionException
      */
-    private void ExpressionForkParen() throws CriticalProductionException { // todo: write
+    private void parseExpressionForkParen() throws CriticalProductionException { // todo: write
 
     }
 
@@ -673,7 +718,7 @@ public class Parser {
             parseExpression();
         }
     }
-// todo add arithmetic to <expression>
+
     /**
      * <arithmetic>:
      *      <secondPrior>
@@ -748,6 +793,7 @@ public class Parser {
         if (curTypeToken.equals("l_paren")) {
             listLexer.match("l_paren");
             parseArithmetic();
+            parseValueFork();
             listLexer.match("r_paren");
         } else if (curTypeToken.equals("id") ||
                     curTypeToken.equals("numeric_constant") ||
@@ -762,7 +808,7 @@ public class Parser {
     }
 
     /**
-     * <secondPriorOper>: + | -
+     * <secondPriorOper>: + | - | =
      * @throws CriticalProductionException
      */
     private void parseSecondPriorOper() throws CriticalProductionException {
@@ -772,6 +818,8 @@ public class Parser {
             listLexer.match("plus");
         } else if (curTypeToken.equals("minus")) {
             listLexer.match("minus");
+        } else if (curTypeToken.equals("equal")) {
+            listLexer.match("equal");
         } else {
             throw new CriticalProductionException("expecting <" + "plus or minus"
                     + ">, but found is <"+ listLexer.getLookahead().getType() +

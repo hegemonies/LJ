@@ -90,4 +90,17 @@ public class Type {
 
         return type;
     }
+
+    public boolean isDoubleToken(String dtoken) {
+        if (dtoken.equals("==") ||
+                dtoken.equals("!=") ||
+                dtoken.equals(">=") ||
+                dtoken.equals("<=") ||
+                dtoken.equals("&&") ||
+                dtoken.equals("||")) {
+            return true;
+        }
+
+        return false;
+    }
 }

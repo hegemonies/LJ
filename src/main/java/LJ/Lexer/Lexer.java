@@ -7,11 +7,11 @@ public class Lexer {
     private List<Token> tokenList = new ArrayList<>();
     private Type types = new Type();
     private String[] strings;
-    private int index_cur_token = 0;
+    private int indexCurToken = 0;
 
     public Lexer(String src_code) {
         strings = src_code.split("\n");
-        tokenList.add(new Token("program", "program", new Location(0, 0)));
+//        tokenList.add(new Token("program", "program", new Location(0, 0)));
     }
 
     public void go() {
@@ -34,7 +34,7 @@ public class Lexer {
                         predictor = PredicationOfTheToken.ILLEGAL;
                     } else if (types.isToken(Character.toString(cur_char))
                             && (col < chars.length - 1)
-                            && chars[col].equals(chars[col + 1])) {
+                            && types.isDoubleToken(cur_char + chars[col + 1])) {
                         char next_char = chars[col + 1].charAt(0);
                         buffer.append(next_char);
                         predictor = PredicationOfTheToken.KWORD;
@@ -226,15 +226,23 @@ public class Lexer {
 
     }
 
-    public Token getNextToken() {
-        if (index_cur_token != tokenList.size()) {
-            return tokenList.get(index_cur_token++);
+    Token getNextToken() {
+        if (indexCurToken != tokenList.size()) {
+            return tokenList.get(indexCurToken++);
         }
 
         return null;
     }
 
+    int getIndexCurToken() {
+        return indexCurToken;
+    }
+
+    void setIndexCurToken(int index) {
+        indexCurToken = index;
+    }
+
     public void resetTokenCounter() {
-        index_cur_token = 0;
+        indexCurToken = 0;
     }
 }

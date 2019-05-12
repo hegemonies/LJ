@@ -5,6 +5,7 @@ import LJ.Parser.ParserException.CriticalProductionException;
 public class ListLexer {
     private Lexer lexer;
     private Token lookahead;
+    private int checkpointIndex = 0;
 
     public ListLexer(Lexer lexer) {
         this.lexer = lexer;
@@ -72,5 +73,13 @@ public class ListLexer {
 
     public Token getLookahead() {
         return lookahead;
+    }
+
+    public void checkpoint() {
+        checkpointIndex = lexer.getIndexCurToken();
+    }
+
+    public void backup() {
+        lexer.setIndexCurToken(checkpointIndex);
     }
 }
