@@ -134,7 +134,7 @@ public class Parser {
 
     /**
      * <argInit>:
-     *     <nativeDataType><rvalueFork> <rvalue>
+     *     <nativeDataType><rvalueFork> <id>
      * @throws CriticalProductionException
      */
     private ASTNode parseArgInit() throws CriticalProductionException {
@@ -142,37 +142,8 @@ public class Parser {
 
         node.addChild(parseNativeDataType());
         node.addChild(parseRValueFork());
-        node.addChild(parseRValue());
-
-        return node;
-    }
-
-    /**
-     * <rvalue>:
-     *     <number> |
-     *     <str_const> |
-     *     <id>
-     * @throws CriticalProductionException
-     */
-    private ASTNode parseRValue() throws CriticalProductionException { // todo maybe delete, need check
-        String curTypeToken = listLexer.getLookahead().getType();
-        ASTNode node = new ASTNode();
-
-        if (curTypeToken.equals("id")) {
-            node.addChild(new ASTNode(listLexer.getLookahead()));
-            listLexer.match("id");
-        } else if (curTypeToken.equals("numeric_constant") ||
-                        curTypeToken.equals("minus")) {
-            node.addChild(parseNumber());
-        } else if (curTypeToken.equals("str_literal")) {
-            node.addChild(new ASTNode(listLexer.getLookahead()));
-            listLexer.match("str_literal");
-        } else {
-            throw new CriticalProductionException("expecting <" + "id or numeric_constant or str_literal"
-                    + ">, but found is <"+ listLexer.getLookahead().getType() +
-                    ":" + listLexer.getLookahead().getValue()
-                    + "> in " + listLexer.getLookahead().getLocation());
-        }
+        node.addChild(new ASTNode(listLexer.getLookahead()));
+        listLexer.match("id");
 
         return node;
     }
@@ -702,32 +673,130 @@ public class Parser {
             parseExpression();
         }
     }
-
+// todo add arithmetic to <expression>
     /**
      * <arithmetic>:
-     *      <addPrior>
+     *      <secondPrior>
      * @throws CriticalProductionException
      */
     private void parseArithmetic() throws CriticalProductionException { // todo first work here
-        parseAddPrior();
+        parseSecondPrior();
     }
 
     /**
-     * <addPrior>:
-     * <multPrior><addPrior_>
+     * <secondPrior>:
+     *      <firstPrior><secondPrior_>
      * @throws CriticalProductionException
      */
-    private void parseAddPrior() throws CriticalProductionException {
-        parseMultPrior();
-        parseAddPrior_();
+    private void parseSecondPrior() throws CriticalProductionException {
+        parseFirstPrior();
+        parseSecondPrior_();
     }
 
-    private void parseAddPrior_() {
-        
+    /**
+     * <secondPrior_>:
+     *      <secondPriorOper><firstPrior><secondPrior_> |
+     *      E
+     * @throws CriticalProductionException
+     */
+    private void parseSecondPrior_() throws CriticalProductionException {
+        String curTypeToken = listLexer.getLookahead().getType();
+        if (curTypeToken.equals("plus") ||
+                curTypeToken.equals("minus")) {
+            parseSecondPriorOper();
+            parseFirstPrior();
+            parseSecondPrior_();
+        }
     }
 
-    private void parseMultPrior() {
+    /**
+     * <firstPrior>:
+     *      <group><firstPrior_>
+     * @throws CriticalProductionException
+     */
+    private void parseFirstPrior() throws CriticalProductionException {
+        parseGroup();
+        parseFirstPrior_();
+    }
 
+    /**
+     * <firstPrior_>:
+     *      <firstPriorOper><group><firstPrior_> |
+     *      E
+     * @throws CriticalProductionException
+     */
+    private void parseFirstPrior_() throws CriticalProductionException {
+        String curTypeToken = listLexer.getLookahead().getType();
+
+        if (curTypeToken.equals("star") ||
+                curTypeToken.equals("slash")) {
+            parseFirstPriorOper();
+            parseGroup();
+            parseFirstPrior_();
+        }
+    }
+
+    /**
+     * <group>:
+     *      (<arithmetic>) |
+     *      <valueExpr>
+     * @throws CriticalProductionException
+     */
+    private void parseGroup() throws CriticalProductionException {
+        String curTypeToken = listLexer.getLookahead().getType();
+
+        if (curTypeToken.equals("l_paren")) {
+            listLexer.match("l_paren");
+            parseArithmetic();
+            listLexer.match("r_paren");
+        } else if (curTypeToken.equals("id") ||
+                    curTypeToken.equals("numeric_constant") ||
+                    curTypeToken.equals("str_literal")) {
+            parseValueExpr();
+        } else {
+            throw new CriticalProductionException("expecting <" + "l_paren or id or numeric_constant or str_literal"
+                    + ">, but found is <"+ listLexer.getLookahead().getType() +
+                    ":" + listLexer.getLookahead().getValue()
+                    + "> in " + listLexer.getLookahead().getLocation());
+        }
+    }
+
+    /**
+     * <secondPriorOper>: + | -
+     * @throws CriticalProductionException
+     */
+    private void parseSecondPriorOper() throws CriticalProductionException {
+        String curTypeToken = listLexer.getLookahead().getType();
+
+        if (curTypeToken.equals("plus")) {
+            listLexer.match("plus");
+        } else if (curTypeToken.equals("minus")) {
+            listLexer.match("minus");
+        } else {
+            throw new CriticalProductionException("expecting <" + "plus or minus"
+                    + ">, but found is <"+ listLexer.getLookahead().getType() +
+                    ":" + listLexer.getLookahead().getValue()
+                    + "> in " + listLexer.getLookahead().getLocation());
+        }
+    }
+
+    /**
+     * <firstPriorOper>: * | -
+     * @throws CriticalProductionException
+     */
+    private void parseFirstPriorOper() throws CriticalProductionException {
+        String curTypeToken = listLexer.getLookahead().getType();
+
+        if (curTypeToken.equals("star")) {
+            listLexer.match("star");
+        } else if (curTypeToken.equals("slash")) {
+            listLexer.match("slash");
+        } else {
+            throw new CriticalProductionException("expecting <" + "star or slash"
+                    + ">, but found is <"+ listLexer.getLookahead().getType() +
+                    ":" + listLexer.getLookahead().getValue()
+                    + "> in " + listLexer.getLookahead().getLocation());
+        }
     }
 
     /**

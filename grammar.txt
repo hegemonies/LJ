@@ -37,7 +37,7 @@
     <argInit> | 
     <argsInitList>, <argsInitList>
 <argInit>: 
-    <nativeDataType><rvalueFork> <id> // todo rewrite in parser
+    <nativeDataType><rvalueFork> <id>
 
 <rvalueFork>: [] | E
 
@@ -146,14 +146,14 @@
     <condition> <expression> |
     E
 
-<arithmetic>: <addPrior>
+<arithmetic>: <secondPrior>
 
-<addPrior>: <multPrior><addPrior_>
-<addPrior_>: <addPriorOper><multPrior><addPrior_>  | E
+<secondPrior>: <firstPrior><secondPrior_>
+<secondPrior_>: <secondPriorOper><firstPrior><secondPrior_>  | E
 
-<multPrior>: <group><multPrior_>
-<multPrior_>: <multPriorOper><group><multPrior_> | E
+<firstPrior>: <group><firstPrior_>
+<firstPrior_>: <firstPriorOper><group><firstPrior_> | E
 
 <group>: (<arithmetic>) | <valueExpr>
-<multPriorOper>: * | -
-<addPriorOper>: + | -
+<firstPriorOper>: * | -
+<secondPriorOper>: + | -
