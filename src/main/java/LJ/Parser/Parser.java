@@ -551,7 +551,7 @@ public class Parser {
                 curTypeToken.equals("numeric_constant") ||
                 curTypeToken.equals("minus") ||
                 curTypeToken.equals("str_literal")) {
-            node.addChild(parseExpression());
+            node.addChild(parseExpression2());
         } else if (curTypeToken.equals("int") ||
                 curTypeToken.equals("char")) {
             node.addChild(parseInit());
@@ -573,49 +573,7 @@ public class Parser {
         ASTNode node = new ASTNode(listLexer.getLookahead());
         listLexer.match("return");
 
-        node.addChild(parseExpression());
-
-        return node;
-    }
-
-    /**
-     * <expression>:
-     *     <arithmetic> <valueFork> |
-     *     <expressionForkParen>
-     * @return
-     * @throws CriticalProductionException
-     */
-    private ASTNode parseExpression() throws CriticalProductionException { // todo: refactor this
-        String curTypeToken = listLexer.getLookahead().getType();
-        ASTNode node = new ASTNode();
-
-        if (curTypeToken.equals("l_paren")) {
-            listLexer.match("l_paren");
-            parseExpression();
-            listLexer.match("r_paren");
-            parseExpressionOptionOperator();
-        } else if (curTypeToken.equals("id") ||
-                curTypeToken.equals("numeric_constant") ||
-                curTypeToken.equals("str_literal")) {
-
-            parseArithmetic();
-            parseValueFork();
-
-            curTypeToken = listLexer.getLookahead().getType();
-            if (curTypeToken.equals("ampamp") ||
-                    curTypeToken.equals("pipepipe") ||
-                    curTypeToken.equals("less") ||
-                    curTypeToken.equals("greater") ||
-                    curTypeToken.equals("equalequal") ||
-                    curTypeToken.equals("exclaimequal")) {
-                parseExpressionOptionOperator();
-            }
-        } else {
-            throw new CriticalProductionException("expecting <" + "id or numeric_constant or str_literal"
-                    + ">, but found is <"+ listLexer.getLookahead().getType() +
-                    ":" + listLexer.getLookahead().getValue()
-                    + "> in " + listLexer.getLookahead().getLocation());
-        }
+        node.addChild(parseExpression2());
 
         return node;
     }
@@ -625,7 +583,8 @@ public class Parser {
      *     <arithmetic> <valueFork> <expressionOptionOperator>
      * @throws CriticalProductionException
      */
-    private void parseExpression2() throws CriticalProductionException {
+    private ASTNode parseExpression2() throws CriticalProductionException {
+        ASTNode node = new ASTNode();
         String curTypeToken = listLexer.getLookahead().getType();
 
         if (curTypeToken.equals("id") ||
@@ -642,9 +601,11 @@ public class Parser {
                     ":" + listLexer.getLookahead().getValue()
                     + "> in " + listLexer.getLookahead().getLocation());
         }
+
+        return node;
     }
 
-    public static void main(String... args) {
+    public static void main(String... args) { // just for tests
 //        String code = "((a + 1) - 2) == (b + 2)";
         String code = "(a > 1) == (b < 1)";
         Lexer lexer = new Lexer(code);
@@ -660,15 +621,6 @@ public class Parser {
 
     }
 
-    /**
-     * <expressionForkParen>:
-     *     (<expression>) <expressionOptionOperator> |
-     *     <expression> <expressionOptionOperator>
-     * @throws CriticalProductionException
-     */
-    private void parseExpressionForkParen() throws CriticalProductionException { // todo: write
-
-    }
 
     /**
      * <valueFork>:
@@ -687,7 +639,7 @@ public class Parser {
                 curTokenType.equals("exclaimequal") ||
                 curTokenType.equals("equal")) {
             node.addChild(parseConditions());
-            node.addChild(parseExpression());
+            node.addChild(parseExpression2());
         } else if (curTokenType.equals("semicolon")) {
             node.addChild(new ASTNode(listLexer.getLookahead()));
             listLexer.match("semicolon");
@@ -709,13 +661,13 @@ public class Parser {
         if (curTypeToken.equals("ampamp") ||
                 curTypeToken.equals("pipepipe")) {
             parseLogicOperator();
-            parseExpression();
+            parseExpression2();
         } else if (curTypeToken.equals("less") ||
                 curTypeToken.equals("greater") ||
                 curTypeToken.equals("equalequal") ||
                 curTypeToken.equals("exclaimequal")) {
             parseConditions();
-            parseExpression();
+            parseExpression2();
         }
     }
 
@@ -783,7 +735,7 @@ public class Parser {
 
     /**
      * <group>:
-     *      (<arithmetic>) |
+     *      (<arithmetic> <valueFork>) |
      *      <valueExpr>
      * @throws CriticalProductionException
      */
@@ -879,7 +831,7 @@ public class Parser {
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("l_paren");
 
-        node.addChild(parseExpression());
+        node.addChild(parseExpression2());
 
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("r_paren");
@@ -958,7 +910,7 @@ public class Parser {
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("l_paren");
 
-        node.addChild(parseExpression());
+        node.addChild(parseExpression2());
 
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("r_paren");

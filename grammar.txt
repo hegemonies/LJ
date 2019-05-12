@@ -157,6 +157,8 @@
 <firstPrior>: <group><firstPrior_>
 <firstPrior_>: <firstPriorOper><group><firstPrior_> | E
 
-<group>: (<arithmetic>) | <valueExpr>
+<group>:
+     (<arithmetic> <valueFork>) |
+     <valueExpr>
 <firstPriorOper>: * | -
 <secondPriorOper>: + | - | =
