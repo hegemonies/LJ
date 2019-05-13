@@ -34,7 +34,6 @@ public class Parser {
      * <Program>: <class>
      */
     private ASTNode parseProgram() throws CriticalProductionException {
-        int a = -     5;
         return parseClass();
     }
 
@@ -56,13 +55,13 @@ public class Parser {
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("id");
 
-        node.addChild(new ASTNode(listLexer.getLookahead()));
+//        node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("l_brace");
 
         node.addChild(parseInitList());
         node.addChild(parseMainMethod());
 
-        node.addChild(new ASTNode(listLexer.getLookahead()));
+//        node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("r_brace");
 
         return node;
@@ -551,7 +550,7 @@ public class Parser {
                 curTypeToken.equals("numeric_constant") ||
                 curTypeToken.equals("minus") ||
                 curTypeToken.equals("str_literal")) {
-            node.addChild(parseExpression2());
+            node.addChild(parseExpression());
         } else if (curTypeToken.equals("int") ||
                 curTypeToken.equals("char")) {
             node.addChild(parseInit());
@@ -573,7 +572,7 @@ public class Parser {
         ASTNode node = new ASTNode(listLexer.getLookahead());
         listLexer.match("return");
 
-        node.addChild(parseExpression2());
+        node.addChild(parseExpression());
 
         return node;
     }
@@ -583,7 +582,7 @@ public class Parser {
      *     <arithmetic> <valueFork> <expressionOptionOperator>
      * @throws CriticalProductionException
      */
-    private ASTNode parseExpression2() throws CriticalProductionException {
+    private ASTNode parseExpression() throws CriticalProductionException {
         ASTNode node = new ASTNode();
         String curTypeToken = listLexer.getLookahead().getType();
 
@@ -605,23 +604,6 @@ public class Parser {
         return node;
     }
 
-    public static void main(String... args) { // just for tests
-//        String code = "((a + 1) - 2) == (b + 2)";
-        String code = "(a > 1) == (b < 1)";
-        Lexer lexer = new Lexer(code);
-        lexer.go();
-        lexer.printOutput();
-        Parser parser = new Parser(new ListLexer(lexer));
-        try {
-            parser.parseExpression2();
-            System.out.println("Compile ok");
-        } catch (CriticalProductionException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
     /**
      * <valueFork>:
      *     <condition> <expression> |
@@ -639,7 +621,7 @@ public class Parser {
                 curTokenType.equals("exclaimequal") ||
                 curTokenType.equals("equal")) {
             node.addChild(parseConditions());
-            node.addChild(parseExpression2());
+            node.addChild(parseExpression());
         } else if (curTokenType.equals("semicolon")) {
             node.addChild(new ASTNode(listLexer.getLookahead()));
             listLexer.match("semicolon");
@@ -661,13 +643,13 @@ public class Parser {
         if (curTypeToken.equals("ampamp") ||
                 curTypeToken.equals("pipepipe")) {
             parseLogicOperator();
-            parseExpression2();
+            parseExpression();
         } else if (curTypeToken.equals("less") ||
                 curTypeToken.equals("greater") ||
                 curTypeToken.equals("equalequal") ||
                 curTypeToken.equals("exclaimequal")) {
             parseConditions();
-            parseExpression2();
+            parseExpression();
         }
     }
 
@@ -831,7 +813,7 @@ public class Parser {
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("l_paren");
 
-        node.addChild(parseExpression2());
+        node.addChild(parseExpression());
 
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("r_paren");
@@ -910,7 +892,7 @@ public class Parser {
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("l_paren");
 
-        node.addChild(parseExpression2());
+        node.addChild(parseExpression());
 
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("r_paren");

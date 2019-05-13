@@ -11,7 +11,7 @@ public class Lexer {
 
     public Lexer(String src_code) {
         strings = src_code.split("\n");
-//        tokenList.add(new Token("program", "program", new Location(0, 0)));
+        tokenList.add(new Token("program", "program", new Location(0, 0)));
     }
 
     public void go() {

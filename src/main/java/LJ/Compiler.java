@@ -30,7 +30,7 @@ class Compiler {
         int count = 1;
         System.out.println("\tSource code:");
         for (String string : src_data.split("\n")) {
-            System.out.printf(count++ + ". " + string + "\n");
+            System.out.printf("%s\n", count++ + ". " + string + "\n");
         }
     }
 }
