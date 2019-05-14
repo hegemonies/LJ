@@ -77,9 +77,22 @@
     int | 
     char
 
-<initList>: 
-    <init> <initList> | 
+<initList>: // todo rewrite init here
+    <initInsideClass> <initList> |
     E
+
+// todo new init
+<initInsideClass>: <nativeDataType> <firstForkInitInsideClass>
+<firstForkInitInsideClass>: [] <id> <forkInitArray> |
+    <id> <secondForkInitInsideClass> |
+<secondForkInitInsideClass>: <forkInitFunc> |
+    <forkInitVar>
+
+<initInsideFunc>: <nativeDataType> <firstForkInitInsideFunc>
+<firstForkInitInsideFunc>: [] <id> <forkInitArray> |
+    <id> <forkInitVar>
+
+/// new init
 
 <init>: 
     <nativeDataType> <id> <forkInit>
@@ -118,12 +131,12 @@
 <return>: 
     return <expression>;
 
-<statement>: 
+<statement>: // todo rewrite init here
     { <statement> } |
     <loop> |
     <conditional> |
     <expression> |
-    <init> |
+    <initInsideFunc> |
     <return> |
     ;
 

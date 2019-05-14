@@ -435,7 +435,7 @@ public class Parser {
 
         if (listLexer.getLookahead().getType().equals("comma")) {
             node.addChild(new ASTNode(listLexer.getLookahead()));
-            listLexer.match(",");
+            listLexer.match("comma");
 
             node.addChild(parseArgsCallList());
         }
@@ -533,6 +533,7 @@ public class Parser {
     private ASTNode parseStatement() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
         ASTNode node = new ASTNode();
+
 
         if (curTypeToken.equals("l_brace")) {
             node.addChild(new ASTNode(listLexer.getLookahead()));
