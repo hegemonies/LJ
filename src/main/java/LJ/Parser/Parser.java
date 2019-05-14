@@ -88,7 +88,7 @@ public class Parser {
 
         if (curTokenType.equals("int") ||
                 curTokenType.equals("char")) {
-            node.addChild(parseInit());
+            node.addChild(parseInitInsideClass());
         } else {
             return node;
         }
@@ -168,20 +168,99 @@ public class Parser {
     }
 
     /**
-     * <init>: <nativeDataType> <id> <forkInit>
+     * <initInsideClass>:
+     *     <nativeDataType> <firstForkInitInsideClass>
+     * @return
      * @throws CriticalProductionException
      */
-    private ASTNode parseInit() throws CriticalProductionException {
-        ASTNode node = new ASTNode();
+    private ASTNode parseInitInsideClass() throws CriticalProductionException {
+        parseNativeDataType();
+        parseFirstForkInitInsideClass();
+    }
 
-        node.addChild(parseNativeDataType());
+    /**
+     * <firstForkInitInsideClass>:
+     *     [] <id> <forkInitArray> |
+     *     <id> <secondForkInitInsideClass>
+     * @return
+     * @throws CriticalProductionException
+     */
+    private ASTNode parseFirstForkInitInsideClass() throws CriticalProductionException {
+        String curTypeToken = listLexer.getLookahead().getType();
 
-        node.addChild(new ASTNode(listLexer.getLookahead()));
-        listLexer.match("id");
+        if (curTypeToken.equals("l_square")) {
+            listLexer.match("l_square");
+            listLexer.match("r_square");
+            listLexer.match("id");
+            parseForkInitArray();
+        } else if (curTypeToken.equals("id")) {
+            listLexer.match("id");
+            parseSecondForkInitInsideClass();
+        } else {
+            throw new CriticalProductionException("expecting <" + "l_square or id"
+                    + ">, but found is <"+ listLexer.getLookahead().getType() +
+                    ":" + listLexer.getLookahead().getValue()
+                    + "> in " + listLexer.getLookahead().getLocation());
+        }
+    }
 
-        node.addChild(parseForkInit());
+    /**
+     * <secondForkInitInsideClass>:
+     *     <forkInitFunc> |
+     *     <forkInitVar>
+     * @return
+     * @throws CriticalProductionException
+     */
+    private ASTNode parseSecondForkInitInsideClass() throws CriticalProductionException {
+        String curTypeToken = listLexer.getLookahead().getType();
 
-        return node;
+        if (curTypeToken.equals("l_paren")) {
+            parseForkInitFunc();
+        } else if (curTypeToken.equals("equal")) {
+            parseForkInitVar();
+        } else {
+            throw new CriticalProductionException("expecting <" + "l_paren or equal"
+                    + ">, but found is <"+ listLexer.getLookahead().getType() +
+                    ":" + listLexer.getLookahead().getValue()
+                    + "> in " + listLexer.getLookahead().getLocation());
+        }
+    }
+
+    /**
+     * <initInsideFunc>:
+     *     <nativeDataType> <firstForkInitInsideFunc>
+     * @return
+     * @throws CriticalProductionException
+     */
+    private ASTNode parseInitInsideFunc() throws CriticalProductionException {
+        parseNativeDataType();
+        parseFirstForkInitInsideFunc();
+    }
+
+    /**
+     * <firstForkInitInsideFunc>:
+     *     [] <id> <forkInitArray> |
+     *     <id> <forkInitVar>
+     * @return
+     * @throws CriticalProductionException
+     */
+    private ASTNode parseFirstForkInitInsideFunc() throws CriticalProductionException {
+        String curTypeToken = listLexer.getLookahead().getType();
+
+        if (curTypeToken.equals("l_square")) {
+            listLexer.match("l_square");
+            listLexer.match("r_square");
+            listLexer.match("id");
+            parseForkInitArray();
+        } else if (curTypeToken.equals("id")) {
+            listLexer.match("id");
+            parseForkInitVar();
+        } else {
+            throw new CriticalProductionException("expecting <" + "l_square or id"
+                    + ">, but found is <"+ listLexer.getLookahead().getType() +
+                    ":" + listLexer.getLookahead().getValue()
+                    + "> in " + listLexer.getLookahead().getLocation());
+        }
     }
 
     /**
@@ -191,26 +270,6 @@ public class Parser {
     private ASTNode parseNativeDataType() throws CriticalProductionException {
         ASTNode node = new ASTNode(listLexer.getLookahead());
         listLexer.matchOneOf("int", "char");
-
-        return node;
-    }
-
-    /**
-     * <forkInit>: <forInitFunc> |
-     *     <forkInitVar> |
-     *     <forInitArray>
-     */
-    private ASTNode parseForkInit() throws CriticalProductionException {
-        String curTokenType = listLexer.getLookahead().getType();
-        ASTNode node = new ASTNode();
-
-        if (curTokenType.equals("l_paren")) {
-            node.addChild(parseForkInitFunc());
-        } else if (curTokenType.equals("equal")) {
-            node.addChild(parseForkInitVar());
-        } else if (curTokenType.equals("l_square")) {
-            node.addChild(parseForkInitArray());
-        }
 
         return node;
     }
@@ -554,7 +613,7 @@ public class Parser {
             node.addChild(parseExpression());
         } else if (curTypeToken.equals("int") ||
                 curTypeToken.equals("char")) {
-            node.addChild(parseInit());
+            node.addChild(parseInitInsideFunc());
         } else if (curTypeToken.equals("semicolon")) {
             node.addChild(new ASTNode(listLexer.getLookahead()));
             listLexer.match("semicolon");

@@ -82,25 +82,20 @@
     E
 
 // todo new init
-<initInsideClass>: <nativeDataType> <firstForkInitInsideClass>
-<firstForkInitInsideClass>: [] <id> <forkInitArray> |
-    <id> <secondForkInitInsideClass> |
-<secondForkInitInsideClass>: <forkInitFunc> |
+<initInsideClass>:
+    <nativeDataType> <firstForkInitInsideClass>
+<firstForkInitInsideClass>:
+    [] <id> <forkInitArray> |
+    <id> <secondForkInitInsideClass>
+<secondForkInitInsideClass>:
+    <forkInitFunc> |
     <forkInitVar>
 
-<initInsideFunc>: <nativeDataType> <firstForkInitInsideFunc>
-<firstForkInitInsideFunc>: [] <id> <forkInitArray> |
+<initInsideFunc>:
+    <nativeDataType> <firstForkInitInsideFunc>
+<firstForkInitInsideFunc>:
+    [] <id> <forkInitArray> |
     <id> <forkInitVar>
-
-/// new init
-
-<init>: 
-    <nativeDataType> <id> <forkInit>
-
-<forkInit>: 
-    <forkInitFunc> |
-    <forkInitVar> |
-    <forkInitArray>
 
 <forkInitFunc>: 
     (<argsInitListChanger>) {
