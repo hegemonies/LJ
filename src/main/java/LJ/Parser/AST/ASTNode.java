@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ASTNode {
     private Token token = null;
-    private List<ASTNode> children;
+    private List<ASTNode> childrens;
     private ASTNodeTypes nodeType;
 
     public ASTNode() {}
@@ -26,11 +26,11 @@ public class ASTNode {
     }
 
     public void addChild(ASTNode t) {
-        if (children == null) {
-            children = new ArrayList<>();
+        if (childrens == null) {
+            childrens = new ArrayList<>();
         }
 
-        children.add(t);
+        childrens.add(t);
     }
 
     public void setToken(Token token) {
@@ -46,7 +46,7 @@ public class ASTNode {
     }
 
     public String toStringTree() {
-        if (children == null || children.size() == 0) {
+        if (childrens == null || childrens.size() == 0) {
             return this.toString();
         }
 
@@ -58,8 +58,8 @@ public class ASTNode {
             buf.append('\t');
         }
 
-        for (int i = 0; i < children.size(); i++) {
-            ASTNode t = children.get(i);
+        for (int i = 0; i < childrens.size(); i++) {
+            ASTNode t = childrens.get(i);
             if (i > 0) buf.append('\n');
             try {
                 buf.append(t.toStringTree());
@@ -71,5 +71,24 @@ public class ASTNode {
         }
 
         return buf.toString();
+    }
+
+    public String _toStringTreeRoot() {
+        String string = "digraph AST {\n";
+        
+        string += _toString();
+        
+        string += "}";
+        return string;
+    }
+    
+    public String _toString() {
+        StringBuilder sb = new StringBuilder();
+        
+        for (ASTNode children : childrens) {
+            sb.append(this.token.getType() + "\"->" );
+        }
+        
+        return sb.toString();
     }
 }
