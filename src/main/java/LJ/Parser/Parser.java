@@ -1,6 +1,5 @@
 package LJ.Parser;
 
-import LJ.Lexer.Lexer;
 import LJ.Lexer.ListLexer;
 import LJ.Parser.AST.ASTNode;
 import LJ.Parser.AST.ASTNodeTypes;
@@ -10,7 +9,6 @@ import LJ.Parser.ParserException.OptionalProductionException;
 import java.util.ArrayList;
 import java.util.List;
 
-// todo: refactor AST on HeterogenAST
 
 public class Parser {
     private ListLexer listLexer;
@@ -31,7 +29,8 @@ public class Parser {
     }
 
     public void showTree() {
-        System.out.println(root.toStringTree());
+//        System.out.println(root.toStringTree());
+        System.out.println(root._toStringTreeRoot());
     }
 
     /**
@@ -345,13 +344,12 @@ public class Parser {
     }
 
     /**
-     * <forkInitArray>: <arrayMember> = new <nativeDataType><arrayMember>;
+     * <forkInitArray>:
+     *      = new <nativeDataType><arrayMember>;
      * @return
      */
     private ASTNode parseForkInitArray() throws CriticalProductionException {
         ASTNode node = new ASTNode();
-
-        node.addChild(parseArrayMember());
 
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("equal");

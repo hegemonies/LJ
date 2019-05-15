@@ -13,11 +13,10 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        int array[3] = new int[3];
+        int[] array = new int[3];
         array[0] = 2;
         array[1] = 0;
         array[2] = 3;
-        int min;
-        min = getMin(array, 3);
+        int min = getMin(array, 3);
     }
 }
