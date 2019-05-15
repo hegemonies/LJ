@@ -77,11 +77,10 @@
     int | 
     char
 
-<initList>: // todo rewrite init here
+<initList>:
     <initInsideClass> <initList> |
     E
 
-// todo new init
 <initInsideClass>:
     <nativeDataType> <firstForkInitInsideClass>
 <firstForkInitInsideClass>:
@@ -126,7 +125,7 @@
 <return>: 
     return <expression>;
 
-<statement>: // todo rewrite init here
+<statement>:
     { <statement> } |
     <loop> |
     <conditional> |

@@ -174,8 +174,9 @@ public class Parser {
      * @throws CriticalProductionException
      */
     private ASTNode parseInitInsideClass() throws CriticalProductionException {
-        parseNativeDataType();
-        parseFirstForkInitInsideClass();
+        ASTNode node = new ASTNode();
+        node.addChild(parseNativeDataType());
+        node.addChild(parseFirstForkInitInsideClass());
     }
 
     /**
@@ -187,21 +188,26 @@ public class Parser {
      */
     private ASTNode parseFirstForkInitInsideClass() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
+        ASTNode node = new ASTNode();
 
         if (curTypeToken.equals("l_square")) {
             listLexer.match("l_square");
             listLexer.match("r_square");
+            node.addChild(new ASTNode(listLexer.getLookahead()));
             listLexer.match("id");
-            parseForkInitArray();
+            node.addChild(parseForkInitArray());
         } else if (curTypeToken.equals("id")) {
+            node.addChild(new ASTNode(listLexer.getLookahead()));
             listLexer.match("id");
-            parseSecondForkInitInsideClass();
+            node.addChild(parseSecondForkInitInsideClass());
         } else {
             throw new CriticalProductionException("expecting <" + "l_square or id"
                     + ">, but found is <"+ listLexer.getLookahead().getType() +
                     ":" + listLexer.getLookahead().getValue()
                     + "> in " + listLexer.getLookahead().getLocation());
         }
+
+        return node;
     }
 
     /**
