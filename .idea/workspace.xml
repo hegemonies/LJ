@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="82d8bc0a-62e4-4d57-a57a-e9d4efc4372e" name="Default Changelist" comment="Fix Lexer and fix Type">
-      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ASTNodeTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ASTNodeTypes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -75,8 +75,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="444">
-                  <caret line="273" column="51" selection-start-line="273" selection-start-column="51" selection-end-line="273" selection-end-column="51" />
+                <state relative-caret-position="467">
+                  <caret line="276" column="39" selection-start-line="276" selection-start-column="39" selection-end-line="276" selection-end-column="39" />
                 </state>
               </provider>
             </entry>
@@ -157,7 +157,7 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/grammar.txt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="544">
+                <state relative-caret-position="158">
                   <caret line="127" column="12" selection-start-line="127" selection-start-column="12" selection-end-line="127" selection-end-column="12" />
                 </state>
               </provider>
@@ -612,6 +612,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4980916" weight="0.15771812" />
       <window_info id="Structure" order="1" sideWeight="0.5019084" side_tool="true" weight="0.19936034" />
@@ -914,7 +915,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/grammar.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
+        <state relative-caret-position="158">
           <caret line="127" column="12" selection-start-line="127" selection-start-column="12" selection-end-line="127" selection-end-column="12" />
         </state>
       </provider>
@@ -938,8 +939,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="444">
-          <caret line="273" column="51" selection-start-line="273" selection-start-column="51" selection-end-line="273" selection-end-column="51" />
+        <state relative-caret-position="467">
+          <caret line="276" column="39" selection-start-line="276" selection-start-column="39" selection-end-line="276" selection-end-column="39" />
         </state>
       </provider>
     </entry>

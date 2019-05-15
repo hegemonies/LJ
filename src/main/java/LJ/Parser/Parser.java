@@ -249,6 +249,9 @@ public class Parser {
         list.add(parseNativeDataType());
         List<ASTNode> firstInitList = new ArrayList<>();
         parseFirstForkInitInsideFunc(firstInitList);
+        for (ASTNode node : firstInitList) {
+            list.add(node);
+        }
     }
 
     /**
@@ -267,11 +270,11 @@ public class Parser {
             list.add(new ASTNode(listLexer.getLookahead()));
             listLexer.match("id");
 
-            parseForkInitArray(); // todo how to add?
+            list.add(parseForkInitArray()); // todo how to add?
         } else if (curTypeToken.equals("id")) {
             list.add(new ASTNode(listLexer.getLookahead()));
             listLexer.match("id");
-            parseForkInitVar(); // todo how to add?
+            list.add(parseForkInitVar()); // todo how to add?
         } else {
             throw new CriticalProductionException("expecting <" + "l_square or id"
                     + ">, but found is <"+ listLexer.getLookahead().getType() +
@@ -623,7 +626,11 @@ public class Parser {
             node.addChild(parseExpression());
         } else if (curTypeToken.equals("int") ||
                 curTypeToken.equals("char")) {
-            node.addChild(parseInitInsideFunc());
+            List<ASTNode> list = new ArrayList<>();
+            parseInitInsideFunc(list);
+            for (ASTNode _node : list) {
+                node.addChild(_node);
+            }
         } else if (curTypeToken.equals("semicolon")) {
             node.addChild(new ASTNode(listLexer.getLookahead()));
             listLexer.match("semicolon");
