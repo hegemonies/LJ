@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="82d8bc0a-62e4-4d57-a57a-e9d4efc4372e" name="Default Changelist" comment="Fix Lexer and fix Type">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ASTNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ASTNodeTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ASTNodeTypes.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" afterDir="false" />
     </list>
@@ -78,7 +76,7 @@
             <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="444">
-                  <caret line="1046" column="37" lean-forward="true" selection-start-line="1046" selection-start-column="37" selection-end-line="1046" selection-end-column="37" />
+                  <caret line="273" column="51" selection-start-line="273" selection-start-column="51" selection-end-line="273" selection-end-column="51" />
                 </state>
               </provider>
             </entry>
@@ -98,8 +96,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ASTNodeTypes.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="128">
-                  <caret line="8" column="9" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
+                <state relative-caret-position="160">
+                  <caret line="10" column="19" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
                 </state>
               </provider>
             </entry>
@@ -614,7 +612,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4980916" weight="0.15771812" />
       <window_info id="Structure" order="1" sideWeight="0.5019084" side_tool="true" weight="0.19936034" />
@@ -934,15 +931,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ASTNodeTypes.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="8" column="9" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
+        <state relative-caret-position="160">
+          <caret line="10" column="19" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="444">
-          <caret line="1046" column="37" lean-forward="true" selection-start-line="1046" selection-start-column="37" selection-end-line="1046" selection-end-column="37" />
+          <caret line="273" column="51" selection-start-line="273" selection-start-column="51" selection-end-line="273" selection-end-column="51" />
         </state>
       </provider>
     </entry>

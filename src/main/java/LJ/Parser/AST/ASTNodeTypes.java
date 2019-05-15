@@ -6,5 +6,7 @@ public enum ASTNodeTypes {
     INITLIST,
     STATEMENTLIST,
     ROOT,
-    CLASS
+    CLASS,
+    INITINSUDEFUNC,
+    INITINSUDECLASS
 }

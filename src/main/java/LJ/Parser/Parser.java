@@ -177,9 +177,10 @@ public class Parser {
      * @throws CriticalProductionException
      */
     private ASTNode parseInitInsideClass() throws CriticalProductionException {
-        ASTNode node = new ASTNode();
+        ASTNode node = new ASTNode(ASTNodeTypes.INITINSUDECLASS);
         node.addChild(parseNativeDataType());
         node.addChild(parseFirstForkInitInsideClass());
+        return node;
     }
 
     /**
@@ -222,17 +223,20 @@ public class Parser {
      */
     private ASTNode parseSecondForkInitInsideClass() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
+        ASTNode node = new ASTNode();
 
         if (curTypeToken.equals("l_paren")) {
-            parseForkInitFunc();
+            node.addChild(parseForkInitFunc());
         } else if (curTypeToken.equals("equal")) {
-            parseForkInitVar();
+            node.addChild(parseForkInitVar());
         } else {
             throw new CriticalProductionException("expecting <" + "l_paren or equal"
                     + ">, but found is <"+ listLexer.getLookahead().getType() +
                     ":" + listLexer.getLookahead().getValue()
                     + "> in " + listLexer.getLookahead().getLocation());
         }
+
+        return node;
     }
 
     /**
@@ -241,9 +245,10 @@ public class Parser {
      * @return
      * @throws CriticalProductionException
      */
-    private ASTNode parseInitInsideFunc() throws CriticalProductionException {
-        parseNativeDataType();
-        parseFirstForkInitInsideFunc();
+    private void parseInitInsideFunc(List<ASTNode> list) throws CriticalProductionException {
+        list.add(parseNativeDataType());
+        List<ASTNode> firstInitList = new ArrayList<>();
+        parseFirstForkInitInsideFunc(firstInitList);
     }
 
     /**
@@ -253,17 +258,20 @@ public class Parser {
      * @return
      * @throws CriticalProductionException
      */
-    private ASTNode parseFirstForkInitInsideFunc() throws CriticalProductionException {
+    private void parseFirstForkInitInsideFunc(List<ASTNode> list) throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
 
         if (curTypeToken.equals("l_square")) {
             listLexer.match("l_square");
             listLexer.match("r_square");
+            list.add(new ASTNode(listLexer.getLookahead()));
             listLexer.match("id");
-            parseForkInitArray();
+
+            parseForkInitArray(); // todo how to add?
         } else if (curTypeToken.equals("id")) {
+            list.add(new ASTNode(listLexer.getLookahead()));
             listLexer.match("id");
-            parseForkInitVar();
+            parseForkInitVar(); // todo how to add?
         } else {
             throw new CriticalProductionException("expecting <" + "l_square or id"
                     + ">, but found is <"+ listLexer.getLookahead().getType() +
