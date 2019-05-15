@@ -8,12 +8,21 @@ import java.util.List;
 public class ASTNode {
     private Token token = null;
     private List<ASTNode> children;
-    private ASTNodeTypes nodeTypes;
+    private ASTNodeTypes nodeType;
 
     public ASTNode() {}
 
     public ASTNode(Token token) {
         this.token = token;
+    }
+
+    public ASTNode(Token token, ASTNodeTypes nodeType) {
+        this.token = token;
+        this.nodeType = nodeType;
+    }
+
+    public ASTNode(ASTNodeTypes nodeType) {
+        this.nodeType = nodeType;
     }
 
     public void addChild(ASTNode t) {

@@ -4,5 +4,7 @@ public enum ASTNodeTypes {
     KWORD,
     MAINMETHOD,
     INITLIST,
-    STATEMENTLIST
+    STATEMENTLIST,
+    ROOT,
+    CLASS
 }

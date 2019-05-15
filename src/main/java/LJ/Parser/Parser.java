@@ -3,8 +3,12 @@ package LJ.Parser;
 import LJ.Lexer.Lexer;
 import LJ.Lexer.ListLexer;
 import LJ.Parser.AST.ASTNode;
+import LJ.Parser.AST.ASTNodeTypes;
 import LJ.Parser.ParserException.CriticalProductionException;
 import LJ.Parser.ParserException.OptionalProductionException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // todo: refactor AST on HeterogenAST
 
@@ -18,7 +22,7 @@ public class Parser {
 
     public void go() {
         try {
-            root = new ASTNode(listLexer.getLookahead());
+            root = new ASTNode(listLexer.getLookahead(), ASTNodeTypes.ROOT);
             listLexer.match("program");
             root.addChild(parseProgram());
         } catch (CriticalProductionException e) {
@@ -45,20 +49,25 @@ public class Parser {
      * @throws CriticalProductionException
      */
     private ASTNode parseClass() throws CriticalProductionException {
-        ASTNode node = new ASTNode();
+        ASTNode node = new ASTNode(ASTNodeTypes.CLASS);
 
         node.addChild(parseModAccessClass());
 
-        node.addChild(new ASTNode(listLexer.getLookahead()));
+        node.addChild(new ASTNode(listLexer.getLookahead(), ASTNodeTypes.KWORD));
         listLexer.match("class");
 
-        node.addChild(new ASTNode(listLexer.getLookahead()));
+        node.addChild(new ASTNode(listLexer.getLookahead(), ASTNodeTypes.KWORD));
         listLexer.match("id");
 
 //        node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("l_brace");
 
-        node.addChild(parseInitList());
+        List<ASTNode> initList = new ArrayList<>();
+        parseInitList(initList);
+        for (ASTNode init : initList) {
+            node.addChild(init);
+        }
+
         node.addChild(parseMainMethod());
 
 //        node.addChild(new ASTNode(listLexer.getLookahead()));
@@ -79,23 +88,17 @@ public class Parser {
     }
 
     /**
-     * <initList>: <init> <initList> | E
+     * <initList>: <initInsideClass> <initList> | E
      * @throws CriticalProductionException
      */
-    private ASTNode parseInitList() throws CriticalProductionException { // todo dont forget about this
+    private void parseInitList(List<ASTNode> list) throws CriticalProductionException {
         String curTokenType = listLexer.getLookahead().getType();
-        ASTNode node = new ASTNode();
 
         if (curTokenType.equals("int") ||
                 curTokenType.equals("char")) {
-            node.addChild(parseInitInsideClass());
-        } else {
-            return node;
+            list.add(parseInitInsideClass());
+            parseInitList(list);
         }
-
-        node.addChild(parseInitList());
-
-        return node;
     }
 
     /**
@@ -300,7 +303,11 @@ public class Parser {
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("l_brace");
 
-        node.addChild(parseStatementList());
+        List<ASTNode> statementList = new ArrayList<>();
+        parseStatementList(statementList);
+        for (ASTNode statement : statementList) {
+            node.addChild(statement);
+        }
 
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("r_brace");
@@ -555,10 +562,8 @@ public class Parser {
     /**
      * <statementList>: <statement> <statementList> | E
      */
-    private ASTNode parseStatementList() throws CriticalProductionException {
+    private void parseStatementList(List<ASTNode> list) throws CriticalProductionException {
         String curTokenType = listLexer.getLookahead().getType();
-        ASTNode node = new ASTNode();
-
 
         if (curTokenType.equals("l_brace") ||
                 curTokenType.equals("while") ||
@@ -571,18 +576,9 @@ public class Parser {
                 curTokenType.equals("char") ||
                 curTokenType.equals("return") ||
                 curTokenType.equals("semicolon")) {
-            node.addChild(parseStatement());
-            node.addChild(parseStatementList());
-            // st = parseStatement
-            // return st ++ parseStatementList()
+            list.add(parseStatement());
+            parseStatementList(list);
         }
-        //else {
-        //    return node;
-        //}
-
-        //node.addChild(parseStatementList());
-
-        return node;
     }
 
     /**
@@ -887,7 +883,11 @@ public class Parser {
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("l_brace");
 
-        node.addChild(parseStatementList());
+        List<ASTNode> statementList = new ArrayList<>();
+        parseStatementList(statementList);
+        for (ASTNode statement : statementList) {
+            node.addChild(statement);
+        }
 
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("r_brace");
@@ -935,7 +935,11 @@ public class Parser {
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("l_brace");
 
-        node.addChild(parseStatementList());
+        List<ASTNode> statementList = new ArrayList<>();
+        parseStatementList(statementList);
+        for (ASTNode statement : statementList) {
+            node.addChild(statement);
+        }
 
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("r_brace");
@@ -966,7 +970,11 @@ public class Parser {
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("l_brace");
 
-        node.addChild(parseStatementList());
+        List<ASTNode> statementList = new ArrayList<>();
+        parseStatementList(statementList);
+        for (ASTNode statement : statementList) {
+            node.addChild(statement);
+        }
 
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("r_brace");
@@ -998,7 +1006,7 @@ public class Parser {
      * @throws CriticalProductionException
      */
     private ASTNode parseMainMethod() throws CriticalProductionException {
-        ASTNode node = new ASTNode();
+        ASTNode node = new ASTNode(ASTNodeTypes.MAINMETHOD);
 
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("public");
@@ -1012,7 +1020,7 @@ public class Parser {
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.matchTypeAndCheckValue("id", "main");
 
-        node.addChild(new ASTNode(listLexer.getLookahead()));
+//        node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("l_paren");
 
         node.addChild(new ASTNode(listLexer.getLookahead()));
@@ -1027,15 +1035,19 @@ public class Parser {
         node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("id");
 
-        node.addChild(new ASTNode(listLexer.getLookahead()));
+//        node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("r_paren");
 
-        node.addChild(new ASTNode(listLexer.getLookahead()));
+//        node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("l_brace");
 
-        node.addChild(parseStatementList());
+        List<ASTNode> statementList = new ArrayList<>();
+        parseStatementList(statementList);
+        for (ASTNode statement : statementList) {
+            node.addChild(statement);
+        }
 
-        node.addChild(new ASTNode(listLexer.getLookahead()));
+//        node.addChild(new ASTNode(listLexer.getLookahead()));
         listLexer.match("r_brace");
 
         return node;
