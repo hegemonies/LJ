@@ -101,7 +101,7 @@
         <statementList>
     }
 <forkInitVar>: 
-    = <valueExpr>;
+    = <expression>;
 <forkInitArray>: 
     <arrayMember> = new <nativeDataType><arrayMember>;
 
@@ -135,12 +135,7 @@
     ;
 
 <expression>:
-    <arithmetic> <valueFork> |
-    <expressionForkParen>
-
-<expression2>:
     <arithmetic> <valueFork> <expressionOptionOperator>
-
 
 <expressionForkParen>:
     (<expression>) <expressionOptionOperator> |
@@ -167,5 +162,5 @@
 <group>:
      (<arithmetic> <valueFork>) |
      <valueExpr>
-<firstPriorOper>: * | -
+<firstPriorOper>: * | /
 <secondPriorOper>: + | - | =

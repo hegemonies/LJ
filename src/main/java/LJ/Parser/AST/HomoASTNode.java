@@ -5,27 +5,27 @@ import LJ.Lexer.Token;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ASTNode {
+public class HomoASTNode {
     private Token token = null;
-    private List<ASTNode> childrens;
-    private ASTNodeTypes nodeType;
+    private List<HomoASTNode> childrens;
+    private HomoASTNodeTypes nodeType;
 
-    public ASTNode() {}
+    public HomoASTNode() {}
 
-    public ASTNode(Token token) {
+    public HomoASTNode(Token token) {
         this.token = token;
     }
 
-    public ASTNode(Token token, ASTNodeTypes nodeType) {
+    public HomoASTNode(Token token, HomoASTNodeTypes nodeType) {
         this.token = token;
         this.nodeType = nodeType;
     }
 
-    public ASTNode(ASTNodeTypes nodeType) {
+    public HomoASTNode(HomoASTNodeTypes nodeType) {
         this.nodeType = nodeType;
     }
 
-    public void addChild(ASTNode t) {
+    public void addChild(HomoASTNode t) {
         if (childrens == null) {
             childrens = new ArrayList<>();
         }
@@ -59,7 +59,7 @@ public class ASTNode {
         }
 
         for (int i = 0; i < childrens.size(); i++) {
-            ASTNode t = childrens.get(i);
+            HomoASTNode t = childrens.get(i);
             if (i > 0) buf.append('\n');
             try {
                 buf.append(t.toStringTree());
@@ -86,7 +86,7 @@ public class ASTNode {
         StringBuilder sb = new StringBuilder();
         
         if (childrens != null) {
-            for (ASTNode children : childrens) {
+            for (HomoASTNode children : childrens) {
                 if (children != null) {
                     sb.append("\"");
 

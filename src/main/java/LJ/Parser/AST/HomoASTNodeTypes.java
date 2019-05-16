@@ -1,6 +1,6 @@
 package LJ.Parser.AST;
 
-public enum ASTNodeTypes {
+public enum HomoASTNodeTypes {
     KWORD,
     MAINMETHOD,
     INITLIST,
