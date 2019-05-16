@@ -9,7 +9,7 @@ public class NodeClass implements Node {
     Token modAccessToken;
     Token classToken;
     Token idToken;
-    List<NodeInit> initList = new ArrayList<>();
+    List<NodeInitInsideClass> initList = new ArrayList<>();
     NodeMainMethod mainMethod;
 
     public void setModAccessToken(Token modAccessToken) {
@@ -28,7 +28,7 @@ public class NodeClass implements Node {
         this.mainMethod = mainMethod;
     }
 
-    public void addInit(NodeInit init) {
+    public void addInit(NodeInitInsideClass init) {
         initList.add(init);
     }
 }

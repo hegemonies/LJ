@@ -103,7 +103,7 @@
 <forkInitVar>: 
     = <expression>;
 <forkInitArray>: 
-    <arrayMember> = new <nativeDataType><arrayMember>;
+    = new <nativeDataType><arrayMember>;
 
 <statementList>: 
     <statement> <statementList> |
