@@ -7,17 +7,12 @@ import java.util.List;
 
 public class NodeClass implements Node {
     Token modAccessToken;
-    Token classToken;
     Token idToken;
     List<NodeInitInsideClass> initList = new ArrayList<>();
     NodeMainMethod mainMethod;
 
     public void setModAccessToken(Token modAccessToken) {
         this.modAccessToken = modAccessToken;
-    }
-
-    public void setClassToken(Token classToken) {
-        this.classToken = classToken;
     }
 
     public void setIdToken(Token idToken) {

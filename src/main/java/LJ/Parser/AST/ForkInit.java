@@ -1,5 +1,5 @@
 package LJ.Parser.AST;
 
-interface ForkInit {
+public interface ForkInit {
 
 }

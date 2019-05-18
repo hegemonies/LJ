@@ -1,8 +1,8 @@
 package LJ.Parser;
 
 import LJ.Lexer.ListLexer;
-import LJ.Parser.AST.HomoASTNode;
-import LJ.Parser.AST.HomoASTNodeTypes;
+import LJ.Lexer.Token;
+import LJ.Parser.AST.*;
 import LJ.Parser.ParserException.CriticalProductionException;
 import LJ.Parser.ParserException.OptionalProductionException;
 
@@ -12,7 +12,8 @@ import java.util.List;
 
 public class Parser {
     private ListLexer listLexer;
-    HomoASTNode root;
+    HomoASTNode homoRoot;
+    NodeClass root;
 
     public Parser(ListLexer listLexer) {
         this.listLexer = listLexer;
@@ -20,24 +21,22 @@ public class Parser {
 
     public void go() {
         try {
-            root = new HomoASTNode(listLexer.getLookahead(), HomoASTNodeTypes.ROOT);
             listLexer.match("program");
-            root.addChild(parseProgram());
         } catch (CriticalProductionException e) {
             e.printStackTrace();
         }
     }
 
     public void showTree() {
-//        System.out.println(root.toStringTree());
-        System.out.println(root._toStringTreeRoot());
+//        System.out.println(homoRoot.toStringTree());
+        System.out.println(homoRoot._toStringTreeRoot());
     }
 
     /**
      * <Program>: <class>
      */
-    private HomoASTNode parseProgram() throws CriticalProductionException {
-        return parseClass();
+    private void parseProgram() throws CriticalProductionException {
+        root = parseClass();
     }
 
     /**
@@ -47,29 +46,27 @@ public class Parser {
      *     }
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseClass() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode(HomoASTNodeTypes.CLASS);
+    private NodeClass parseClass() throws CriticalProductionException {
+        NodeClass node = new NodeClass();
 
-        node.addChild(parseModAccessClass());
+        node.setModAccessToken(listLexer.getLookahead());
+        parseModAccessClass();
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead(), HomoASTNodeTypes.KWORD));
         listLexer.match("class");
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead(), HomoASTNodeTypes.KWORD));
+        node.setIdToken(listLexer.getLookahead());
         listLexer.match("id");
 
-//        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("l_brace");
 
         List<HomoASTNode> initList = new ArrayList<>();
-        parseInitList(initList);
+        parseInitList(initList); // todo refactor this
         for (HomoASTNode init : initList) {
             node.addChild(init);
         }
 
-        node.addChild(parseMainMethod());
+        node.setMainMethod(parseMainMethod());
 
-//        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("r_brace");
 
         return node;
@@ -90,7 +87,7 @@ public class Parser {
      * <initList>: <initInsideClass> <initList> | E
      * @throws CriticalProductionException
      */
-    private void parseInitList(List<HomoASTNode> list) throws CriticalProductionException {
+    private void parseInitList(List<NodeInitInsideClass> list) throws CriticalProductionException {
         String curTokenType = listLexer.getLookahead().getType();
 
         if (curTokenType.equals("int") ||
@@ -175,10 +172,16 @@ public class Parser {
      * @return
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseInitInsideClass() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode(HomoASTNodeTypes.INITINSUDECLASS);
-        node.addChild(parseNativeDataType());
-        node.addChild(parseFirstForkInitInsideClass());
+    private NodeInitInsideClass parseInitInsideClass() throws CriticalProductionException {
+        NodeInitInsideClass node = new NodeInitInsideClass();
+
+        node.setDataType(listLexer.getLookahead());
+        parseNativeDataType();
+
+        List<Token> id = new ArrayList<>(1);
+        node.setForkInit(parseFirstForkInitInsideClass(id));
+        node.setId(id.get(0));
+
         return node;
     }
 
@@ -189,20 +192,21 @@ public class Parser {
      * @return
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseFirstForkInitInsideClass() throws CriticalProductionException {
+    private ForkInit parseFirstForkInitInsideClass(List<Token> id) throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
-        HomoASTNode node = new HomoASTNode();
+
+        ForkInit forkInit;
 
         if (curTypeToken.equals("l_square")) {
             listLexer.match("l_square");
             listLexer.match("r_square");
-            node.addChild(new HomoASTNode(listLexer.getLookahead()));
+            id.add(listLexer.getLookahead());
             listLexer.match("id");
-            node.addChild(parseForkInitArray());
+            forkInit = parseForkInitArray();
         } else if (curTypeToken.equals("id")) {
-            node.addChild(new HomoASTNode(listLexer.getLookahead()));
+            id.add(listLexer.getLookahead());
             listLexer.match("id");
-            node.addChild(parseSecondForkInitInsideClass());
+            forkInit = parseSecondForkInitInsideClass();
         } else {
             throw new CriticalProductionException("expecting <" + "l_square or id"
                     + ">, but found is <"+ listLexer.getLookahead().getType() +
@@ -210,7 +214,7 @@ public class Parser {
                     + "> in " + listLexer.getLookahead().getLocation());
         }
 
-        return node;
+        return forkInit;
     }
 
     /**
@@ -269,11 +273,11 @@ public class Parser {
             list.add(new HomoASTNode(listLexer.getLookahead()));
             listLexer.match("id");
 
-            list.add(parseForkInitArray()); // todo how to add?
+            list.add(parseForkInitArray());
         } else if (curTypeToken.equals("id")) {
             list.add(new HomoASTNode(listLexer.getLookahead()));
             listLexer.match("id");
-            list.add(parseForkInitVar()); // todo how to add?
+            list.add(parseForkInitVar());
         } else {
             throw new CriticalProductionException("expecting <" + "l_square or id"
                     + ">, but found is <"+ listLexer.getLookahead().getType() +
@@ -286,11 +290,8 @@ public class Parser {
      * <nativeDataType>: int | char
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseNativeDataType() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode(listLexer.getLookahead());
+    private void parseNativeDataType() throws CriticalProductionException {
         listLexer.matchOneOf("int", "char");
-
-        return node;
     }
 
     /**
@@ -346,17 +347,14 @@ public class Parser {
      *      = new <nativeDataType><arrayMember>;
      * @return
      */
-    private HomoASTNode parseForkInitArray() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode();
+    private ForkInitArray parseForkInitArray() throws CriticalProductionException {
+        ForkInitArray node = new ForkInitArray();
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("equal");
-
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("new");
 
-        node.addChild(parseNativeDataType());
-        node.addChild(parseArrayMember());
+        parseNativeDataType();
+        node.setIndex(parseArrayMember());
 
         node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("semicolon");
@@ -417,13 +415,10 @@ public class Parser {
      * <number>: <sign> numeric_constant
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseNumber() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode();
+    private NodeNumber parseNumber() throws CriticalProductionException {
+        NodeNumber node = new NodeNumber();
 
-        if (listLexer.getLookahead().getType().equals("minus")) {
-            node.setToken(listLexer.getLookahead());
-        }
-        parseSign();
+        node.setPositive(parseSign());
 
         if (node.isNull()) {
             node.setToken(listLexer.getLookahead());
@@ -437,12 +432,15 @@ public class Parser {
      * <sign>: - | E
      * @throws CriticalProductionException
      */
-    private void parseSign() throws CriticalProductionException {
+    private boolean parseSign() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
 
         if (curTypeToken.equals("minus")) {
             listLexer.match("minus");
+            return false;
         }
+
+        return true;
     }
 
     /**
@@ -527,18 +525,14 @@ public class Parser {
      *     [<arrayMemberFork>]
      * @throws OptionalProductionException
      */
-    private HomoASTNode parseArrayMember() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode();
-
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
+    private Token parseArrayMember() throws CriticalProductionException {
         listLexer.match("l_square");
 
-        node.addChild(parseArrayMemberFork());
+        Token index = parseArrayMemberFork();
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("r_square");
 
-        return node;
+        return index;
     }
 
     /**
@@ -547,12 +541,11 @@ public class Parser {
      *     <id>
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseArrayMemberFork() throws CriticalProductionException {
+    private Token parseArrayMemberFork() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
-        HomoASTNode node = new HomoASTNode();
 
         if (curTypeToken.equals("numeric_constant")) {
-            node.addChild(parseNumber());
+            parseNumber();
         } else if (curTypeToken.equals("id")) {
             node.addChild(new HomoASTNode(listLexer.getLookahead()));
             listLexer.match("id");
@@ -731,7 +724,7 @@ public class Parser {
      *      <secondPrior>
      * @throws CriticalProductionException
      */
-    private void parseArithmetic() throws CriticalProductionException { // todo first work here
+    private void parseArithmetic() throws CriticalProductionException {
         parseSecondPrior();
     }
 
