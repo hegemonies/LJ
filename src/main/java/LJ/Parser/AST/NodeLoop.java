@@ -5,7 +5,7 @@ import LJ.Lexer.Token;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NodeLoop {
+public class NodeLoop extends NodeStatement {
     private Token whileToken;
     private NodeExpression expression;
     private List<NodeStatement> statementList = new ArrayList<>();
