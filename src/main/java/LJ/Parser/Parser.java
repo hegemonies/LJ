@@ -73,9 +73,9 @@ public class Parser {
 
         listLexer.match("l_brace");
 
-        List<NodeInitInsideClass> initList = new ArrayList<>();
+        List<NodeInit> initList = new ArrayList<>();
         parseInitList(initList);
-        for (NodeInitInsideClass init : initList) {
+        for (NodeInit init : initList) {
             node.addInit(init);
         }
 
@@ -101,7 +101,7 @@ public class Parser {
      * <initList>: <initInsideClass> <initList> | E
      * @throws CriticalProductionException
      */
-    private void parseInitList(List<NodeInitInsideClass> list) throws CriticalProductionException {
+    private void parseInitList(List<NodeInit> list) throws CriticalProductionException {
         String curTokenType = listLexer.getLookahead().getType();
 
         if (curTokenType.equals("int") ||
@@ -187,8 +187,8 @@ public class Parser {
      * @return
      * @throws CriticalProductionException
      */
-    private NodeInitInsideClass parseInitInsideClass() throws CriticalProductionException {
-        NodeInitInsideClass node = new NodeInitInsideClass();
+    private NodeInit parseInitInsideClass() throws CriticalProductionException {
+        NodeInit node = new NodeInit();
 
         node.setDataType(listLexer.getLookahead());
         parseNativeDataType();
@@ -263,45 +263,49 @@ public class Parser {
     /**
      * <initInsideFunc>:
      *     <nativeDataType> <firstForkInitInsideFunc>
+     * <firstForkInitInsideFunc>:
+     *      [] <id> <forkInitArray> |
+     *      <id> <forkInitVar>
      * @return
      * @throws CriticalProductionException
      */
-    private void parseInitInsideFunc(List<HomoASTNode> list) throws CriticalProductionException {
-        list.add(parseNativeDataType());
-        List<HomoASTNode> firstInitList = new ArrayList<>();
-        parseFirstForkInitInsideFunc(firstInitList);
-        for (HomoASTNode node : firstInitList) {
-            list.add(node);
-        }
-    }
-
     /**
      * <firstForkInitInsideFunc>:
-     *     [] <id> <forkInitArray> |
-     *     <id> <forkInitVar>
-     * @return
-     * @throws CriticalProductionException
+     *      *     [] <id> <forkInitArray> |
+     *      *     <id> <forkInitVar>
      */
-    private void parseFirstForkInitInsideFunc(List<HomoASTNode> list) throws CriticalProductionException {
+    private NodeInit parseInitInsideFunc() throws CriticalProductionException {
+        NodeInit node = new NodeInit();
+        node.setDataType(listLexer.getLookahead());
+        parseNativeDataType();
+
         String curTypeToken = listLexer.getLookahead().getType();
 
         if (curTypeToken.equals("l_square")) {
             listLexer.match("l_square");
             listLexer.match("r_square");
-            list.add(new HomoASTNode(listLexer.getLookahead()));
+
+            node.setId(listLexer.getLookahead());
             listLexer.match("id");
 
-            list.add(parseForkInitArray());
+            ForkInit forkInit = parseForkInitArray();
+            forkInit.chooseType();
+            node.setForkInit(forkInit);
         } else if (curTypeToken.equals("id")) {
-            list.add(new HomoASTNode(listLexer.getLookahead()));
+            node.setId(listLexer.getLookahead());
             listLexer.match("id");
-            list.add(parseForkInitVar());
+
+            ForkInit forkInit = parseForkInitVar();
+            forkInit.chooseType();
+            node.setForkInit(forkInit);
         } else {
             throw new CriticalProductionException("expecting <" + "l_square or id"
                     + ">, but found is <"+ listLexer.getLookahead().getType() +
                     ":" + listLexer.getLookahead().getValue()
                     + "> in " + listLexer.getLookahead().getLocation());
         }
+
+        return node;
     }
 
     /**
@@ -612,7 +616,7 @@ public class Parser {
      */
     private NodeStatement parseStatement() throws CriticalProductionException { // todo first important work here
         String curTypeToken = listLexer.getLookahead().getType();
-        NodeStatement node;
+        NodeStatement node = null;
 
         if (curTypeToken.equals("l_brace")) {
             listLexer.match("l_brace");
@@ -626,19 +630,14 @@ public class Parser {
                 curTypeToken.equals("numeric_constant") ||
                 curTypeToken.equals("minus") ||
                 curTypeToken.equals("str_literal")) {
-            node.addChild(parseExpression());
+            node = parseExpression();
         } else if (curTypeToken.equals("int") ||
                 curTypeToken.equals("char")) {
-            List<HomoASTNode> list = new ArrayList<>();
-            parseInitInsideFunc(list);
-            for (HomoASTNode _node : list) {
-                node.addChild(_node);
-            }
-        } else if (curTypeToken.equals("semicolon")) {
-            node.addChild(new HomoASTNode(listLexer.getLookahead()));
+            node = parseInitInsideFunc();
+        } else if (curTypeToken.equals("semicolon")) { // todo wtf
             listLexer.match("semicolon");
         } else if (curTypeToken.equals("return")) {
-            node.addChild(parseReturn());
+            node = parseReturn();
         }
 
         return node;
@@ -648,11 +647,13 @@ public class Parser {
      * <return>: return <expression>;
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseReturn() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode(listLexer.getLookahead());
+    private NodeReturn parseReturn() throws CriticalProductionException {
+        NodeReturn node = new NodeReturn();
+
+        node.setReturnToken(listLexer.getLookahead());
         listLexer.match("return");
 
-        node.addChild(parseExpression());
+        node.setExpression(parseExpression());
 
         return node;
     }
@@ -886,7 +887,7 @@ public class Parser {
      *      } <else>
      * @throws CriticalProductionException
      */
-    private NodeConditional parseConditional() throws CriticalProductionException { // todo hey i'm work here
+    private NodeConditional parseConditional() throws CriticalProductionException {
         NodeConditional node = new NodeConditional();
 
         node.setIfToken(listLexer.getLookahead());

@@ -1,5 +1,5 @@
 package LJ.Parser.AST;
 
-public class NodeExpression implements Node {
+public class NodeExpression extends NodeStatement {
 
 }

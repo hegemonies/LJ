@@ -1,7 +1,7 @@
 package LJ.Parser.AST;
 
 import LJ.Lexer.Token;
-import LJ.Parser.AST.Inits.NodeInitInsideClass;
+import LJ.Parser.AST.Inits.NodeInit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 public class NodeClass implements Node {
     Token modAccessToken;
     Token idToken;
-    List<NodeInitInsideClass> initList = new ArrayList<>();
+    List<NodeInit> initList = new ArrayList<>();
     NodeMainMethod mainMethod;
 
     public void setModAccessToken(Token modAccessToken) {
@@ -24,7 +24,7 @@ public class NodeClass implements Node {
         this.mainMethod = mainMethod;
     }
 
-    public void addInit(NodeInitInsideClass init) {
+    public void addInit(NodeInit init) {
         initList.add(init);
     }
 }

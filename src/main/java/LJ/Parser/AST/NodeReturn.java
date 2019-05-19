@@ -2,7 +2,7 @@ package LJ.Parser.AST;
 
 import LJ.Lexer.Token;
 
-public class NodeReturn implements Node {
+public class NodeReturn extends NodeStatement {
     Token returnToken;
     NodeExpression expression;
 

@@ -3,12 +3,12 @@ package LJ.Parser.AST.Inits;
 import LJ.Lexer.Token;
 import LJ.Parser.AST.Inits.ForkInit;
 import LJ.Parser.AST.Node;
+import LJ.Parser.AST.NodeStatement;
 import LJ.Parser.AST.TypeInit;
 
-public class NodeInitInsideClass implements Node {
+public class NodeInit extends NodeStatement {
     Token dataType;
     Token id;
-    TypeInit typeInit;
     ForkInit forkInit;
 
     public void setDataType(Token dataType) {
@@ -17,10 +17,6 @@ public class NodeInitInsideClass implements Node {
 
     public void setId(Token id) {
         this.id = id;
-    }
-
-    public void setTypeInit(TypeInit typeInit) {
-        this.typeInit = typeInit;
     }
 
     public void setForkInit(ForkInit forkInit) {
