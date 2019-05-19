@@ -111,13 +111,15 @@ public class Parser {
      * <argsInitListChanger>: <argsInitList> | E
      * @throws OptionalProductionException
      */
-    private HomoASTNode parseArgsInitListChanger() throws CriticalProductionException {
+    private List<NodeArgsInit> parseArgsInitListChanger() throws CriticalProductionException {
         String curTokenType = listLexer.getLookahead().getType();
+
 
         if (curTokenType.equals("int") ||
                 curTokenType.equals("char")) {
-            HomoASTNode node = new HomoASTNode();
-            node.addChild(parseArgsInitList());
+            List<NodeArgsInit> list = new ArrayList<>();
+            parseArgsInitList(list);
+            return list;
         }
 
         return null;
@@ -127,18 +129,13 @@ public class Parser {
      * <argsInitList>:  <argInit> | <argsInitList>, <argsInitList>
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseArgsInitList() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode();
-        node.addChild(parseArgInit());
+    private void parseArgsInitList(List<NodeArgsInit> list) throws CriticalProductionException {
+        list.add(parseArgInit());
 
         if (listLexer.getLookahead().getType().equals("comma")) {
-            node.addChild(new HomoASTNode(listLexer.getLookahead()));
             listLexer.match("comma");
-
-            node.addChild(parseArgsInitList());
+            parseArgsInitList(list);
         }
-
-        return node;
     }
 
     /**
@@ -146,12 +143,19 @@ public class Parser {
      *     <nativeDataType><rvalueFork> <id>
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseArgInit() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode();
+    private NodeArgsInit parseArgInit() throws CriticalProductionException {
+        NodeArgsInit node = new NodeArgsInit();
 
-        node.addChild(parseNativeDataType());
-        node.addChild(parseRValueFork());
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
+        node.setDataType(listLexer.getLookahead());
+        parseNativeDataType();
+        boolean isArray = parseRValueFork();
+        if (isArray) {
+            node.setTypeInit(TypeInit.ARRAY);
+        } else {
+            node.setTypeInit(TypeInit.VAR);
+        }
+
+        node.setId(listLexer.getLookahead());
         listLexer.match("id");
 
         return node;
@@ -161,19 +165,16 @@ public class Parser {
      * <rvalueFork>: [] | E
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseRValueFork() throws CriticalProductionException {
+    private boolean parseRValueFork() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
-        HomoASTNode node = new HomoASTNode();
 
         if (curTypeToken.equals("l_square")) {
-            node.addChild(new HomoASTNode(listLexer.getLookahead()));
             listLexer.match("l_square");
-
-            node.addChild(new HomoASTNode(listLexer.getLookahead()));
             listLexer.match("r_square");
+            return true;
         }
 
-        return node;
+        return false;
     }
 
     /**
