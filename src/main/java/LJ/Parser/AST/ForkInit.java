@@ -1,5 +1,6 @@
 package LJ.Parser.AST;
 
-public interface ForkInit {
-
+public abstract class ForkInit {
+    TypeInit type;
+    abstract void chooseType();
 }

@@ -3,7 +3,7 @@ package LJ.Parser.AST;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ForkInitFunc implements ForkInit {
+public class ForkInitFunc extends ForkInit {
     List<NodeArgsInit> nodeArgsInitList = new ArrayList<>(); // optional
     List<NodeStatement> statementList = new ArrayList<>(); // too
 
@@ -13,5 +13,10 @@ public class ForkInitFunc implements ForkInit {
 
     public void addStatement(NodeStatement node) {
         statementList.add(node);
+    }
+
+    @Override
+    void chooseType() {
+        type = TypeInit.FUNC;
     }
 }

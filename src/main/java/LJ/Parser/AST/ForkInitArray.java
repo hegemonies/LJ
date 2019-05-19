@@ -2,7 +2,7 @@ package LJ.Parser.AST;
 
 import LJ.Lexer.Token;
 
-public class ForkInitArray implements ForkInit {
+public class ForkInitArray extends ForkInit {
     Token dataType;
     Token index;
 
@@ -12,5 +12,10 @@ public class ForkInitArray implements ForkInit {
 
     public void setIndex(Token index) {
         this.index = index;
+    }
+
+    @Override
+    public void chooseType() {
+        type = TypeInit.ARRAY;
     }
 }

@@ -59,10 +59,10 @@ public class Parser {
 
         listLexer.match("l_brace");
 
-        List<HomoASTNode> initList = new ArrayList<>();
-        parseInitList(initList); // todo refactor this
-        for (HomoASTNode init : initList) {
-            node.addChild(init);
+        List<NodeInitInsideClass> initList = new ArrayList<>();
+        parseInitList(initList);
+        for (NodeInitInsideClass init : initList) {
+            node.addInit(init);
         }
 
         node.setMainMethod(parseMainMethod());
@@ -203,6 +203,7 @@ public class Parser {
             id.add(listLexer.getLookahead());
             listLexer.match("id");
             forkInit = parseForkInitArray();
+
         } else if (curTypeToken.equals("id")) {
             id.add(listLexer.getLookahead());
             listLexer.match("id");
@@ -349,6 +350,7 @@ public class Parser {
      */
     private ForkInitArray parseForkInitArray() throws CriticalProductionException {
         ForkInitArray node = new ForkInitArray();
+        node.set
 
         listLexer.match("equal");
         listLexer.match("new");
@@ -420,9 +422,7 @@ public class Parser {
 
         node.setPositive(parseSign());
 
-        if (node.isNull()) {
-            node.setToken(listLexer.getLookahead());
-        }
+        node.setNumber(listLexer.getLookahead());
         listLexer.match("numeric_constant");
 
         return node;
@@ -544,7 +544,8 @@ public class Parser {
     private Token parseArrayMemberFork() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
 
-        if (curTypeToken.equals("numeric_constant")) {
+        if (curTypeToken.equals("numeric_constant") ||
+                curTypeToken.equals("minus")) {
             parseNumber();
         } else if (curTypeToken.equals("id")) {
             node.addChild(new HomoASTNode(listLexer.getLookahead()));
@@ -655,6 +656,7 @@ public class Parser {
         if (curTypeToken.equals("id") ||
                 curTypeToken.equals("numeric_constant") ||
                 curTypeToken.equals("str_literal") ||
+                curTypeToken.equals("minus") ||
                 curTypeToken.equals("l_paren")) {
 
             parseArithmetic();
@@ -797,6 +799,7 @@ public class Parser {
             listLexer.match("r_paren");
         } else if (curTypeToken.equals("id") ||
                     curTypeToken.equals("numeric_constant") ||
+                    curTypeToken.equals("minus") ||
                     curTypeToken.equals("str_literal")) {
             parseValueExpr();
         } else {
