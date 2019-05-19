@@ -16,7 +16,7 @@ public class ForkInitFunc extends ForkInit {
     }
 
     @Override
-    void chooseType() {
+    public void chooseType() {
         type = TypeInit.FUNC;
     }
 }

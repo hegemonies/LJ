@@ -8,7 +8,7 @@ public class ForkInitVar extends ForkInit {
     }
 
     @Override
-    void chooseType() {
+    public void chooseType() {
         type = TypeInit.VAR;
     }
 }

@@ -9,6 +9,16 @@ import LJ.Parser.ParserException.OptionalProductionException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * todo: what need a refactor?
+ * expression
+ * loop
+ * statement
+ * condition
+ * operator
+ * arithmetic
+ * ...
+  */
 
 public class Parser {
     private ListLexer listLexer;
@@ -203,7 +213,6 @@ public class Parser {
             id.add(listLexer.getLookahead());
             listLexer.match("id");
             forkInit = parseForkInitArray();
-
         } else if (curTypeToken.equals("id")) {
             id.add(listLexer.getLookahead());
             listLexer.match("id");
@@ -215,6 +224,8 @@ public class Parser {
                     + "> in " + listLexer.getLookahead().getLocation());
         }
 
+        forkInit.chooseType();
+
         return forkInit;
     }
 
@@ -225,14 +236,15 @@ public class Parser {
      * @return
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseSecondForkInitInsideClass() throws CriticalProductionException {
+    private ForkInit parseSecondForkInitInsideClass() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
-        HomoASTNode node = new HomoASTNode();
+
+        ForkInit forkInit;
 
         if (curTypeToken.equals("l_paren")) {
-            node.addChild(parseForkInitFunc());
+            forkInit = parseForkInitFunc();
         } else if (curTypeToken.equals("equal")) {
-            node.addChild(parseForkInitVar());
+            forkInit = parseForkInitVar();
         } else {
             throw new CriticalProductionException("expecting <" + "l_paren or equal"
                     + ">, but found is <"+ listLexer.getLookahead().getType() +
@@ -240,7 +252,7 @@ public class Parser {
                     + "> in " + listLexer.getLookahead().getLocation());
         }
 
-        return node;
+        return forkInit;
     }
 
     /**
@@ -301,27 +313,21 @@ public class Parser {
      *                }
      * @return
      */
-    private HomoASTNode parseForkInitFunc() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode();
+    private ForkInit parseForkInitFunc() throws CriticalProductionException {
+        ForkInitFunc node = new ForkInitFunc();
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("l_paren");
-
-        node.addChild(parseArgsInitListChanger());
-
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
+        parseArgsInitListChanger(); // todo refactor
         listLexer.match("r_paren");
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("l_brace");
 
-        List<HomoASTNode> statementList = new ArrayList<>();
+        List<HomoASTNode> statementList = new ArrayList<>(); // todo refactor
         parseStatementList(statementList);
         for (HomoASTNode statement : statementList) {
             node.addChild(statement);
         }
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("r_brace");
 
         return node;
@@ -332,13 +338,12 @@ public class Parser {
      *      = <expression>
      * @return
      */
-    private HomoASTNode parseForkInitVar() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode();
+    private ForkInit parseForkInitVar() throws CriticalProductionException {
+        ForkInitVar node = new ForkInitVar();
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("equal");
 
-        node.addChild(parseExpression());
+        node.setExpression(parseExpression());
 
         return node;
     }
@@ -347,18 +352,19 @@ public class Parser {
      * <forkInitArray>:
      *      = new <nativeDataType><arrayMember>;
      * @return
+     * @throws CriticalProductionException
      */
     private ForkInitArray parseForkInitArray() throws CriticalProductionException {
         ForkInitArray node = new ForkInitArray();
-        node.set
 
         listLexer.match("equal");
         listLexer.match("new");
 
+        node.setDataType(listLexer.getLookahead());
         parseNativeDataType();
+
         node.setIndex(parseArrayMember());
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("semicolon");
 
         return node;
