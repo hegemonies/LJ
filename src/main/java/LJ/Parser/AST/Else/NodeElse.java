@@ -1,16 +1,12 @@
-package LJ.Parser.AST;
+package LJ.Parser.AST.Else;
 
 import LJ.Lexer.Token;
+import LJ.Parser.AST.Node;
 
 public class NodeElse implements Node {
     Token elseToken;
-    NodeConditional conditional;
 
     public void setElseToken(Token elseToken) {
         this.elseToken = elseToken;
-    }
-
-    public void setConditional(NodeConditional conditional) {
-        this.conditional = conditional;
     }
 }

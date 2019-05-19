@@ -1,4 +1,8 @@
-package LJ.Parser.AST;
+package LJ.Parser.AST.Inits;
+
+import LJ.Parser.AST.NodeArgsInit;
+import LJ.Parser.AST.NodeStatement;
+import LJ.Parser.AST.TypeInit;
 
 import java.util.ArrayList;
 import java.util.List;

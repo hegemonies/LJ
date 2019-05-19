@@ -1,11 +1,12 @@
 package LJ.Parser.AST;
 
 import LJ.Lexer.Token;
+import LJ.Parser.AST.Else.NodeElse;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NodeConditional implements Node {
+public class NodeConditional extends NodeStatement {
     Token ifToken;
     NodeExpression expression;
     List<Node> statementList = new ArrayList<>();

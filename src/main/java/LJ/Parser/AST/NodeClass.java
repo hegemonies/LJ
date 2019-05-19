@@ -1,6 +1,7 @@
 package LJ.Parser.AST;
 
 import LJ.Lexer.Token;
+import LJ.Parser.AST.Inits.NodeInitInsideClass;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,7 @@
-package LJ.Parser.AST;
+package LJ.Parser.AST.Inits;
+
+import LJ.Parser.AST.NodeExpression;
+import LJ.Parser.AST.TypeInit;
 
 public class ForkInitVar extends ForkInit {
     NodeExpression expression;

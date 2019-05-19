@@ -3,6 +3,10 @@ package LJ.Parser;
 import LJ.Lexer.ListLexer;
 import LJ.Lexer.Token;
 import LJ.Parser.AST.*;
+import LJ.Parser.AST.Else.NodeElse;
+import LJ.Parser.AST.Else.NodeIfElse;
+import LJ.Parser.AST.Else.NodeJustElse;
+import LJ.Parser.AST.Inits.*;
 import LJ.Parser.ParserException.CriticalProductionException;
 import LJ.Parser.ParserException.OptionalProductionException;
 
@@ -330,10 +334,10 @@ public class Parser {
 
         listLexer.match("l_brace");
 
-        List<HomoASTNode> statementList = new ArrayList<>(); // todo refactor
+        List<NodeStatement> statementList = new ArrayList<>();
         parseStatementList(statementList);
-        for (HomoASTNode statement : statementList) {
-            node.addChild(statement);
+        for (NodeStatement statement : statementList) {
+            node.addStatement(statement);
         }
 
         listLexer.match("r_brace");
@@ -617,7 +621,7 @@ public class Parser {
         } else if (curTypeToken.equals("while")) {
             node = parseLoop();
         } else if (curTypeToken.equals("if")) {
-            node.addChild(parseConditional());
+            node = parseConditional();
         } else if (curTypeToken.equals("id") ||
                 curTypeToken.equals("numeric_constant") ||
                 curTypeToken.equals("minus") ||
@@ -879,88 +883,80 @@ public class Parser {
      * <conditional>:
      *      if (<expression>) {
      *         <statementList>
-     *      }
+     *      } <else>
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseConditional() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode();
+    private NodeConditional parseConditional() throws CriticalProductionException { // todo hey i'm work here
+        NodeConditional node = new NodeConditional();
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
+        node.setIfToken(listLexer.getLookahead());
         listLexer.match("if");
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("l_paren");
 
-        node.addChild(parseExpression());
+        node.setExpression(parseExpression());
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("r_paren");
-
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("l_brace");
 
-        List<HomoASTNode> statementList = new ArrayList<>();
+        List<NodeStatement> statementList = new ArrayList<>();
         parseStatementList(statementList);
-        for (HomoASTNode statement : statementList) {
-            node.addChild(statement);
+        for (NodeStatement statement : statementList) {
+            node.addStatement(statement);
         }
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("r_brace");
 
-        node.addChild(parseElseFork());
+        node.setElseNode(parseElse());
 
         return node;
     }
 
     /**
-     * <elseFork>:
-     *     else <elseFork1> |
+     * <else>:
+     *     else <elseFork> |
      *     E
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseElseFork() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode();
-
-        if (listLexer.getLookahead().getType().equals("else")) {
-            node.addChild(new HomoASTNode(listLexer.getLookahead()));
-            listLexer.match("else");
-        } else {
-            return node;
-        }
-
-        node.addChild(parseElseFork1());
-
-        return node;
-    }
-
     /**
-     * <elseFork1>:
+     * <elseFork>:
      *     <conditional> |
      *     { <statementList> } |
      *     E
-     * @throws CriticalProductionException
      */
-    private HomoASTNode parseElseFork1() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode();
+    private NodeElse parseElse() throws CriticalProductionException {
+        String curTypeToken = listLexer.getLookahead().getType();
 
-        if (listLexer.getLookahead().getType().equals("if")) {
-            node.addChild(parseConditional());
+        if (curTypeToken.equals("else")) {
+            Token elseToken = listLexer.getLookahead();
+            listLexer.match("else");
+
+            curTypeToken = listLexer.getLookahead().getType();
+
+            if (curTypeToken.equals("if")) {
+                NodeIfElse nodeIfElse = new NodeIfElse();
+                nodeIfElse.setElseToken(elseToken);
+                nodeIfElse.setConditional(parseConditional());
+
+                return nodeIfElse;
+            } else if (curTypeToken.equals("l_brace")) {
+                NodeJustElse nodeJustElse = new NodeJustElse();
+                nodeJustElse.setElseToken(elseToken);
+                listLexer.match("l_brace");
+
+                List<NodeStatement> statementList = new ArrayList<>();
+                parseStatementList(statementList);
+                for (NodeStatement statement : statementList) {
+                    nodeJustElse.addStatement(statement);
+                }
+
+                listLexer.match("r_brace");
+
+                return nodeJustElse;
+            }
         }
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
-        listLexer.match("l_brace");
-
-        List<HomoASTNode> statementList = new ArrayList<>();
-        parseStatementList(statementList);
-        for (HomoASTNode statement : statementList) {
-            node.addChild(statement);
-        }
-
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
-        listLexer.match("r_brace");
-
-        return node;
+        return null;
     }
 
     /**
@@ -1016,49 +1012,42 @@ public class Parser {
      *     }
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseMainMethod() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode(HomoASTNodeTypes.MAINMETHOD);
+    private NodeMainMethod parseMainMethod() throws CriticalProductionException {
+        NodeMainMethod node = new NodeMainMethod();
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
+        node.setPublicToken(listLexer.getLookahead());
         listLexer.match("public");
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
+        node.setStaticToken(listLexer.getLookahead());
         listLexer.match("static");
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
+        node.setVoidToken(listLexer.getLookahead());
         listLexer.match("void");
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
+        node.setIdMainToken(listLexer.getLookahead());
         listLexer.matchTypeAndCheckValue("id", "main");
 
-//        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("l_paren");
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
+        node.setGettingDataTypeToken(listLexer.getLookahead());
         listLexer.matchTypeAndCheckValue("id", "String");
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("l_square");
-
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("r_square");
 
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
+        node.setIdArgsToken(listLexer.getLookahead());
         listLexer.match("id");
 
-//        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("r_paren");
 
-//        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("l_brace");
 
-        List<HomoASTNode> statementList = new ArrayList<>();
+        List<NodeStatement> statementList = new ArrayList<>();
         parseStatementList(statementList);
-        for (HomoASTNode statement : statementList) {
-            node.addChild(statement);
+        for (NodeStatement statement : statementList) {
+            node.addStatement(statement);
         }
 
-//        node.addChild(new HomoASTNode(listLexer.getLookahead()));
         listLexer.match("r_brace");
 
         return node;

@@ -1,6 +1,9 @@
-package LJ.Parser.AST;
+package LJ.Parser.AST.Inits;
 
 import LJ.Lexer.Token;
+import LJ.Parser.AST.Inits.ForkInit;
+import LJ.Parser.AST.Node;
+import LJ.Parser.AST.TypeInit;
 
 public class NodeInitInsideClass implements Node {
     Token dataType;
