@@ -7,6 +7,7 @@ import LJ.Parser.AST.Else.NodeElse;
 import LJ.Parser.AST.Else.NodeIfElse;
 import LJ.Parser.AST.Else.NodeJustElse;
 import LJ.Parser.AST.Inits.*;
+import LJ.Parser.AST.Value.Number;
 import LJ.Parser.ParserException.CriticalProductionException;
 import LJ.Parser.ParserException.OptionalProductionException;
 
@@ -117,7 +118,6 @@ public class Parser {
      */
     private List<NodeArgsInit> parseArgsInitListChanger() throws CriticalProductionException {
         String curTokenType = listLexer.getLookahead().getType();
-
 
         if (curTokenType.equals("int") ||
                 curTokenType.equals("char")) {
@@ -439,8 +439,8 @@ public class Parser {
      * <number>: <sign> numeric_constant
      * @throws CriticalProductionException
      */
-    private NodeNumber parseNumber() throws CriticalProductionException {
-        NodeNumber node = new NodeNumber();
+    private Number parseNumber() throws CriticalProductionException {
+        Number node = new Number();
 
         node.setPositive(parseSign());
 
@@ -634,7 +634,7 @@ public class Parser {
         } else if (curTypeToken.equals("int") ||
                 curTypeToken.equals("char")) {
             node = parseInitInsideFunc();
-        } else if (curTypeToken.equals("semicolon")) { // todo wtf
+        } else if (curTypeToken.equals("semicolon")) {
             listLexer.match("semicolon");
         } else if (curTypeToken.equals("return")) {
             node = parseReturn();

@@ -5,7 +5,7 @@ import LJ.Lexer.Token;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NodeMainMethod implements Node { // todo may be getters not need
+public class NodeMainMethod implements Node {
     private Token publicToken;
     private Token staticToken;
     private Token voidToken;
