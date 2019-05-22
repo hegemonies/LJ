@@ -1,9 +1,9 @@
 package LJ.Parser.AST.Value;
 
 public class Number extends GenericValue {
-    boolean isPositive;
+    boolean isNegative;
 
-    public void setPositive(boolean positive) {
-        isPositive = positive;
+    public void setNegative(boolean isNegative) {
+        this.isNegative = isNegative;
     }
 }

@@ -5,7 +5,7 @@ public class Token {
     private String value;
     private Location location;
 
-    Token(String type, String value, Location location) {
+    public Token(String type, String value, Location location) {
         this.type = type;
         this.value = value;
         this.location = location;

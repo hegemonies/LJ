@@ -1,8 +1,12 @@
 package LJ.Parser;
 
 import LJ.Lexer.ListLexer;
+import LJ.Lexer.Location;
 import LJ.Lexer.Token;
 import LJ.Parser.AST.*;
+import LJ.Parser.AST.ArrayMember.ArrayMember;
+import LJ.Parser.AST.ArrayMember.ArrayMemberID;
+import LJ.Parser.AST.ArrayMember.ArrayMemberNumber;
 import LJ.Parser.AST.Else.NodeElse;
 import LJ.Parser.AST.Else.NodeIfElse;
 import LJ.Parser.AST.Else.NodeJustElse;
@@ -443,9 +447,10 @@ public class Parser {
     private Number parseNumber() throws CriticalProductionException {
         Number node = new Number();
 
-        node.setPositive(parseSign());
+        boolean isNegativeNumber = parseSign();
+        node.setNegative(isNegativeNumber);
 
-        node.setNumber(listLexer.getLookahead());
+        node.setValue(listLexer.getLookahead());
         listLexer.match("numeric_constant");
 
         return node;
@@ -460,10 +465,10 @@ public class Parser {
 
         if (curTypeToken.equals("minus")) {
             listLexer.match("minus");
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -548,10 +553,10 @@ public class Parser {
      *     [<arrayMemberFork>]
      * @throws OptionalProductionException
      */
-    private Token parseArrayMember() throws CriticalProductionException {
+    private ArrayMember parseArrayMember() throws CriticalProductionException {
         listLexer.match("l_square");
 
-        Token index = parseArrayMemberFork();
+        ArrayMember index = parseArrayMemberFork();
 
         listLexer.match("r_square");
 
@@ -564,14 +569,16 @@ public class Parser {
      *     <id>
      * @throws CriticalProductionException
      */
-    private Token parseArrayMemberFork() throws CriticalProductionException {
+    private ArrayMember parseArrayMemberFork() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
+
+        ArrayMember arrayMember = null;
 
         if (curTypeToken.equals("numeric_constant") ||
                 curTypeToken.equals("minus")) {
-            parseNumber();
+            arrayMember = new ArrayMemberNumber(parseNumber());
         } else if (curTypeToken.equals("id")) {
-            node.addChild(new HomoASTNode(listLexer.getLookahead()));
+            arrayMember = new ArrayMemberID(listLexer.getLookahead());
             listLexer.match("id");
         } else {
             throw new CriticalProductionException("expecting <id or numeric_constant"
@@ -580,7 +587,7 @@ public class Parser {
                     + "> in " + listLexer.getLookahead().getLocation());
         }
 
-        return node;
+        return arrayMember;
     }
 
     /**
@@ -615,7 +622,7 @@ public class Parser {
      *     ;
      * @throws CriticalProductionException
      */
-    private NodeStatement parseStatement() throws CriticalProductionException { // todo first important work here
+    private NodeStatement parseStatement() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
         NodeStatement node = null;
 
@@ -693,7 +700,7 @@ public class Parser {
      *     E
      * @throws CriticalProductionException
      */
-    private NodeExprFork parseExprFork() throws CriticalProductionException { // todo work here
+    private NodeExprFork parseExprFork() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
         NodeExprFork node = new NodeExprFork();
 
