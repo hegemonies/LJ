@@ -141,14 +141,10 @@
     (<expression>) <expressionOptionOperator> |
     <expression> <expressionOptionOperator>
 
-<valueFork>: 
-    <condition> <expression> |
-    ; |
-    E
-
-<expressionOptionOperator>:
+<exprFork>:
     <logicOperator> <expression> |
     <condition> <expression> |
+    ; |
     E
 
 <arithmetic>: <secondPrior>

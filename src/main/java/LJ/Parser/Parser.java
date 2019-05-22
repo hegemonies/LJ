@@ -7,6 +7,7 @@ import LJ.Parser.AST.Else.NodeElse;
 import LJ.Parser.AST.Else.NodeIfElse;
 import LJ.Parser.AST.Else.NodeJustElse;
 import LJ.Parser.AST.Inits.*;
+import LJ.Parser.AST.Operator.Operator;
 import LJ.Parser.AST.Value.Number;
 import LJ.Parser.ParserException.CriticalProductionException;
 import LJ.Parser.ParserException.OptionalProductionException;
@@ -663,8 +664,8 @@ public class Parser {
      *     <arithmetic> <valueFork> <expressionOptionOperator>
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseExpression() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode();
+    private NodeExpression parseExpression() throws CriticalProductionException {
+        NodeExpression node = new NodeExpression();
         String curTypeToken = listLexer.getLookahead().getType();
 
         if (curTypeToken.equals("id") ||
@@ -672,10 +673,8 @@ public class Parser {
                 curTypeToken.equals("str_literal") ||
                 curTypeToken.equals("minus") ||
                 curTypeToken.equals("l_paren")) {
-
-            parseArithmetic();
-            parseValueFork();
-            parseExpressionOptionOperator();
+            node.setArithmetic(parseArithmetic());
+            node.setExprFork(parseExprFork());
         } else {
             throw new CriticalProductionException("expecting <" + "id or numeric_constant or str_literal or l_paren"
                     + ">, but found is <"+ listLexer.getLookahead().getType() +
@@ -687,52 +686,33 @@ public class Parser {
     }
 
     /**
-     * <valueFork>:
+     * <exprFork>:
+     *     <logicOperator> <expression> |
      *     <condition> <expression> |
      *     ; |
      *     E
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseValueFork() throws CriticalProductionException {
-        String curTokenType = listLexer.getLookahead().getType();
-        HomoASTNode node = new HomoASTNode();
+    private NodeExprFork parseExprFork() throws CriticalProductionException { // todo work here
+        String curTypeToken = listLexer.getLookahead().getType();
+        NodeExprFork node = new NodeExprFork();
 
-        if (curTokenType.equals("less") ||
-                curTokenType.equals("greater") ||
-                curTokenType.equals("equalequal") ||
-                curTokenType.equals("exclaimequal") ||
-                curTokenType.equals("equal")) {
-            node.addChild(parseConditions());
-            node.addChild(parseExpression());
-        } else if (curTokenType.equals("semicolon")) {
-            node.addChild(new HomoASTNode(listLexer.getLookahead()));
+        if (curTypeToken.equals("ampamp") ||
+                curTypeToken.equals("pipepipe")) {
+            node.setOperator(parseLogicOperator());
+            node.setExpression(parseExpression());
+        } else if (curTypeToken.equals("less") ||
+                curTypeToken.equals("greater") ||
+                curTypeToken.equals("equalequal") ||
+                curTypeToken.equals("exclaimequal") ||
+                curTypeToken.equals("equal")) {
+            node.setOperator(parseConditions());
+            node.setExpression(parseExpression());
+        } else if (curTypeToken.equals("semicolon")) {
             listLexer.match("semicolon");
         }
 
         return node;
-    }
-
-    /**
-     * <expressionOptionOperator>:
-     *     <logicOperator> <expression> |
-     *     <condition> <expression> |
-     *     E
-     * @throws CriticalProductionException
-     */
-    private void parseExpressionOptionOperator() throws CriticalProductionException {
-        String curTypeToken = listLexer.getLookahead().getType();
-
-        if (curTypeToken.equals("ampamp") ||
-                curTypeToken.equals("pipepipe")) {
-            parseLogicOperator();
-            parseExpression();
-        } else if (curTypeToken.equals("less") ||
-                curTypeToken.equals("greater") ||
-                curTypeToken.equals("equalequal") ||
-                curTypeToken.equals("exclaimequal")) {
-            parseConditions();
-            parseExpression();
-        }
     }
 
     /**
@@ -809,7 +789,7 @@ public class Parser {
         if (curTypeToken.equals("l_paren")) {
             listLexer.match("l_paren");
             parseArithmetic();
-            parseValueFork();
+            parseExprFork();
             listLexer.match("r_paren");
         } else if (curTypeToken.equals("id") ||
                     curTypeToken.equals("numeric_constant") ||
@@ -876,8 +856,10 @@ public class Parser {
      * <logicOperator>: && | ||
      * @throws CriticalProductionException
      */
-    private void parseLogicOperator() throws CriticalProductionException {
+    private Operator parseLogicOperator() throws CriticalProductionException {
+        Operator node = new Operator(listLexer.getLookahead());
         listLexer.matchOneOf("ampamp", "pipepipe");
+        return node;
     }
 
     /**
@@ -993,8 +975,8 @@ public class Parser {
     /**
      * <condition>: < | > | == | != | <= | >=
      */
-    private HomoASTNode parseConditions() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode(listLexer.getLookahead());
+    private Operator parseConditions() throws CriticalProductionException {
+        Operator node = new Operator(listLexer.getLookahead());
 
         listLexer.matchOneOf("less",
                 "greater",
