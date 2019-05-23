@@ -1,7 +1,6 @@
 package LJ.Parser;
 
 import LJ.Lexer.ListLexer;
-import LJ.Lexer.Location;
 import LJ.Lexer.Token;
 import LJ.Parser.AST.*;
 import LJ.Parser.AST.ArrayMember.ArrayMember;
@@ -22,11 +21,8 @@ import java.util.List;
 /**
  * todo: what need a refactor?
  * expression
- * loop
- * statement
- * condition
- * operator
  * arithmetic
+ * exprValue
  * ...
   */
 
@@ -556,11 +552,11 @@ public class Parser {
     private ArrayMember parseArrayMember() throws CriticalProductionException {
         listLexer.match("l_square");
 
-        ArrayMember index = parseArrayMemberFork();
+        ArrayMember node = parseArrayMemberFork();
 
         listLexer.match("r_square");
 
-        return index;
+        return node;
     }
 
     /**
@@ -849,14 +845,6 @@ public class Parser {
                     ":" + listLexer.getLookahead().getValue()
                     + "> in " + listLexer.getLookahead().getLocation());
         }
-    }
-
-    /**
-     * <operator>: + | - | * | / | =
-     * @throws CriticalProductionException
-     */
-    private void parseOperator() throws CriticalProductionException {
-        listLexer.matchOneOf("plus", "minus", "star", "slash", "equal");
     }
 
     /**

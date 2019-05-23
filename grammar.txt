@@ -135,11 +135,7 @@
     ;
 
 <expression>:
-    <arithmetic> <valueFork> <expressionOptionOperator>
-
-<expressionForkParen>:
-    (<expression>) <expressionOptionOperator> |
-    <expression> <expressionOptionOperator>
+    <arithmetic> <exprFork>
 
 <exprFork>:
     <logicOperator> <expression> |
@@ -156,7 +152,7 @@
 <firstPrior_>: <firstPriorOper><group><firstPrior_> | E
 
 <group>:
-     (<arithmetic> <valueFork>) |
+     (<arithmetic> <exprFork>) |
      <valueExpr>
 <firstPriorOper>: * | /
 <secondPriorOper>: + | - | =
