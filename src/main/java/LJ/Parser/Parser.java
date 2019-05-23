@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * todo: what need a refactor?
+ * todo: what need to refactor?
  * expression
  * arithmetic
  * exprValue
@@ -92,11 +92,8 @@ public class Parser {
      * <modAccessClass>: public | private
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseModAccessClass() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode(listLexer.getLookahead());
+    private void parseModAccessClass() throws CriticalProductionException {
         listLexer.matchOneOf("public", "private");
-
-        return node;
     }
 
     /**
