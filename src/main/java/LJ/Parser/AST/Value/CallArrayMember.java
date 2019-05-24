@@ -1,6 +1,5 @@
 package LJ.Parser.AST.Value;
 
-import LJ.Lexer.Token;
 import LJ.Parser.AST.ArrayMember.ArrayMember;
 
 public class CallArrayMember extends GenericValue {

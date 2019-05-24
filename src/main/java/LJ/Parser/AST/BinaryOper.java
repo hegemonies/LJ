@@ -1,21 +1,22 @@
 package LJ.Parser.AST;
 
 import LJ.Parser.AST.Operator.Operator;
+import LJ.Parser.AST.Value.GenericValue;
 
 public class BinaryOper {
-    private NodeExpression lval;
+    private GenericValue lval;
     private Operator oper;
-    private NodeExpression rval;
+    private GenericValue rval;
 
-    public void setLval(NodeExpression lval) {
-        this.lval = lval;
+    public void setRval(GenericValue rval) {
+        this.rval = rval;
     }
 
     public void setOper(Operator oper) {
         this.oper = oper;
     }
 
-    public void setRval(NodeExpression rval) {
-        this.rval = rval;
+    public void setLval(GenericValue lval) {
+        this.lval = lval;
     }
 }

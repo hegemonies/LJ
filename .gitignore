@@ -1,6 +1,6 @@
-bin/
-target/
-build/
-out/
-.gradle/
-.idea/
+bin/*
+target/*
+build/*
+out/*
+.gradle/*
+.idea/*

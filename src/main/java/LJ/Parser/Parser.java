@@ -11,6 +11,7 @@ import LJ.Parser.AST.Else.NodeIfElse;
 import LJ.Parser.AST.Else.NodeJustElse;
 import LJ.Parser.AST.Inits.*;
 import LJ.Parser.AST.Operator.Operator;
+import LJ.Parser.AST.Value.*;
 import LJ.Parser.AST.Value.Number;
 import LJ.Parser.ParserException.CriticalProductionException;
 import LJ.Parser.ParserException.OptionalProductionException;
@@ -390,24 +391,25 @@ public class Parser {
      *     <str_const>
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseValueExpr() throws CriticalProductionException {
+    private GenericValue parseValueExpr() throws CriticalProductionException {
         boolean matchAny = false;
         String curTypeToken = listLexer.getLookahead().getType();
-        HomoASTNode node = new HomoASTNode();
+        GenericValue node = null;
 
         if (curTypeToken.equals("id")) {
-            node.addChild(parseVExpr());
+            node.addChild(parseVExpr()); // todo will return here
             matchAny = true;
         }
 
         if (curTypeToken.equals("numeric_constant") ||
                 curTypeToken.equals("minus")) {
-            node.addChild(parseNumber());
+            node = parseNumber();
             matchAny = true;
         }
 
         if (curTypeToken.equals("str_literal")) {
-            node.addChild(new HomoASTNode(listLexer.getLookahead()));
+            node = new StrLiteral();
+            node.setValue(listLexer.getLookahead());
             listLexer.match("str_literal");
             matchAny = true;
         }
@@ -468,77 +470,77 @@ public class Parser {
      * <vExpr>: <id> <vExprChange>
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseVExpr() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode();
-
-        node.addChild(new HomoASTNode(listLexer.getLookahead()));
+    private GenericValue parseVExpr() throws CriticalProductionException {
+        Token savingTokenID = listLexer.getLookahead();
         listLexer.match("id");
 
-        node.addChild(parseVExprChanger());
+        GenericValue node = parseVExprChanger();
+        node.setValue(savingTokenID);
 
         return node;
     }
 
     /**
-     * <vExprChanger>: <arrayMember> |
-     *      (<argsCallListChanger>) |
-     *      E
+     * <vExprChanger>:
+     *     <arrayMember> |
+     *     (<argsCallListChanger>) |
+     *     = <expression> |
+     *     E
      * @throws OptionalProductionException
      */
-    private HomoASTNode parseVExprChanger() throws CriticalProductionException {
+    private GenericValue parseVExprChanger() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
-        HomoASTNode node = new HomoASTNode();
 
         if (curTypeToken.equals("l_square")) {
-            node.addChild(parseArrayMember());
+            CallArrayMember node = new CallArrayMember();
+            node.setArrayMember(parseArrayMember());
+            return node;
         } else if (curTypeToken.equals("l_paren")) {
-            node.addChild(new HomoASTNode(listLexer.getLookahead()));
             listLexer.match("l_paren");
-
-            node.addChild(parseArgsCallListChanger());
-
-            node.addChild(new HomoASTNode(listLexer.getLookahead()));
+            FuncCall node = new FuncCall();
+            node.setArgsCall(parseArgsCallListChanger());
             listLexer.match("r_paren");
+            return node;
+        } else if (curTypeToken.equals("equal")) {
+            listLexer.match("equal");
+            Attachment node = new Attachment();
+            node.setExpression(parseExpression());
+            return node;
         }
 
-        return node;
+        return null;
     }
 
     /**
      * <argsCallListChanger>: <argsCallList> | E
      * @throws OptionalProductionException
      */
-    private HomoASTNode parseArgsCallListChanger() throws CriticalProductionException {
+    private List<GenericValue> parseArgsCallListChanger() throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
-        HomoASTNode node = new HomoASTNode();
+        List<GenericValue> list = new ArrayList<>();
 
         if (curTypeToken.equals("id") ||
                 curTypeToken.equals("numeric_constant") ||
                 curTypeToken.equals("minus") ||
                 curTypeToken.equals("str_literal")) {
-            node.addChild(parseArgsCallList());
+            parseArgsCallList(list);
         }
 
-        return node;
+        return list;
     }
 
     /**
      * <argsCallList>: <valueExpr> | <argsCallList>, <argsCallList>
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseArgsCallList() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode();
-
-        node.addChild(parseValueExpr());
+    private void parseArgsCallList(List<GenericValue> list) throws CriticalProductionException {
+        GenericValue node = parseValueExpr();
+        list.add(node);
 
         if (listLexer.getLookahead().getType().equals("comma")) {
-            node.addChild(new HomoASTNode(listLexer.getLookahead()));
             listLexer.match("comma");
-
-            node.addChild(parseArgsCallList());
+            parseArgsCallList(list);
         }
-
-        return node;
     }
 
     /**
