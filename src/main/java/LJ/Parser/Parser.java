@@ -23,13 +23,11 @@ import java.util.List;
  * todo: what need to refactor?
  * expression
  * arithmetic
- * exprValue
  * ...
   */
 
 public class Parser {
     private ListLexer listLexer;
-    HomoASTNode homoRoot;
     NodeClass root;
 
     public Parser(ListLexer listLexer) {
@@ -45,8 +43,7 @@ public class Parser {
     }
 
     public void showTree() {
-//        System.out.println(homoRoot.toStringTree());
-        System.out.println(homoRoot._toStringTreeRoot());
+
     }
 
     /**
@@ -392,29 +389,19 @@ public class Parser {
      * @throws CriticalProductionException
      */
     private GenericValue parseValueExpr() throws CriticalProductionException {
-        boolean matchAny = false;
         String curTypeToken = listLexer.getLookahead().getType();
         GenericValue node = null;
 
         if (curTypeToken.equals("id")) {
-            node.addChild(parseVExpr()); // todo will return here
-            matchAny = true;
-        }
-
-        if (curTypeToken.equals("numeric_constant") ||
+            node = parseVExpr();
+        } else if (curTypeToken.equals("numeric_constant") ||
                 curTypeToken.equals("minus")) {
             node = parseNumber();
-            matchAny = true;
-        }
-
-        if (curTypeToken.equals("str_literal")) {
+        } else if (curTypeToken.equals("str_literal")) {
             node = new StrLiteral();
             node.setValue(listLexer.getLookahead());
             listLexer.match("str_literal");
-            matchAny = true;
-        }
-
-        if (!matchAny) {
+        } else {
             throw new CriticalProductionException("expecting <" + "id or numeric_constant or str_literal"
                     + ">, but found is <"+ listLexer.getLookahead().getType() +
                     ":" + listLexer.getLookahead().getValue()
@@ -428,8 +415,9 @@ public class Parser {
      * <str_const>: str_literal
      * @throws CriticalProductionException
      */
-    private HomoASTNode parseStrConst() throws CriticalProductionException {
-        HomoASTNode node = new HomoASTNode(listLexer.getLookahead());
+    private StrLiteral parseStrConst() throws CriticalProductionException {
+        StrLiteral node = new StrLiteral();
+        node.setValue(listLexer.getLookahead());
         listLexer.match("str_literal");
 
         return node;
@@ -550,9 +538,7 @@ public class Parser {
      */
     private ArrayMember parseArrayMember() throws CriticalProductionException {
         listLexer.match("l_square");
-
         ArrayMember node = parseArrayMemberFork();
-
         listLexer.match("r_square");
 
         return node;
@@ -608,7 +594,8 @@ public class Parser {
     }
 
     /**
-     * <statement>: { <statement> } |
+     * <statement>:
+     *     { <statement> } |
      *     <loop> |
      *     <conditional> |
      *     <expression>; |
@@ -662,8 +649,8 @@ public class Parser {
     }
 
     /**
-     * <expression2>:
-     *     <arithmetic> <valueFork> <expressionOptionOperator>
+     * <expression>:
+     *     <arithmetic> <exprFork>
      * @throws CriticalProductionException
      */
     private NodeExpression parseExpression() throws CriticalProductionException {

@@ -1,17 +1,18 @@
 package LJ.Parser.AST.Inits;
 
 import LJ.Lexer.Token;
+import LJ.Parser.AST.ArrayMember.ArrayMember;
 import LJ.Parser.AST.TypeInit;
 
 public class ForkInitArray extends ForkInit {
     Token dataType;
-    Token index;
+    ArrayMember index;
 
     public void setDataType(Token dataType) {
         this.dataType = dataType;
     }
 
-    public void setIndex(Token index) {
+    public void setIndex(ArrayMember index) {
         this.index = index;
     }
 
