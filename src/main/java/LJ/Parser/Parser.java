@@ -662,12 +662,13 @@ public class Parser {
                 curTypeToken.equals("str_literal") ||
                 curTypeToken.equals("minus") ||
                 curTypeToken.equals("l_paren")) {
-            node.setArithmetic(parseArithmetic());
-            node.setExprFork(parseExprFork());
+            parseArithmetic(node);
+            parseExprFork(node);
         } else {
-            throw new CriticalProductionException("expecting <" + "id or numeric_constant or str_literal or l_paren"
-                    + ">, but found is <"+ listLexer.getLookahead().getType() +
-                    ":" + listLexer.getLookahead().getValue()
+            throw new CriticalProductionException("expecting <id or numeric_constant or minus" +
+                    " or str_literal or l_paren>, but found is <"
+                    + listLexer.getLookahead().getType()
+                    + ":" + listLexer.getLookahead().getValue()
                     + "> in " + listLexer.getLookahead().getLocation());
         }
 
@@ -682,26 +683,39 @@ public class Parser {
      *     E
      * @throws CriticalProductionException
      */
-    private NodeExprFork parseExprFork() throws CriticalProductionException {
+    private void parseExprFork(NodeExpression node) throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
-        NodeExprFork node = new NodeExprFork();
 
         if (curTypeToken.equals("ampamp") ||
                 curTypeToken.equals("pipepipe")) {
             node.setOperator(parseLogicOperator());
-            node.setExpression(parseExpression());
+            node.setrExpression(parseExpression());
         } else if (curTypeToken.equals("less") ||
                 curTypeToken.equals("greater") ||
                 curTypeToken.equals("equalequal") ||
                 curTypeToken.equals("exclaimequal") ||
                 curTypeToken.equals("equal")) {
             node.setOperator(parseConditions());
-            node.setExpression(parseExpression());
+            node.setrExpression(parseExpression());
+        } else if (curTypeToken.equals("minus") ||
+                curTypeToken.equals("plus") ||
+                curTypeToken.equals("star") ||
+                curTypeToken.equals("slash")) {
+            node.setOperator(parseOperator());
         } else if (curTypeToken.equals("semicolon")) {
             listLexer.match("semicolon");
         }
+    }
 
-        return node;
+    /**
+     * <operator>: + | - | * | / | =
+     * @throws CriticalProductionException
+     */
+    private Operator parseOperator() throws CriticalProductionException {
+        Operator operator = new Operator(listLexer.getLookahead());
+        listLexer.matchOneOf("plus", "minus", "star", "slash", "equal");
+
+        return operator;
     }
 
     /**
@@ -709,8 +723,8 @@ public class Parser {
      *      <secondPrior>
      * @throws CriticalProductionException
      */
-    private void parseArithmetic() throws CriticalProductionException {
-        parseSecondPrior();
+    private void parseArithmetic(NodeExpression node) throws CriticalProductionException {
+        parseSecondPrior(node);
     }
 
     /**
@@ -718,9 +732,9 @@ public class Parser {
      *      <firstPrior><secondPrior_>
      * @throws CriticalProductionException
      */
-    private void parseSecondPrior() throws CriticalProductionException {
-        parseFirstPrior();
-        parseSecondPrior_();
+    private void parseSecondPrior(NodeExpression node) throws CriticalProductionException {
+        parseFirstPrior(node);
+        parseSecondPrior_(node);
     }
 
     /**
@@ -729,13 +743,14 @@ public class Parser {
      *      E
      * @throws CriticalProductionException
      */
-    private void parseSecondPrior_() throws CriticalProductionException {
+    private void parseSecondPrior_(NodeExpression node) throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
+
         if (curTypeToken.equals("plus") ||
                 curTypeToken.equals("minus")) {
-            parseSecondPriorOper();
-            parseFirstPrior();
-            parseSecondPrior_();
+            parseSecondPriorOper(node);
+            parseFirstPrior(node);
+            parseSecondPrior_(node);
         }
     }
 
@@ -744,9 +759,9 @@ public class Parser {
      *      <group><firstPrior_>
      * @throws CriticalProductionException
      */
-    private void parseFirstPrior() throws CriticalProductionException {
-        parseGroup();
-        parseFirstPrior_();
+    private void parseFirstPrior(NodeExpression node) throws CriticalProductionException {
+        parseGroup(node);
+        parseFirstPrior_(node);
     }
 
     /**
@@ -755,36 +770,48 @@ public class Parser {
      *      E
      * @throws CriticalProductionException
      */
-    private void parseFirstPrior_() throws CriticalProductionException {
+    private void parseFirstPrior_(NodeExpression node) throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
 
         if (curTypeToken.equals("star") ||
                 curTypeToken.equals("slash")) {
-            parseFirstPriorOper();
-            parseGroup();
-            parseFirstPrior_();
+            parseFirstPriorOper(node);
+            parseGroup(node);
+            parseFirstPrior_(node);
         }
     }
 
     /**
      * <group>:
-     *      (<arithmetic> <valueFork>) |
+     *      (<expression>) <operator> <expression> |
      *      <valueExpr>
      * @throws CriticalProductionException
      */
-    private void parseGroup() throws CriticalProductionException {
+    private void parseGroup(NodeExpression node) throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
 
         if (curTypeToken.equals("l_paren")) {
             listLexer.match("l_paren");
-            parseArithmetic();
-            parseExprFork();
+            NodeExpression expression = new NodeExpression();
+            parseArithmetic(expression);
+            node.setlExpression(expression);
             listLexer.match("r_paren");
+            parseExprFork(node);
         } else if (curTypeToken.equals("id") ||
                     curTypeToken.equals("numeric_constant") ||
                     curTypeToken.equals("minus") ||
                     curTypeToken.equals("str_literal")) {
-            parseValueExpr();
+            if (node.getlValue() == null) {
+                node.setlValue(parseValueExpr());
+            } else if (node.getrValue() == null) {
+                node.setrValue(parseValueExpr());
+            } else {
+                if (node.getrExpression() != null) {
+                    parseGroup(node.getrExpression());
+                } else {
+                    System.out.println("ERROR in parseGroup"); // todo just for test
+                }
+            }
         } else {
             throw new CriticalProductionException("expecting <" + "l_paren or id or numeric_constant or str_literal"
                     + ">, but found is <"+ listLexer.getLookahead().getType() +
@@ -797,8 +824,24 @@ public class Parser {
      * <secondPriorOper>: + | - | =
      * @throws CriticalProductionException
      */
-    private void parseSecondPriorOper() throws CriticalProductionException {
+    private void parseSecondPriorOper(NodeExpression node) throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
+        if (node.getOperator() == null) {
+            node.setOperator(new Operator(listLexer.getLookahead()));
+        } else {
+            if (node.getrValue() == null && node.getrExpression() != null) {
+                parseFirstPriorOper(node.getrExpression());
+            } else if (node.getrValue() != null) {
+                NodeExpression newNode = new NodeExpression();
+                newNode.setOperator(new Operator(listLexer.getLookahead()));
+                newNode.setlValue(node.getrValue());
+                node.setrValue(null);
+                node.setrExpression(newNode);
+            } else if (node.getrExpression() == null && node.getrValue() == null) {
+                NodeExpression newNode = new NodeExpression();
+                parseFirstPriorOper(newNode);
+            }
+        }
 
         if (curTypeToken.equals("plus")) {
             listLexer.match("plus");
@@ -818,8 +861,24 @@ public class Parser {
      * <firstPriorOper>: * | -
      * @throws CriticalProductionException
      */
-    private void parseFirstPriorOper() throws CriticalProductionException {
+    private void parseFirstPriorOper(NodeExpression node) throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
+        if (node.getOperator() == null) {
+            node.setOperator(new Operator(listLexer.getLookahead()));
+        } else {
+            if (node.getrValue() == null && node.getrExpression() != null) {
+                parseFirstPriorOper(node.getrExpression());
+            } else if (node.getrValue() != null) {
+                NodeExpression newNode = new NodeExpression();
+                newNode.setOperator(new Operator(listLexer.getLookahead()));
+                newNode.setlValue(node.getrValue());
+                node.setrValue(null);
+                node.setrExpression(newNode);
+            } else if (node.getrExpression() == null && node.getrValue() == null) {
+                NodeExpression newNode = new NodeExpression();
+                parseFirstPriorOper(newNode);
+            }
+        }
 
         if (curTypeToken.equals("star")) {
             listLexer.match("star");

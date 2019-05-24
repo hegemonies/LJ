@@ -143,16 +143,24 @@
     ; |
     E
 
-<arithmetic>: <secondPrior>
+<arithmetic>:
+    <secondPrior>
 
-<secondPrior>: <firstPrior><secondPrior_>
-<secondPrior_>: <secondPriorOper><firstPrior><secondPrior_>  | E
+<secondPrior>:
+    <firstPrior><secondPrior_>
+<secondPrior_>:
+    <secondPriorOper><firstPrior><secondPrior_> |
+    E
 
-<firstPrior>: <group><firstPrior_>
-<firstPrior_>: <firstPriorOper><group><firstPrior_> | E
+<firstPrior>:
+    <group><firstPrior_>
+<firstPrior_>:
+    <firstPriorOper><group><firstPrior_> |
+    E
 
 <group>:
-     (<arithmetic> <exprFork>) |
+     (<expression>) <operator> <expression> |
      <valueExpr>
+
 <firstPriorOper>: * | /
 <secondPriorOper>: + | - | =
