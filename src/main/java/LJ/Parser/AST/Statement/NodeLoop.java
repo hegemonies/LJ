@@ -21,4 +21,19 @@ public class NodeLoop extends NodeStatement {
     public void addStatement(NodeStatement statement) {
         statementList.add(statement);
     }
+
+    @Override
+    public int visit(String rootNode, int index, StringBuilder sb) {
+        String thisNode = String.format("\"WHILE%d\"", index++);
+
+        index = expression.visit(thisNode, index, sb);
+
+        for (NodeStatement statement : statementList) {
+            index = statement.visit(thisNode, index, sb);
+        }
+
+        sb.append(String.format("%s -> %s;\n", rootNode, thisNode));
+
+        return index;
+    }
 }

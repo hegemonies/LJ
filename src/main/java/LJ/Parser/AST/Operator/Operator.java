@@ -8,4 +8,8 @@ public class Operator {
     public Operator(Token value) {
         this.value = value;
     }
+
+    public Token getValue() {
+        return value;
+    }
 }

@@ -49,4 +49,34 @@ public class NodeExpression extends NodeStatement {
     public NodeExpression getrExpression() {
         return rExpression;
     }
+
+    @Override
+    public int visit(String rootNode, int index, StringBuilder sb) {
+        String thisNode = String.format("\"Expression%d\"", index);
+        String operatorNode = String.format("\"%s%d\"", operator.getValue(), index++);
+        String pickUpNode;
+
+        if (operator != null) {
+            pickUpNode = operatorNode;
+        } else {
+            pickUpNode = thisNode;
+        }
+
+        if (lValue != null) {
+            index = lValue.visit(operatorNode, index, sb);
+        }
+        if (lExpression != null) {
+            index = lExpression.visit(operatorNode, index, sb);
+        }
+        if (rValue != null) {
+            index = rValue.visit(operatorNode, index, sb);
+        }
+        if (rExpression != null) {
+            index = rExpression.visit(operatorNode, index, sb);
+        }
+
+        sb.append(String.format("%s -> %s;\n", rootNode, thisNode));
+
+        return index;
+    }
 }
