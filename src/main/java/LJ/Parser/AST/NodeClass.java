@@ -42,9 +42,10 @@ public class NodeClass implements Node {
 
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
-        sb.append(String.format("%s [label=\"", rootNode));
-        sb.append(String.format("ModAccess=%s\n", modAccessToken.getValue()));
-        sb.append(String.format("id=%s\"];\n", idToken.getValue()));
+        sb.append(String.format("%s [label=\"ModAccess=%s\nid=%s\"];\n",
+                rootNode,
+                modAccessToken.getValue(),
+                idToken.getValue()));
 
         for (NodeInit nodeInit : initList) {
             index = nodeInit.visit(rootNode, index++, sb);

@@ -3,10 +3,10 @@ package LJ.Parser.AST;
 import LJ.Parser.AST.Operator.Operator;
 import LJ.Parser.AST.Statement.NodeExpression;
 
-public class NodeExprFork implements Node {
-    NodeExpression lExpression;
-    Operator operator;
-    NodeExpression rExpression;
+public class NodeExprFork implements Node { // todo refactor (mb remove this class)
+    private NodeExpression lExpression;
+    private Operator operator;
+    private NodeExpression rExpression;
 
     public void setlExpression(NodeExpression lExpression) {
         this.lExpression = lExpression;
@@ -18,5 +18,10 @@ public class NodeExprFork implements Node {
 
     public void setrExpression(NodeExpression rExpression) {
         this.rExpression = rExpression;
+    }
+
+    @Override
+    public int visit(String rootNode, int index, StringBuilder sb) {
+        return index;
     }
 }

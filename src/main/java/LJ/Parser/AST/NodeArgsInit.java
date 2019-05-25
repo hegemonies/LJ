@@ -21,15 +21,15 @@ public class NodeArgsInit implements Node {
 
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
-        String nameNode = String.format("\"args%d\" ", index++);
+        String thisNode = String.format("\"args%d\" ", index++);
 
         sb.append(String.format("%s [label=\"DataType=%s\nid=%s\nType=%s\"];\n",
-                nameNode,
+                thisNode,
                 dataType.getValue(),
                 id.getValue(),
                 typeInit));
 
-        sb.append(String.format("%s -> %s;\n", rootNode, nameNode));
+        sb.append(String.format("%s -> %s;\n", rootNode, thisNode));
 
         return index;
     }

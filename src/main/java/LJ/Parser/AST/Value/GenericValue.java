@@ -4,7 +4,7 @@ import LJ.Lexer.Token;
 import LJ.Parser.AST.Node;
 
 public class GenericValue implements Node {
-    private Token value;
+    protected Token value;
 
     public void setValue(Token value) {
         this.value = value;
@@ -16,6 +16,6 @@ public class GenericValue implements Node {
 
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
-        return 0;
+        return index;
     }
 }
