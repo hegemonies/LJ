@@ -1,5 +1,5 @@
 package LJ.Parser.AST;
 
-public class NodeStatement implements Node {
-
+public abstract class NodeStatement {
+    abstract public String visit(int index);
 }

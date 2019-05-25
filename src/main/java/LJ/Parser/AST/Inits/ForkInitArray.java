@@ -20,4 +20,9 @@ public class ForkInitArray extends ForkInit {
     public void chooseType() {
         type = TypeInit.ARRAY;
     }
+
+    @Override
+    public String visit() {
+        return null;
+    }
 }

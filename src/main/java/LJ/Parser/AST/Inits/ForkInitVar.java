@@ -14,4 +14,10 @@ public class ForkInitVar extends ForkInit {
     public void chooseType() {
         type = TypeInit.VAR;
     }
+
+    @Override
+    public String visit() {
+
+        return null;
+    }
 }

@@ -19,16 +19,9 @@ import LJ.Parser.ParserException.OptionalProductionException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * todo: what need to refactor?
- * expression
- * arithmetic
- * ...
-  */
-
 public class Parser {
     private ListLexer listLexer;
-    NodeClass root;
+    private NodeClass root = null;
 
     public Parser(ListLexer listLexer) {
         this.listLexer = listLexer;

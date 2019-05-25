@@ -22,4 +22,23 @@ public class NodeInit extends NodeStatement {
     public void setForkInit(ForkInit forkInit) {
         this.forkInit = forkInit;
     }
+
+
+    @Override
+    public String visit(int index) {
+        StringBuilder sb = new StringBuilder();
+
+        String nameNode = "\"init" + index + "\"";
+
+        sb.append(nameNode);
+        sb.append("[label=\"");
+        sb.append("DataType=" + dataType.getValue() + "\n");
+        sb.append("id=" + id.getValue() + "\n");
+        sb.append("Type=" + forkInit.getType() + "\n");
+        sb.append("];");
+
+
+
+        return sb.toString();
+    }
 }

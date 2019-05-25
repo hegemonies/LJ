@@ -23,4 +23,10 @@ public class ForkInitFunc extends ForkInit {
     public void chooseType() {
         type = TypeInit.FUNC;
     }
+
+    @Override
+    public String visit(String nameRootNode) {
+
+        return null;
+    }
 }
