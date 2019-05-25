@@ -11,6 +11,7 @@ import LJ.Parser.AST.Else.NodeIfElse;
 import LJ.Parser.AST.Else.NodeJustElse;
 import LJ.Parser.AST.Inits.*;
 import LJ.Parser.AST.Operator.Operator;
+import LJ.Parser.AST.Statement.*;
 import LJ.Parser.AST.Value.*;
 import LJ.Parser.AST.Value.Number;
 import LJ.Parser.ParserException.CriticalProductionException;
@@ -36,7 +37,8 @@ public class Parser {
     }
 
     public void showTree() {
-
+        int startIndex = 0;
+        System.out.println(root.wrapperVisit(startIndex));
     }
 
     /**

@@ -1,4 +1,4 @@
-package LJ.Parser.AST;
+package LJ.Parser.AST.Statement;
 
 import LJ.Parser.AST.Operator.Operator;
 import LJ.Parser.AST.Value.GenericValue;

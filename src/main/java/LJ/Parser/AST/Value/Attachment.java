@@ -1,6 +1,6 @@
 package LJ.Parser.AST.Value;
 
-import LJ.Parser.AST.NodeExpression;
+import LJ.Parser.AST.Statement.NodeExpression;
 
 public class Attachment extends GenericValue {
     private NodeExpression expression;

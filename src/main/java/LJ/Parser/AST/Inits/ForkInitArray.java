@@ -5,8 +5,8 @@ import LJ.Parser.AST.ArrayMember.ArrayMember;
 import LJ.Parser.AST.TypeInit;
 
 public class ForkInitArray extends ForkInit {
-    Token dataType;
-    ArrayMember index;
+    private Token dataType;
+    private ArrayMember index;
 
     public void setDataType(Token dataType) {
         this.dataType = dataType;
@@ -22,7 +22,16 @@ public class ForkInitArray extends ForkInit {
     }
 
     @Override
-    public String visit() {
-        return null;
+    public int visit(String rootName, int indexNode, StringBuilder sb) {
+        String thisNode = String.format("\"ARRAY%d\"", indexNode++);
+        sb.append(String.format("%s [label=\"DataType=%s\"];\n",
+                thisNode,
+                dataType.getValue()));
+
+        indexNode = this.index.visit(thisNode, indexNode, sb);
+
+        sb.append(String.format("%s -> %s;\n", rootName, thisNode));
+
+        return indexNode;
     }
 }

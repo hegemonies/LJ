@@ -1,15 +1,15 @@
 package LJ.Parser.AST.Inits;
 
 import LJ.Parser.AST.NodeArgsInit;
-import LJ.Parser.AST.NodeStatement;
+import LJ.Parser.AST.Statement.NodeStatement;
 import LJ.Parser.AST.TypeInit;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ForkInitFunc extends ForkInit {
-    List<NodeArgsInit> nodeArgsInitList = new ArrayList<>(); // optional
-    List<NodeStatement> statementList = new ArrayList<>(); // too
+    private List<NodeArgsInit> nodeArgsInitList = new ArrayList<>(); // optional
+    private List<NodeStatement> statementList = new ArrayList<>(); // too
 
     public void addArgInit(NodeArgsInit node) {
         nodeArgsInitList.add(node);
@@ -25,8 +25,27 @@ public class ForkInitFunc extends ForkInit {
     }
 
     @Override
-    public String visit(String nameRootNode) {
+    public int visit(String rootNode, int index, StringBuilder sb) {
+        if (nodeArgsInitList.size() > 0) {
+            String argsNode = String.format("\"%s%d\"", "ARGS", index++);
 
-        return null;
+            for (NodeArgsInit nodeArgsInit : nodeArgsInitList) {
+                index = nodeArgsInit.visit(argsNode, index++, sb);
+            }
+
+            sb.append(String.format("%s -> %s;\n", rootNode, argsNode));
+        }
+
+        if (statementList.size() > 0) {
+            String statementNode = String.format("\"%s%d\"", "STATEMENTS", index++);
+
+            for (NodeStatement statement : statementList) {
+                index = statement.visit(statementNode, index++, sb);
+            }
+
+            sb.append(String.format("%s -> %s;\n", rootNode, statementNode));
+        }
+
+        return index;
     }
 }

@@ -1,6 +1,7 @@
 package LJ.Parser.AST;
 
 import LJ.Parser.AST.Operator.Operator;
+import LJ.Parser.AST.Statement.NodeExpression;
 
 public class NodeExprFork implements Node {
     NodeExpression lExpression;

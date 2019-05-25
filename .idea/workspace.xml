@@ -3,6 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="82d8bc0a-62e4-4d57-a57a-e9d4efc4372e" name="Default Changelist" comment="Fix Lexer and fix Type">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArrayMember/ArrayMemberID.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArrayMember/ArrayMemberID.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArrayMember/ArrayMemberNumber.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArrayMember/ArrayMemberNumber.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeElse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeElse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeIfElse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeIfElse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeJustElse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeJustElse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitArray.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitFunc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitFunc.java" afterDir="false" />
@@ -11,9 +16,17 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeArgsInit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeArgsInit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeStatement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeConditional.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Statement/NodeConditional.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeExprFork.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeExprFork.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Statement/NodeExpression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeLoop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Statement/NodeLoop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeMainMethod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeMainMethod.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeReturn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Statement/NodeReturn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Statement/NodeStatement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/Attachment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/Attachment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/GenericValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/GenericValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/Number.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/Number.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/LJ/PredactiveSyntaxTable/SyntaxTable.java" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -70,14 +83,14 @@
     </system>
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.69009584">
+    <splitter split-orientation="horizontal" split-proportion="0.86171573">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="363">
-                  <caret line="46" column="5" lean-forward="true" selection-start-line="46" selection-start-column="5" selection-end-line="46" selection-end-column="5" />
+                <state relative-caret-position="13668">
+                  <caret line="806" column="66" selection-start-line="806" selection-start-column="66" selection-end-line="806" selection-end-column="66" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -88,8 +101,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeClass.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="715">
-                  <caret line="52" column="44" selection-start-line="52" selection-start-column="44" selection-end-line="52" selection-end-column="44" />
+                <state relative-caret-position="414">
+                  <caret line="48" column="17" lean-forward="true" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="17" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#360#361#0" expanded="true" />
@@ -103,80 +116,14 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/NodeInit.java">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeMainMethod.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="493">
-                  <caret line="39" lean-forward="true" selection-start-line="39" selection-end-line="39" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInit.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="119">
-                  <caret line="7" column="33" selection-start-line="7" selection-start-column="33" selection-end-line="7" selection-end-column="52" />
-                  <folding>
-                    <element signature="e#229#230#0" expanded="true" />
-                    <element signature="e#256#257#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitArray.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="272">
-                  <caret line="24" column="24" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="24" />
-                  <folding>
-                    <element signature="e#586#587#0" expanded="true" />
-                    <element signature="e#613#614#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitFunc.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="170">
-                  <caret line="10" column="16" lean-forward="true" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
+                <state relative-caret-position="510">
+                  <caret line="50" column="57" selection-start-line="50" selection-start-column="57" selection-end-line="50" selection-end-column="57" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#595#596#0" expanded="true" />
-                    <element signature="e#631#632#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeArgsInit.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="561">
-                  <caret line="33" column="50" selection-start-line="33" selection-start-column="50" selection-end-line="33" selection-end-column="50" />
-                  <folding>
-                    <element signature="e#210#211#0" expanded="true" />
-                    <element signature="e#250#251#0" expanded="true" />
-                    <element signature="e#285#286#0" expanded="true" />
-                    <element signature="e#313#314#0" expanded="true" />
-                    <element signature="e#363#364#0" expanded="true" />
-                    <element signature="e#403#404#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitVar.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="204">
-                  <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
-                  <folding>
-                    <element signature="e#322#323#0" expanded="true" />
-                    <element signature="e#357#358#0" expanded="true" />
+                    <element signature="method#setGettingDataTypeToken#0;class#NodeMainMethod#0" />
                   </folding>
                 </state>
               </provider>
@@ -189,8 +136,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/grammar.txt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="619">
-                  <caret line="154" column="13" lean-forward="true" selection-start-line="154" selection-start-column="13" selection-end-line="154" selection-end-column="13" />
+                <state relative-caret-position="605">
+                  <caret line="154" column="13" selection-start-line="154" selection-start-column="13" selection-end-line="154" selection-end-column="13" />
                 </state>
               </provider>
             </entry>
@@ -263,9 +210,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeInitInsideClass.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ForkInitArray.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ForkInit.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ForkInitFunc.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ForkInitVar.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArgsInit.java" />
@@ -273,53 +217,56 @@
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeLoop.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/TypeElse.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/NodeInitInsideClass.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeElse.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeJustElse.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeIfElse.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/NodeInitInsideFunc.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeReturn.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeMainMethod.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/BinaryOper.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeNumber.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/NodeNumber.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/StrLiteral.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/ArgsCall.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/FuncCall.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/GenericValue.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/BinaryOper.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Operator/Condition.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Operator/GenericOperator.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/Attachment.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Operator/Operator.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/Number.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NumberOfArrayMember.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/ArrayMember.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArrayMember/ArrayMember.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArrayMember/ArrayMemberID.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/CallArrayMember.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Lexer/Type.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArrayMember/ArrayMemberNumber.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/HomoASTNode.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/HomoASTNodeTypes.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeExprFork.java" />
         <option value="$PROJECT_DIR$/grammar.txt" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/jshell/jshell_console.snippet" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeStatement.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeClass.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitVar.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/NodeInit.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInit.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitArray.java" />
-        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitFunc.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Statement/NodeStatement.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Node.java" />
         <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeArgsInit.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitFunc.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInit.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/NodeInit.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitVar.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArrayMember/ArrayMember.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitArray.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArrayMember/ArrayMemberNumber.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/GenericValue.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArrayMember/ArrayMemberID.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/Number.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Statement/NodeConditional.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeJustElse.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeIfElse.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeElse.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeClass.java" />
+        <option value="$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeMainMethod.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="194" />
-    <option name="y" value="150" />
+    <option name="x" value="156" />
+    <option name="y" value="163" />
     <option name="width" value="1440" />
     <option name="height" value="788" />
   </component>
@@ -382,6 +329,17 @@
               <item name="LJ" type="462c0819:PsiDirectoryNode" />
               <item name="Parser" type="462c0819:PsiDirectoryNode" />
               <item name="AST" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="LJ" type="b2602c69:ProjectViewProjectNode" />
+              <item name="LJ" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="LJ" type="462c0819:PsiDirectoryNode" />
+              <item name="Parser" type="462c0819:PsiDirectoryNode" />
+              <item name="AST" type="462c0819:PsiDirectoryNode" />
+              <item name="Statement" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -536,20 +494,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.LJ [run]">
-    <configuration name="Parser" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="LJ.Parser.Parser" />
-      <module name="LanguageJava.LJ.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="LJ.Parser.AST.Value.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager">
     <configuration name="LJ [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -611,7 +556,6 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.Parser" />
       <item itemvalue="Gradle.LJ [build]" />
       <item itemvalue="Gradle.LJ [run]" />
       <item itemvalue="Gradle.LJ [clean]" />
@@ -620,7 +564,6 @@
       <list>
         <item itemvalue="Gradle.LJ [run]" />
         <item itemvalue="Gradle.LJ [clean]" />
-        <item itemvalue="Application.Parser" />
         <item itemvalue="Gradle.LJ [build]" />
       </list>
     </recent_temporary>
@@ -651,7 +594,7 @@
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4980916" visible="true" weight="0.16577825" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4980916" visible="true" weight="0.16897655" />
       <window_info id="Structure" order="1" sideWeight="0.5019084" side_tool="true" weight="0.19936034" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -664,12 +607,12 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.44859812" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.23218143" />
+      <window_info anchor="bottom" id="TODO" order="6" visible="true" weight="0.23151125" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.3293348" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" weight="0.3297587" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.3215434" />
       <window_info anchor="bottom" id="Build" order="10" weight="0.3279743" />
-      <window_info anchor="bottom" id="Messages" order="11" weight="0.3281412" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.19078243" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -726,13 +669,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="Fix Lexer and fix Type" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Lexer/Lexer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="560">
-          <caret line="36" column="72" selection-start-line="36" selection-start-column="72" selection-end-line="36" selection-end-column="72" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Compiler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="368">
@@ -766,67 +702,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArgsInit.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeStatementAroundBrace.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeLoop.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="16" column="33" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/TypeElse.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeIfElse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="8" selection-start-line="8" selection-start-column="8" selection-end-line="8" selection-end-column="39" />
-          <folding>
-            <element signature="e#205#206#0" expanded="true" />
-            <element signature="e#251#252#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeJustElse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="37" selection-start-line="11" selection-start-column="37" selection-end-line="11" selection-end-column="37" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#233#234#0" expanded="true" />
-            <element signature="e#257#258#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeElse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/NodeInitInsideFunc.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeReturn.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="31" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeMainMethod.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="45" selection-start-line="7" selection-start-column="45" selection-end-line="7" selection-end-column="45" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#setGettingDataTypeToken#0;class#NodeMainMethod#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/StrLiteral.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -836,16 +714,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/ArgsCall.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeConditional.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="22" lean-forward="true" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Operator/Condition.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/Attachment.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -868,30 +736,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/GenericValue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="5" column="41" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Lexer/ListLexer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="230">
           <caret line="18" column="16" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArrayMember/ArrayMemberID.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="36" selection-start-line="7" selection-start-column="36" selection-end-line="7" selection-end-column="36" />
-          <folding>
-            <element signature="e#187#188#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -905,17 +753,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/Number.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
-          <folding>
-            <element signature="e#144#145#0" expanded="true" />
-            <element signature="e#181#182#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NumberOfArrayMember.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Lexer/Type.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -924,38 +761,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArrayMember/ArrayMember.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArrayMember/ArrayMemberNumber.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="24" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
-          <folding>
-            <element signature="e#301#302#0" expanded="true" />
-            <element signature="e#349#350#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/HomoASTNode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="18" column="24" lean-forward="true" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/HomoASTNodeTypes.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/HomoASTNode.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/HomoASTNodeTypes.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/BinaryOper.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -989,56 +796,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeExpression.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/PredactiveSyntaxTable/SyntaxTable.java" />
+    <entry file="file://$PROJECT_DIR$/grammar.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="44" column="44" selection-start-line="44" selection-start-column="44" selection-end-line="44" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#383#384#0" expanded="true" />
-            <element signature="e#419#420#0" expanded="true" />
-            <element signature="e#481#482#0" expanded="true" />
-            <element signature="e#527#528#0" expanded="true" />
-            <element signature="e#577#578#0" expanded="true" />
-            <element signature="e#617#618#0" expanded="true" />
-            <element signature="e#667#668#0" expanded="true" />
-            <element signature="e#703#704#0" expanded="true" />
-            <element signature="e#765#766#0" expanded="true" />
-            <element signature="e#811#812#0" expanded="true" />
-            <element signature="e#850#851#0" expanded="true" />
-            <element signature="e#879#880#0" expanded="true" />
-            <element signature="e#918#919#0" expanded="true" />
-            <element signature="e#947#948#0" expanded="true" />
-            <element signature="e#984#985#0" expanded="true" />
-            <element signature="e#1015#1016#0" expanded="true" />
-            <element signature="e#1095#1096#0" expanded="true" />
-            <element signature="e#1141#1142#0" expanded="true" />
-            <element signature="e#1175#1176#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="605">
+          <caret line="154" column="13" selection-start-line="154" selection-start-column="13" selection-end-line="154" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/PredactiveSyntaxTable/SyntaxTable.java">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/jshell/jshell_console.snippet">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="52" lean-forward="true" selection-start-column="52" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Statement/NodeLoop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Statement/NodeReturn.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grammar.txt">
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Statement/NodeExpression.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="619">
-          <caret line="154" column="13" lean-forward="true" selection-start-line="154" selection-start-column="13" selection-end-line="154" selection-end-column="13" />
+        <state relative-caret-position="85">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1071#1072#0" expanded="true" />
+            <element signature="e#1105#1106#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Node.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="363">
-          <caret line="46" column="5" lean-forward="true" selection-start-line="46" selection-start-column="5" selection-end-line="46" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="51">
+          <caret line="3" column="29" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeArgsInit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
         </state>
       </provider>
     </entry>
@@ -1049,17 +858,149 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeStatement.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/GenericValue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="13" column="8" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#254#255#0" expanded="true" />
+            <element signature="e#282#283#0" expanded="true" />
+            <element signature="e#307#308#0" expanded="true" />
+            <element signature="e#331#332#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArrayMember/ArrayMemberID.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="23" column="44" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="44" />
+          <folding>
+            <element signature="e#223#224#0" expanded="true" />
+            <element signature="e#248#249#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArrayMember/ArrayMemberNumber.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="16" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="16" />
+          <folding>
+            <element signature="e#295#296#0" expanded="true" />
+            <element signature="e#330#331#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Value/Number.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="18" column="44" selection-start-line="18" selection-start-column="44" selection-end-line="18" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/ArrayMember/ArrayMember.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="49" lean-forward="true" selection-start-line="4" selection-start-column="49" selection-end-line="4" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Statement/NodeStatement.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
-          <caret line="3" column="26" selection-start-line="3" selection-start-column="26" selection-end-line="3" selection-end-column="26" />
+          <caret line="3" column="45" selection-start-line="3" selection-start-column="45" selection-end-line="3" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitArray.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="32" column="44" selection-start-line="32" selection-start-column="44" selection-end-line="32" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitFunc.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitVar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="21" column="1" lean-forward="true" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
+          <folding>
+            <element signature="e#451#452#0" expanded="true" />
+            <element signature="e#511#512#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeIfElse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeJustElse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="24" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Statement/NodeConditional.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="46" column="21" lean-forward="true" selection-start-line="46" selection-start-column="21" selection-end-line="46" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Else/NodeElse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="39" selection-start-line="5" selection-start-column="39" selection-end-line="5" selection-end-column="39" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/Parser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13668">
+          <caret line="806" column="66" selection-start-line="806" selection-start-column="66" selection-end-line="806" selection-end-column="66" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeClass.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="715">
-          <caret line="52" column="44" selection-start-line="52" selection-start-column="44" selection-end-line="52" selection-end-column="44" />
+        <state relative-caret-position="414">
+          <caret line="48" column="17" lean-forward="true" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#360#361#0" expanded="true" />
@@ -1074,74 +1015,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/NodeInit.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="39" lean-forward="true" selection-start-line="39" selection-end-line="39" />
+        <state relative-caret-position="459">
+          <caret line="34" column="8" selection-start-line="34" selection-start-column="8" selection-end-line="34" selection-end-column="68" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInit.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeMainMethod.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="33" selection-start-line="7" selection-start-column="33" selection-end-line="7" selection-end-column="52" />
-          <folding>
-            <element signature="e#229#230#0" expanded="true" />
-            <element signature="e#256#257#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitArray.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="24" column="24" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="24" />
-          <folding>
-            <element signature="e#586#587#0" expanded="true" />
-            <element signature="e#613#614#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitVar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
-          <folding>
-            <element signature="e#322#323#0" expanded="true" />
-            <element signature="e#357#358#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Inits/ForkInitFunc.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="16" lean-forward="true" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
+        <state relative-caret-position="510">
+          <caret line="50" column="57" selection-start-line="50" selection-start-column="57" selection-end-line="50" selection-end-column="57" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#595#596#0" expanded="true" />
-            <element signature="e#631#632#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/Node.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="47" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LJ/Parser/AST/NodeArgsInit.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="33" column="50" selection-start-line="33" selection-start-column="50" selection-end-line="33" selection-end-column="50" />
-          <folding>
-            <element signature="e#210#211#0" expanded="true" />
-            <element signature="e#250#251#0" expanded="true" />
-            <element signature="e#285#286#0" expanded="true" />
-            <element signature="e#313#314#0" expanded="true" />
-            <element signature="e#363#364#0" expanded="true" />
-            <element signature="e#403#404#0" expanded="true" />
+            <element signature="method#setGettingDataTypeToken#0;class#NodeMainMethod#0" />
           </folding>
         </state>
       </provider>

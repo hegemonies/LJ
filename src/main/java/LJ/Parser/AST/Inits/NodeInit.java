@@ -1,15 +1,12 @@
 package LJ.Parser.AST.Inits;
 
 import LJ.Lexer.Token;
-import LJ.Parser.AST.Inits.ForkInit;
-import LJ.Parser.AST.Node;
-import LJ.Parser.AST.NodeStatement;
-import LJ.Parser.AST.TypeInit;
+import LJ.Parser.AST.Statement.NodeStatement;
 
 public class NodeInit extends NodeStatement {
-    Token dataType;
-    Token id;
-    ForkInit forkInit;
+    private Token dataType;
+    private Token id;
+    private ForkInit forkInit;
 
     public void setDataType(Token dataType) {
         this.dataType = dataType;
@@ -23,22 +20,20 @@ public class NodeInit extends NodeStatement {
         this.forkInit = forkInit;
     }
 
-
     @Override
-    public String visit(int index) {
-        StringBuilder sb = new StringBuilder();
+    public int visit(String rootNode, int index, StringBuilder sb) {
+        String thisNode = String.format("\"init%d\"", index++);
 
-        String nameNode = "\"init" + index + "\"";
+        sb.append(String.format("%s [label=\"DataType=%s\nid=%s\nType=%s\"];\n",
+                thisNode,
+                dataType.getValue(),
+                id.getValue(),
+                forkInit.getType()));
 
-        sb.append(nameNode);
-        sb.append("[label=\"");
-        sb.append("DataType=" + dataType.getValue() + "\n");
-        sb.append("id=" + id.getValue() + "\n");
-        sb.append("Type=" + forkInit.getType() + "\n");
-        sb.append("];");
+        index = forkInit.visit(thisNode, index, sb);
 
+        sb.append(String.format("%s -> %s;\n", rootNode, thisNode));
 
-
-        return sb.toString();
+        return index;
     }
 }

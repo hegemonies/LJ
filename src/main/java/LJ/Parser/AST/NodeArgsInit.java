@@ -3,9 +3,9 @@ package LJ.Parser.AST;
 import LJ.Lexer.Token;
 
 public class NodeArgsInit implements Node {
-    Token dataType;
-    Token id;
-    TypeInit typeInit; // var or array
+    private Token dataType;
+    private Token id;
+    private TypeInit typeInit; // var or array
 
     public void setDataType(Token dataType) {
         this.dataType = dataType;
@@ -20,19 +20,17 @@ public class NodeArgsInit implements Node {
     }
 
     @Override
-    public String visit(String nameRootNode, int index) {
-        StringBuilder sb = new StringBuilder();
+    public int visit(String rootNode, int index, StringBuilder sb) {
+        String nameNode = String.format("\"args%d\" ", index++);
 
-        String nameNode = "\"args" + index + "\"";
+        sb.append(String.format("%s [label=\"DataType=%s\nid=%s\nType=%s\"];\n",
+                nameNode,
+                dataType.getValue(),
+                id.getValue(),
+                typeInit));
 
-        sb.append(nameNode);
-        sb.append("[" + "DataType=" + dataType.getValue() + "\n");
-        sb.append("id=" + id.getValue() + "\n");
-        sb.append("TypeInit=" + typeInit);
-        sb.append("];\n");
+        sb.append(String.format("%s -> %s;\n", rootNode, nameNode));
 
-        sb.append(nameRootNode + " -> " + nameNode + ";");
-
-        return sb.toString();
+        return index;
     }
 }

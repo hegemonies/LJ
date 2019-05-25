@@ -1,6 +1,6 @@
 package LJ.Parser.AST.Inits;
 
-import LJ.Parser.AST.NodeExpression;
+import LJ.Parser.AST.Statement.NodeExpression;
 import LJ.Parser.AST.TypeInit;
 
 public class ForkInitVar extends ForkInit {
@@ -16,8 +16,7 @@ public class ForkInitVar extends ForkInit {
     }
 
     @Override
-    public String visit() {
-
-        return null;
+    public int visit(String rootName, int index, StringBuilder sb) {
+        return expression.visit(rootName, index, sb);
     }
 }

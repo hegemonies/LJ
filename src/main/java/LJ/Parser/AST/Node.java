@@ -1,5 +1,5 @@
 package LJ.Parser.AST;
 
 public interface Node {
-    String visit(String nameRootNode, int index);
+    int visit(String rootNode, int index, StringBuilder sb);
 }

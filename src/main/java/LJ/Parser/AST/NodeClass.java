@@ -28,33 +28,30 @@ public class NodeClass implements Node {
         initList.add(init);
     }
 
-    public String wrapperVisit() { // start point for wrapper GraphViz
+    public String wrapperVisit(int startIndex) { // start point for wrapper GraphViz
         StringBuilder sb = new StringBuilder();
 
         sb.append("digraph AST {\n" +
                 "node [shape=\"circle\", style=\"filled\", margin=\"0.01\"];\n");
-        sb.append(this.visit());
+        String rootNode = String.format("\"%s%d\"", "class", startIndex++);
+        startIndex = this.visit(rootNode, startIndex, sb);
         sb.append("}");
 
         return sb.toString();
     }
 
     @Override
-    public String visit() {
-        StringBuilder sb = new StringBuilder();
+    public int visit(String rootNode, int index, StringBuilder sb) {
+        sb.append(String.format("%s [label=\"", rootNode));
+        sb.append(String.format("ModAccess=%s\n", modAccessToken.getValue()));
+        sb.append(String.format("id=%s\"];\n", idToken.getValue()));
 
-        sb.append("\"class\" [label=");
-        sb.append("ModAccess=").append(modAccessToken.getValue()).append("\n");
-        sb.append("id=").append(idToken.getValue()).append("\n");
-        sb.append("];\n");
-
-        int index = 0;
         for (NodeInit nodeInit : initList) {
-            sb.append(nodeInit.visit(index++));
+            index = nodeInit.visit(rootNode, index++, sb);
         }
 
+        index = mainMethod.visit(rootNode, index, sb);
 
-
-        return null;
+        return index;
     }
 }

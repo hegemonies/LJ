@@ -5,7 +5,7 @@ import LJ.Parser.AST.TypeInit;
 public abstract class ForkInit {
     TypeInit type;
     public abstract void chooseType();
-    public abstract String visit(String nameRootNode);
+    public abstract int visit(String rootName, int index, StringBuilder sb);
 
     public TypeInit getType() {
         return type;
