@@ -1,7 +1,7 @@
 package LJ.Parser.AST.Value;
 
 public class Number extends GenericValue {
-    boolean isNegative;
+    private boolean isNegative;
 
     public void setNegative(boolean isNegative) {
         this.isNegative = isNegative;
@@ -9,14 +9,20 @@ public class Number extends GenericValue {
 
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
-        String thisNode = String.format("\"number%d\"", index++);
+        String nameNode = "NUMBER";
+        String labelNameNode = String.format("\"%s%d\"",
+                nameNode,
+                index++);
 
-        sb.append(String.format("%s [label=\"%s%s\"];\n",
-                thisNode,
-                isNegative ? "-" : "",
-                getValue()));
+        String negative = isNegative ? "-" : "";
 
-        sb.append(String.format("%s -> %s;\n", rootNode, thisNode));
+        sb.append(String.format("%s [label=\"%s\\n%s%s\"];\n",
+                labelNameNode,
+                nameNode,
+                negative,
+                getValue().getValue()));
+
+        sb.append(String.format("%s -> %s;\n", rootNode, labelNameNode));
 
         return index;
     }
