@@ -24,7 +24,7 @@ public class NodeInit extends NodeStatement {
     public int visit(String rootNode, int index, StringBuilder sb) {
         String thisNode = String.format("\"init%d\"", index++);
 
-        sb.append(String.format("%s [label=\"DataType=%s\nid=%s\nType=%s\"];\n",
+        sb.append(String.format("%s [label=\"INIT\\nDataType=%s\\nid=%s\\nType=%s\"];\n",
                 thisNode,
                 dataType.getValue(),
                 id.getValue(),

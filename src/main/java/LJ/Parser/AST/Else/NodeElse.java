@@ -12,6 +12,6 @@ public class NodeElse implements Node {
 
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
-        return 0;
+        return index;
     }
 }

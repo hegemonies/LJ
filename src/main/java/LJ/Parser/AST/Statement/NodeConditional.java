@@ -30,19 +30,37 @@ public class NodeConditional extends NodeStatement {
 
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
-        String thisNode = String.format("\"%s%d\"", "IF", index++);
+        String nameNode = "IF";
+        String labelNameNode = String.format("\"%s%d\"",
+                nameNode,
+                index++);
 
-        sb.append(String.format("%s [label=\"IF\"];\n", thisNode));
+        sb.append(String.format("%s [label=\"%s\"];\n",
+                labelNameNode,
+                nameNode));
 
-        index = expression.visit(thisNode, index, sb);
+        index = expression.visit(labelNameNode, index, sb);
 
-        for (NodeStatement statement : statementList) {
-            index = statement.visit(thisNode, index, sb);
+        if (statementList.size() > 0) {
+            String nameStatementNode = "STATEMENTS";
+            String labelNameStatementNode = String.format("\"%s%d\"", nameStatementNode, index++);
+
+            sb.append(String.format("%s [label=\"%s\"];\n",
+                    labelNameStatementNode,
+                    nameStatementNode));
+
+            for (NodeStatement statement : statementList) {
+                index = statement.visit(labelNameStatementNode, index++, sb);
+            }
+
+            sb.append(String.format("%s -> %s;\n", labelNameNode, labelNameStatementNode));
         }
 
-        index = elseNode.visit(thisNode, index, sb);
+        if (elseNode != null) {
+            index = elseNode.visit(labelNameNode, index, sb);
+        }
 
-        sb.append(String.format("%s -> %s;\n", rootNode, thisNode));
+        sb.append(String.format("%s -> %s;\n", rootNode, labelNameNode));
 
         return index;
     }

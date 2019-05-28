@@ -32,26 +32,30 @@ public class NodeClass implements Node {
         StringBuilder sb = new StringBuilder();
 
         sb.append("digraph AST {\n" +
-                "node [shape=\"circle\", style=\"filled\", margin=\"0.01\"];\n");
-        String rootNode = String.format("\"%s%d\"", "class", startIndex++);
+                "node [shape=\"box\", style=\"filled\", margin=\"0.1\"];\n");
+        String rootNode = "class";
         startIndex = this.visit(rootNode, startIndex, sb);
         sb.append("}");
+
+        System.out.println(String.format("Total %d nodes", startIndex));
 
         return sb.toString();
     }
 
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
-        sb.append(String.format("%s [label=\"ModAccess=%s\nid=%s\"];\n",
+        String labelRootName = String.format("\"%s%d\"", rootNode, index++);
+        sb.append(String.format("%s [label=\"%s\\nModAccess=%s\\nid=%s\"];\n",
+                labelRootName,
                 rootNode,
                 modAccessToken.getValue(),
                 idToken.getValue()));
 
         for (NodeInit nodeInit : initList) {
-            index = nodeInit.visit(rootNode, index++, sb);
+            index = nodeInit.visit(labelRootName, index++, sb);
         }
 
-        index = mainMethod.visit(rootNode, index, sb);
+        index = mainMethod.visit(labelRootName, index, sb);
 
         return index;
     }

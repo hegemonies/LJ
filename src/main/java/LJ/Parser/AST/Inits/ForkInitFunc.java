@@ -27,23 +27,33 @@ public class ForkInitFunc extends ForkInit {
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
         if (nodeArgsInitList.size() > 0) {
-            String argsNode = String.format("\"%s%d\"", "ARGS", index++);
+            String nameArgsNode = "ARGS";
+            String labelArgsNode = String.format("\"%s%d\"", nameArgsNode, index++);
+
+            sb.append(String.format("%s [label=\"%s\"];\n",
+                    labelArgsNode,
+                    nameArgsNode));
 
             for (NodeArgsInit nodeArgsInit : nodeArgsInitList) {
-                index = nodeArgsInit.visit(argsNode, index++, sb);
+                index = nodeArgsInit.visit(labelArgsNode, index++, sb);
             }
 
-            sb.append(String.format("%s -> %s;\n", rootNode, argsNode));
+            sb.append(String.format("%s -> %s;\n", rootNode, labelArgsNode));
         }
 
         if (statementList.size() > 0) {
-            String statementNode = String.format("\"%s%d\"", "STATEMENTS", index++);
+            String nameStatementNode = "STATEMENT";
+            String labelNameStatementNode = String.format("\"%s%d\"", nameStatementNode, index++);
+
+            sb.append(String.format("%s [label=\"%s\"];\n",
+                    labelNameStatementNode,
+                    nameStatementNode));
 
             for (NodeStatement statement : statementList) {
-                index = statement.visit(statementNode, index++, sb);
+                index = statement.visit(labelNameStatementNode, index++, sb);
             }
 
-            sb.append(String.format("%s -> %s;\n", rootNode, statementNode));
+            sb.append(String.format("%s -> %s;\n", rootNode, labelNameStatementNode));
         }
 
         return index;

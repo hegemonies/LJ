@@ -16,11 +16,18 @@ public class NodeReturn extends NodeStatement {
 
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
-        String thisNode = String.format("\"RETURN%d\"", index++);
+        String nameNode = "RETURN";
+        String labelNameNode = String.format("\"%s%d\"",
+                nameNode,
+                index++);
 
-        index = expression.visit(thisNode, index, sb);
+        sb.append(String.format("%s [label=\"%s\"];\n",
+                labelNameNode,
+                nameNode));
 
-        sb.append(String.format("%s -> %s;\n", rootNode, thisNode));
+        index = expression.visit(labelNameNode, index, sb);
+
+        sb.append(String.format("%s -> %s;\n", rootNode, labelNameNode));
 
         return index;
     }

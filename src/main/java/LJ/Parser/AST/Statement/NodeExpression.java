@@ -52,30 +52,38 @@ public class NodeExpression extends NodeStatement {
 
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
-        String thisNode = String.format("\"Expression%d\"", index);
-        String operatorNode = String.format("\"%s%d\"", operator.getValue(), index++);
+        String nameNode = "EXPRESSION";
+        String labelNameNode = String.format("\"%s%d\"",
+                nameNode,
+                index);
+        String operatorNode;
         String pickUpNode;
 
+        sb.append(String.format("%s [label=\"%s\"];\n",
+                labelNameNode,
+                nameNode));
+
         if (operator != null) {
+            operatorNode = String.format("\"%s%d\"", operator.getValue(), index++);
             pickUpNode = operatorNode;
         } else {
-            pickUpNode = thisNode;
+            pickUpNode = labelNameNode;
         }
 
         if (lValue != null) {
-            index = lValue.visit(operatorNode, index, sb);
+            index = lValue.visit(pickUpNode, index, sb);
         }
         if (lExpression != null) {
-            index = lExpression.visit(operatorNode, index, sb);
+            index = lExpression.visit(pickUpNode, index, sb);
         }
         if (rValue != null) {
-            index = rValue.visit(operatorNode, index, sb);
+            index = rValue.visit(pickUpNode, index, sb);
         }
         if (rExpression != null) {
-            index = rExpression.visit(operatorNode, index, sb);
+            index = rExpression.visit(pickUpNode, index, sb);
         }
 
-        sb.append(String.format("%s -> %s;\n", rootNode, thisNode));
+        sb.append(String.format("%s -> %s;\n", rootNode, pickUpNode));
 
         return index;
     }

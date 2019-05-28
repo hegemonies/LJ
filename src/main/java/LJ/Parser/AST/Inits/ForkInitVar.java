@@ -4,7 +4,7 @@ import LJ.Parser.AST.Statement.NodeExpression;
 import LJ.Parser.AST.TypeInit;
 
 public class ForkInitVar extends ForkInit {
-    NodeExpression expression;
+    private NodeExpression expression;
 
     public void setExpression(NodeExpression expression) {
         this.expression = expression;
@@ -17,6 +17,17 @@ public class ForkInitVar extends ForkInit {
 
     @Override
     public int visit(String rootName, int index, StringBuilder sb) {
-        return expression.visit(rootName, index, sb);
+        String nameNode = "VAR";
+        String labelNameNode = String.format("\"%s%d\"",
+                nameNode,
+                index++);
+
+        sb.append(String.format("%s [label=\"%s\"];\n",
+                labelNameNode,
+                nameNode));
+
+        index = expression.visit(labelNameNode, index, sb);
+
+        return index;
     }
 }

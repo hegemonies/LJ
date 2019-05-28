@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NodeJustElse extends NodeElse {
-    List<NodeStatement> statementList = new ArrayList<>();
+    private List<NodeStatement> statementList = new ArrayList<>();
 
     public void addStatement(NodeStatement statement) {
         statementList.add(statement);
@@ -14,13 +14,31 @@ public class NodeJustElse extends NodeElse {
 
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
-        String thisNode = String.format("\"ELSE%d\"", index++);
+        String nameNode = "ELSE";
+        String labelNameNode = String.format("\"%s%d\"",
+                nameNode,
+                index++);
 
-        for (NodeStatement statement : statementList) {
-            index = statement.visit(thisNode, index, sb);
+        sb.append(String.format("%s [label=\"%s\"];\n",
+                labelNameNode,
+                nameNode));
+
+        if (statementList.size() > 0) {
+            String nameStatementNode = "STATEMENTS";
+            String labelNameStatementNode = String.format("\"%s%d\"", nameStatementNode, index++);
+
+            sb.append(String.format("%s [label=\"%s\"];\n",
+                    labelNameStatementNode,
+                    nameStatementNode));
+
+            for (NodeStatement statement : statementList) {
+                index = statement.visit(labelNameStatementNode, index++, sb);
+            }
+
+            sb.append(String.format("%s -> %s;\n", labelNameNode, labelNameStatementNode));
         }
 
-        sb.append(String.format("%s -> %s;\n", rootNode, thisNode));
+        sb.append(String.format("%s -> %s;\n", rootNode, labelNameNode));
 
         return index;
     }

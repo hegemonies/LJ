@@ -23,7 +23,8 @@ class Compiler {
 
         Parser parser = new Parser(new ListLexer(lexer));
         parser.go();
-        parser.showTree();
+//        parser.showTree();
+        parser.printTreeToFile();
     }
 
     private static void printSourceCode() {
@@ -31,6 +32,6 @@ class Compiler {
         System.out.println("\tSource code:");
         for (String string : src_data.split("\n")) {
             System.out.printf("%s\n", count++ + ". " + string + "\n");
-        }
+    }
     }
 }

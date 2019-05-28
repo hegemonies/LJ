@@ -45,13 +45,33 @@ public class NodeMainMethod implements Node {
 
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
-        String thisNode = String.format("\"MainMethod%d\"", index++);
+        String nameNode = "MAINMETHOD";
+        String labelNameNode = String.format("\"%s%d\"",
+                nameNode,
+                index++);
 
-        for (NodeStatement statement : statementList) {
-            index = statement.visit(thisNode, index, sb);
+        sb.append(String.format("%s [label=\"%s\"];\n",
+                labelNameNode,
+                nameNode));
+
+        //
+        if (statementList.size() > 0) {
+            String nameStatementNode = "STATEMENTS";
+            String labelNameStatementNode = String.format("\"%s%d\"", nameStatementNode, index++);
+
+            sb.append(String.format("%s [label=\"%s\"];\n",
+                    labelNameStatementNode,
+                    nameStatementNode));
+
+            for (NodeStatement statement : statementList) {
+                index = statement.visit(labelNameStatementNode, index++, sb);
+            }
+
+            sb.append(String.format("%s -> %s;\n", labelNameNode, labelNameStatementNode));
         }
+        //
 
-        sb.append(String.format("%s -> %s;\n", rootNode, thisNode));
+        sb.append(String.format("%s -> %s;\n", rootNode, labelNameNode));
 
         return index;
     }

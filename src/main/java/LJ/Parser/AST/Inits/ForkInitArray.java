@@ -23,14 +23,19 @@ public class ForkInitArray extends ForkInit {
 
     @Override
     public int visit(String rootName, int indexNode, StringBuilder sb) {
-        String thisNode = String.format("\"ARRAY%d\"", indexNode++);
-        sb.append(String.format("%s [label=\"DataType=%s\"];\n",
-                thisNode,
+        String nameNode = "ARRAY";
+        String labelNameNode = String.format("\"%s%d\"",
+                "ARRAY",
+                indexNode++);
+
+        sb.append(String.format("%s [label=\"%s\\nDataType=%s\"];\n",
+                labelNameNode,
+                nameNode,
                 dataType.getValue()));
 
-        indexNode = this.index.visit(thisNode, indexNode, sb);
+        indexNode = this.index.visit(labelNameNode, indexNode, sb);
 
-        sb.append(String.format("%s -> %s;\n", rootName, thisNode));
+        sb.append(String.format("%s -> %s;\n", rootName, labelNameNode));
 
         return indexNode;
     }

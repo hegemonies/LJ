@@ -11,11 +11,18 @@ public class NodeIfElse extends NodeElse {
 
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
-        String thisNode = String.format("\"ELSE%d\"", index++);
+        String nameNode = "ELSE";
+        String labelNameNode = String.format("\"%s%d\"",
+                nameNode,
+                index++);
 
-        index = conditional.visit(thisNode, index, sb);
+        sb.append(String.format("%s [label=\"%s\"];\n",
+                labelNameNode,
+                nameNode));
 
-        sb.append(String.format("%s -> %s;\n", rootNode, thisNode));
+        index = conditional.visit(labelNameNode, index, sb);
+
+        sb.append(String.format("%s -> %s;\n", rootNode, labelNameNode));
 
         return index;
     }

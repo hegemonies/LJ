@@ -6,7 +6,7 @@ public class ArrayMemberNumber extends ArrayMember {
     private Number numberMember;
 
     public ArrayMemberNumber(Number parseNumber) {
-        this.numberMember = numberMember;
+        this.numberMember = parseNumber;
     }
 
     public Number getNumberMember() {

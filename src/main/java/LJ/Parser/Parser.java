@@ -17,6 +17,8 @@ import LJ.Parser.AST.Value.Number;
 import LJ.Parser.ParserException.CriticalProductionException;
 import LJ.Parser.ParserException.OptionalProductionException;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class Parser {
     public void go() {
         try {
             listLexer.match("program");
+            parseProgram();
         } catch (CriticalProductionException e) {
             e.printStackTrace();
         }
@@ -39,6 +42,17 @@ public class Parser {
     public void showTree() {
         int startIndex = 0;
         System.out.println(root.wrapperVisit(startIndex));
+    }
+
+    public void printTreeToFile() {
+        int startIndex = 0;
+        String filename = "tree.graph";
+
+        try (FileWriter fw = new FileWriter(filename, false)) {
+            fw.write(root.wrapperVisit(startIndex));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -458,7 +472,12 @@ public class Parser {
         listLexer.match("id");
 
         GenericValue node = parseVExprChanger();
-        node.setValue(savingTokenID);
+        if (node != null) {
+            node.setValue(savingTokenID);
+        } else {
+            node = new GenericValue();
+            node.setValue(savingTokenID);
+        }
 
         return node;
     }
@@ -782,7 +801,7 @@ public class Parser {
      *      <valueExpr>
      * @throws CriticalProductionException
      */
-    private void parseGroup(NodeExpression node) throws CriticalProductionException {
+    private void parseGroup(NodeExpression node) throws CriticalProductionException { // todo need to check
         String curTypeToken = listLexer.getLookahead().getType();
 
         if (curTypeToken.equals("l_paren")) {

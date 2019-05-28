@@ -14,7 +14,9 @@ public class CallArrayMember extends GenericValue {
     public int visit(String rootNode, int index, StringBuilder sb) {
         String thisNode = String.format("\"CallArrayMember%d\"", index);
 
-        sb.append(String.format("%s [label=\"id=%s\"];\n", value.getValue()));
+        sb.append(String.format("%s [label=\"id=%s\"];\n",
+                thisNode,
+                value.getValue()));
 
         index = arrayMember.visit(thisNode, index, sb);
 
