@@ -53,22 +53,24 @@ public class NodeExpression extends NodeStatement {
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
         String nameNode = "EXPRESSION";
-        String labelNameNode = String.format("\"%s%d\"",
-                nameNode,
-                index);
-        String operatorNode;
         String pickUpNode;
 
-        sb.append(String.format("%s [label=\"%s\"];\n",
-                labelNameNode,
-                nameNode));
-
         if (operator != null) {
-            operatorNode = String.format("\"%s%d\"", operator.getValue(), index++);
-            pickUpNode = operatorNode;
+            String operatorNameNode = operator.getValue().getValue();
+            String operatorLabelNameNode = String.format("\"%s%d\"",
+                    operatorNameNode,
+                    index++) ;
+            pickUpNode = operatorLabelNameNode;
         } else {
+            String labelNameNode = String.format("\"%s%d\"",
+                    nameNode,
+                    index);
             pickUpNode = labelNameNode;
         }
+
+        sb.append(String.format("%s [label=\"%s\"];\n",
+                pickUpNode,
+                nameNode));
 
         if (lValue != null) {
             index = lValue.visit(pickUpNode, index, sb);

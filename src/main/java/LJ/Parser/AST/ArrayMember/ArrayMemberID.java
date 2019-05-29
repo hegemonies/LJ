@@ -15,13 +15,17 @@ public class ArrayMemberID extends ArrayMember {
 
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
-        String thisNode = String.format("\"id%d\"", index++);
+        String nameNode = "AR_MEM_ID";
+        String labelNameNode = String.format("\"%s%d\"",
+                nameNode,
+                index++);
 
-        sb.append(String.format("%s [label=\"%s\"];\n",
-                thisNode,
+        sb.append(String.format("%s [label=\"%s\\n%s\"];\n",
+                labelNameNode,
+                nameNode,
                 id.getValue()));
 
-        sb.append(String.format("%s -> %s;\n", rootNode, thisNode));
+        sb.append(String.format("%s -> %s;\n", rootNode, labelNameNode));
 
         return index;
     }

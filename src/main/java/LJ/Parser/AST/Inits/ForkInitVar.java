@@ -28,6 +28,10 @@ public class ForkInitVar extends ForkInit {
 
         index = expression.visit(labelNameNode, index, sb);
 
+        sb.append(String.format("%s -> %s;\n",
+                rootName,
+                labelNameNode));
+
         return index;
     }
 }

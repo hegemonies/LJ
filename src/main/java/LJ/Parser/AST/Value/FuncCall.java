@@ -1,5 +1,7 @@
 package LJ.Parser.AST.Value;
 
+import LJ.Parser.AST.Statement.NodeStatement;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,17 +15,32 @@ public class FuncCall extends GenericValue {
 
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
-        String thisNode = String.format("\"FuncCall%d\"", index++);
+        String nameNode = "FUNCCAL";
+        String labelNameNode = String.format("\"%s%d\"",
+                nameNode,
+                index++);
 
-        sb.append(String.format("%s [label=\"id=%s\"];\n",
-                thisNode,
+        sb.append(String.format("%s [label=\"%s\\nid=%s\"];\n",
+                labelNameNode,
+                nameNode,
                 value.getValue()));
 
+        //
+        String nameGenerticValue = "VALUES";
+        String labelGenerticValue = String.format("\"%s%d\"", nameGenerticValue, index++);
+
+        sb.append(String.format("%s [label=\"%s\"];\n",
+                labelGenerticValue,
+                nameGenerticValue));
+
         for (GenericValue argCall : argsCall) {
-            index = argCall.visit(thisNode, index, sb);
+            index = argCall.visit(labelGenerticValue, index++, sb);
         }
 
-        sb.append(String.format("%s -> %s;\n", rootNode, thisNode));
+        sb.append(String.format("%s -> %s;\n", labelNameNode, labelGenerticValue));
+        //
+
+        sb.append(String.format("%s -> %s;\n", rootNode, labelNameNode));
 
         return index;
     }

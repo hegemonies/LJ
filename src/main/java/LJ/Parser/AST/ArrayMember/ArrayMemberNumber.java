@@ -15,7 +15,20 @@ public class ArrayMemberNumber extends ArrayMember {
 
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
-        index = numberMember.visit(rootNode, index, sb);
+        String nameNode = "AR_MEM_NUM";
+        String labelNameNode = String.format("\"%s%d\"",
+                nameNode,
+                index++);
+
+        sb.append(String.format("%s [label=\"%s\"];\n",
+                labelNameNode,
+                nameNode));
+
+        index = numberMember.visit(labelNameNode, index, sb);
+
+        sb.append(String.format("%s -> %s;\n",
+                rootNode,
+                labelNameNode));
 
         return index;
     }
