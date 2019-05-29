@@ -808,7 +808,15 @@ public class Parser {
             listLexer.match("l_paren");
             NodeExpression expression = new NodeExpression();
             parseArithmetic(expression);
-            node.setlExpression(expression);
+
+            if (node.getlExpression() == null) {
+                node.setlExpression(expression);
+            } else if (node.getrExpression() == null) {
+                node.setrExpression(expression);
+            } else {
+                System.out.println("ERROR in parseGroup");
+            }
+
             listLexer.match("r_paren");
             parseExprFork(node);
         } else if (curTypeToken.equals("id") ||

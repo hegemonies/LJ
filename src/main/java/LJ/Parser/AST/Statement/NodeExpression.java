@@ -52,40 +52,37 @@ public class NodeExpression extends NodeStatement {
 
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
-        String nameNode = "EXPRESSION";
         String pickUpNode;
+        String pickUpLabel;
 
         if (operator != null) {
-            String operatorNameNode = operator.getValue().getValue();
-            String operatorLabelNameNode = String.format("\"%s%d\"",
-                    operatorNameNode,
-                    index++) ;
-            pickUpNode = operatorLabelNameNode;
+            pickUpNode = operator.getValue().getValue();
         } else {
-            String labelNameNode = String.format("\"%s%d\"",
-                    nameNode,
-                    index);
-            pickUpNode = labelNameNode;
+            pickUpNode = "EXPRESSION";
         }
+
+        pickUpLabel = String.format("\"%s%d\"",
+                pickUpNode,
+                index++);
 
         sb.append(String.format("%s [label=\"%s\"];\n",
-                pickUpNode,
-                nameNode));
+                pickUpLabel,
+                pickUpNode));
 
         if (lValue != null) {
-            index = lValue.visit(pickUpNode, index, sb);
+            index = lValue.visit(pickUpLabel, index, sb);
         }
         if (lExpression != null) {
-            index = lExpression.visit(pickUpNode, index, sb);
+            index = lExpression.visit(pickUpLabel, index, sb);
         }
         if (rValue != null) {
-            index = rValue.visit(pickUpNode, index, sb);
+            index = rValue.visit(pickUpLabel, index, sb);
         }
         if (rExpression != null) {
-            index = rExpression.visit(pickUpNode, index, sb);
+            index = rExpression.visit(pickUpLabel, index, sb);
         }
 
-        sb.append(String.format("%s -> %s;\n", rootNode, pickUpNode));
+        sb.append(String.format("%s -> %s;\n", rootNode, pickUpLabel));
 
         return index;
     }

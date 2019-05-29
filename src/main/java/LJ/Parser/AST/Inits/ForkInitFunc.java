@@ -42,7 +42,7 @@ public class ForkInitFunc extends ForkInit {
         }
 
         if (statementList.size() > 0) {
-            String nameStatementNode = "STATEMENT";
+            String nameStatementNode = "STATEMENTS";
             String labelNameStatementNode = String.format("\"%s%d\"", nameStatementNode, index++);
 
             sb.append(String.format("%s [label=\"%s\"];\n",
