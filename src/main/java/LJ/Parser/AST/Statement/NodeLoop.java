@@ -22,6 +22,10 @@ public class NodeLoop extends NodeStatement {
         statementList.add(statement);
     }
 
+    public List<NodeStatement> getStatementList() {
+        return statementList;
+    }
+
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
         String nameNode = "WHILE";

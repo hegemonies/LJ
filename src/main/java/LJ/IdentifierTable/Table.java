@@ -1,44 +1,87 @@
 package LJ.IdentifierTable;
 
+import LJ.Parser.AST.Else.NodeJustElse;
 import LJ.Parser.AST.Inits.*;
 import LJ.Parser.AST.Node;
 import LJ.Parser.AST.NodeClass;
+import LJ.Parser.AST.NodeMainMethod;
+import LJ.Parser.AST.Statement.NodeConditional;
+import LJ.Parser.AST.Statement.NodeLoop;
+import LJ.Parser.AST.Statement.NodeStatement;
 
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
- * todo may be need remove WrapperAST
+ * TODO add a method to print a table. I wonder how it will be?
  */
 
-public class Table {
+public class Table implements GenericUnit {
     private Map<String, GenericUnit> mainTable = new HashMap<>();
 
     public void go(NodeClass root) {
         next(root);
     }
 
-    Map<String, GenericUnit> next(Node node) { // todo need to end this method
+    Map<String, GenericUnit> next(Node node) { // todo may be it work
         if (node instanceof NodeClass) {
             for (NodeInit nodeInit : ((NodeClass) node).getInitList()) {
-                if (nodeInit.getForkInit() != null) {
-                    ForkInit tmpForkInit = nodeInit.getForkInit();
-
-                    if (tmpForkInit instanceof ForkInitVar ||
-                            tmpForkInit instanceof ForkInitArray) {
-                        mainTable.put(nodeInit.getId().getValue(), new IDUnit(nodeInit));
-                    } else if (tmpForkInit instanceof ForkInitFunc) {
-                        Table newTable = new Table();
-                        mainTable.put(nodeInit.getId().getValue(), new TableUnit(newTable.next(nodeInit)));
-                    }
-                } else {
-                    mainTable.put(nodeInit.getId().getValue(), new IDUnit(nodeInit));
-                }
+                addInitNode(nodeInit);
             }
-        } else {
+            next(((NodeClass) node).getMainMethod());
+        } else if (node instanceof ForkInitFunc) {
+            for (NodeStatement statement : ((ForkInitFunc) node).getStatementList()) {
+                addStatement(statement);
+            }
+        } else if (node instanceof NodeConditional) {
+            for (NodeStatement statement : ((NodeConditional) node).getStatementList()) {
+                addStatement(statement);
+            }
 
+            if (((NodeConditional) node).getElseNode() != null) {
+                next(((NodeConditional) node).getElseNode());
+            }
+        } else if (node instanceof NodeLoop) {
+            for (NodeStatement statement : ((NodeLoop) node).getStatementList()) {
+                addStatement(statement);
+            }
+        } else if (node instanceof NodeJustElse) {
+            for (NodeStatement statement : ((NodeJustElse) node).getStatementList()) {
+                addStatement(statement);
+            }
+        } else if (node instanceof NodeMainMethod) {
+            for (NodeStatement statement : ((NodeMainMethod) node).getStatementList()) {
+                addStatement(statement);
+            }
         }
 
         return mainTable;
+    }
+
+    private void addInitNode(NodeInit nodeInit) {
+        if (nodeInit.getForkInit() != null) {
+            ForkInit tmpForkInit = nodeInit.getForkInit();
+
+            if (tmpForkInit instanceof ForkInitVar ||
+                    tmpForkInit instanceof ForkInitArray) {
+                mainTable.put(nodeInit.getId().getValue(), new IDUnit(nodeInit));
+            } else if (tmpForkInit instanceof ForkInitFunc) {
+                Table newTable = new Table();
+                newTable.next(tmpForkInit);
+                mainTable.put(nodeInit.getId().getValue(), newTable);
+            }
+        } else {
+            mainTable.put(nodeInit.getId().getValue(), new IDUnit(nodeInit));
+        }
+    }
+
+    private void addStatement(NodeStatement statement) {
+        if (statement instanceof NodeInit) {
+            addInitNode((NodeInit) statement);
+        } else if (statement instanceof NodeConditional ||
+                statement instanceof NodeLoop) {
+            next(statement);
+        }
     }
 }

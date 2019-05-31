@@ -1,5 +1,6 @@
 package LJ;
 
+import LJ.IdentifierTable.Table;
 import LJ.Lexer.Lexer;
 import LJ.Lexer.ListLexer;
 import LJ.Parser.AST.NodeClass;
@@ -24,6 +25,9 @@ class Compiler {
         NodeClass root = parser.go();
 //        parser.showTree();
         parser.printTreeToFile();
+
+        Table identifierTable = new Table();
+        identifierTable.go(root);
     }
 
     private static void printSourceCode() {

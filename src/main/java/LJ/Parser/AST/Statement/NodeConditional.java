@@ -28,6 +28,14 @@ public class NodeConditional extends NodeStatement {
         statementList.add(statement);
     }
 
+    public List<NodeStatement> getStatementList() {
+        return statementList;
+    }
+
+    public NodeElse getElseNode() {
+        return elseNode;
+    }
+
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
         String nameNode = "IF";

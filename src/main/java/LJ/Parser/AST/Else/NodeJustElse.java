@@ -12,6 +12,10 @@ public class NodeJustElse extends NodeElse {
         statementList.add(statement);
     }
 
+    public List<NodeStatement> getStatementList() {
+        return statementList;
+    }
+
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
         String nameNode = "ELSE";

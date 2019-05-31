@@ -19,6 +19,10 @@ public class ForkInitFunc extends ForkInit {
         statementList.add(node);
     }
 
+    public List<NodeStatement> getStatementList() {
+        return statementList;
+    }
+
     @Override
     public void chooseType() {
         type = TypeInit.FUNC;

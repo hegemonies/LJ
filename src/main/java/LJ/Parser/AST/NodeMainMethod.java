@@ -43,6 +43,10 @@ public class NodeMainMethod implements Node {
         statementList.add(statement);
     }
 
+    public List<NodeStatement> getStatementList() {
+        return statementList;
+    }
+
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
         String nameNode = "MAINMETHOD";
