@@ -2,7 +2,6 @@ package LJ.Parser;
 
 import LJ.Lexer.ListLexer;
 import LJ.Lexer.Token;
-import LJ.Parser.AST.*;
 import LJ.Parser.AST.ArrayMember.ArrayMember;
 import LJ.Parser.AST.ArrayMember.ArrayMemberID;
 import LJ.Parser.AST.ArrayMember.ArrayMemberNumber;
@@ -10,10 +9,14 @@ import LJ.Parser.AST.Else.NodeElse;
 import LJ.Parser.AST.Else.NodeIfElse;
 import LJ.Parser.AST.Else.NodeJustElse;
 import LJ.Parser.AST.Inits.*;
+import LJ.Parser.AST.NodeArgsInit;
+import LJ.Parser.AST.NodeClass;
+import LJ.Parser.AST.NodeMainMethod;
 import LJ.Parser.AST.Operator.Operator;
 import LJ.Parser.AST.Statement.*;
-import LJ.Parser.AST.Value.*;
+import LJ.Parser.AST.TypeInit;
 import LJ.Parser.AST.Value.Number;
+import LJ.Parser.AST.Value.*;
 import LJ.Parser.ParserException.CriticalProductionException;
 import LJ.Parser.ParserException.OptionalProductionException;
 
@@ -30,13 +33,16 @@ public class Parser {
         this.listLexer = listLexer;
     }
 
-    public void go() {
+    public NodeClass go() {
         try {
             listLexer.match("program");
             parseProgram();
+            return root;
         } catch (CriticalProductionException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 
     public void showTree() {

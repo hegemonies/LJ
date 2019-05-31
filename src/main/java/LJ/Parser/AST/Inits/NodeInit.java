@@ -20,6 +20,14 @@ public class NodeInit extends NodeStatement {
         this.forkInit = forkInit;
     }
 
+    public Token getId() {
+        return id;
+    }
+
+    public ForkInit getForkInit() {
+        return forkInit;
+    }
+
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
         String thisNode = String.format("\"init%d\"", index++);

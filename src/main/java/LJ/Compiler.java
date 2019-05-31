@@ -2,7 +2,7 @@ package LJ;
 
 import LJ.Lexer.Lexer;
 import LJ.Lexer.ListLexer;
-import LJ.Lexer.Type;
+import LJ.Parser.AST.NodeClass;
 import LJ.Parser.Parser;
 
 class Compiler {
@@ -16,13 +16,12 @@ class Compiler {
         }
         printSourceCode();
 
-        assert src_data != null;
         Lexer lexer = new Lexer(src_data);
         lexer.go();
         lexer.printOutput();
 
         Parser parser = new Parser(new ListLexer(lexer));
-        parser.go();
+        NodeClass root = parser.go();
 //        parser.showTree();
         parser.printTreeToFile();
     }

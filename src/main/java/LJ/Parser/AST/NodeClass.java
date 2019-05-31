@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NodeClass implements Node {
-    Token modAccessToken;
-    Token idToken;
-    List<NodeInit> initList = new ArrayList<>();
-    NodeMainMethod mainMethod;
+    private Token modAccessToken;
+    private Token idToken;
+    private List<NodeInit> initList = new ArrayList<>();
+    private NodeMainMethod mainMethod;
 
     public void setModAccessToken(Token modAccessToken) {
         this.modAccessToken = modAccessToken;
@@ -22,6 +22,15 @@ public class NodeClass implements Node {
 
     public void setMainMethod(NodeMainMethod mainMethod) {
         this.mainMethod = mainMethod;
+    }
+
+
+    public List<NodeInit> getInitList() {
+        return initList;
+    }
+
+    public NodeMainMethod getMainMethod() {
+        return mainMethod;
     }
 
     public void addInit(NodeInit init) {
