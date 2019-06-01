@@ -1,5 +1,5 @@
 public class Test {
-    int getMin(int[] array, int size) {
+    int getMin(int[] arr, int size) {
         int i = 0;
         int min = 999999;
         while (i < size) {

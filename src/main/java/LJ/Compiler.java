@@ -28,6 +28,7 @@ class Compiler {
 
         Table identifierTable = new Table();
         identifierTable.go(root);
+        identifierTable.printTable();
     }
 
     private static void printSourceCode() {

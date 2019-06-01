@@ -20,6 +20,10 @@ import java.util.Map;
 public class Table implements GenericUnit {
     private Map<String, GenericUnit> mainTable = new HashMap<>();
 
+    public Map<String, GenericUnit> getMainTable() {
+        return mainTable;
+    }
+
     public void go(NodeClass root) {
         next(root);
     }
@@ -82,6 +86,24 @@ public class Table implements GenericUnit {
         } else if (statement instanceof NodeConditional ||
                 statement instanceof NodeLoop) {
             next(statement);
+        }
+    }
+
+    public void printTable() {
+        printTable(this);
+    }
+
+    private void printTable(Table table) {
+        System.out.println("\n\tIdentifier Table:");
+
+        for (String key : table.getMainTable().keySet()) {
+            if (table.getMainTable().get(key) instanceof IDUnit) {
+                System.out.println(String.format("%s %s",
+                        key,
+                        table.getMainTable().get(key)));
+            } else if (table.getMainTable().get(key) instanceof Table) {
+                printTable((Table) table.getMainTable().get(key));
+            }
         }
     }
 }

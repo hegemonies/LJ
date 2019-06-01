@@ -4,7 +4,7 @@ node [shape="box", style="filled", margin="0.1"];
 "init1" [label="INIT\nDataType=int\nid=getMin\nType=FUNC"];
 "ARGS2" [label="ARGS"];
 "args3"  [label="DataType=int
-id=array
+id=arr
 Type=ARRAY"];
 "ARGS2" -> "args3" ;
 "args4"  [label="DataType=int
