@@ -807,7 +807,7 @@ public class Parser {
      *      <valueExpr>
      * @throws CriticalProductionException
      */
-    private void parseGroup(NodeExpression node) throws CriticalProductionException { // todo need to check
+    private void parseGroup(NodeExpression node) throws CriticalProductionException {
         String curTypeToken = listLexer.getLookahead().getType();
 
         if (curTypeToken.equals("l_paren")) {
@@ -837,7 +837,7 @@ public class Parser {
                 if (node.getrExpression() != null) {
                     parseGroup(node.getrExpression());
                 } else {
-                    System.out.println("ERROR in parseGroup"); // todo just for test
+                    System.out.println("ERROR in parseGroup");
                 }
             }
         } else {
