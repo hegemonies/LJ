@@ -1,5 +1,6 @@
 package LJ.IdentifierTable;
 
+import LJ.IdentifierTable.CustomerException.SemanticException;
 import LJ.Parser.AST.Else.NodeJustElse;
 import LJ.Parser.AST.Inits.*;
 import LJ.Parser.AST.Node;
@@ -21,11 +22,11 @@ public class Table implements GenericUnit {
         return mainTable;
     }
 
-    public void go(NodeClass root) {
+    public void go(NodeClass root) throws SemanticException {
         next(root);
     }
 
-    void next(Node node) {
+    void next(Node node) throws SemanticException {
         if (node instanceof NodeClass) {
             for (NodeInit nodeInit : ((NodeClass) node).getInitList()) {
                 addInitNode(nodeInit);
@@ -61,20 +62,45 @@ public class Table implements GenericUnit {
         }
     }
 
-    private void addInitNode(NodeInit nodeInit) {
+    private void addInitNode(NodeInit nodeInit) throws SemanticException {
         ForkInit tmpForkInit = nodeInit.getForkInit();
 
         if (tmpForkInit instanceof ForkInitVar ||
                 tmpForkInit instanceof ForkInitArray) {
-            mainTable.put(nodeInit.getId().getValue(), new IDUnit(nodeInit));
+            String tmpNameID = nodeInit.getId().getValue();
+
+            if (!containsKey(this, tmpNameID)) {
+                mainTable.put(tmpNameID, new IDUnit(nodeInit));
+            } else {
+                throw new SemanticException();
+            }
         } else if (tmpForkInit instanceof ForkInitFunc) {
-            Table newTable = new Table();
-            newTable.next(tmpForkInit);
-            mainTable.put(nodeInit.getId().getValue(), newTable);
+            String tmpNameID = nodeInit.getId().getValue();
+
+            if (!containsKey(this, tmpNameID)) {
+                Table newTable = new Table();
+                newTable.next(tmpForkInit);
+                mainTable.put(tmpNameID, newTable);
+            } else {
+                throw new SemanticException();
+            }
         }
     }
 
-    private void addStatement(NodeStatement statement) {
+    private boolean containsKey(Table table, String ckey) {
+        for (String key : table.getMainTable().keySet()) {
+            GenericUnit gu = table.getMainTable().get(key);
+            if (gu instanceof IDUnit && key.equals(ckey)) {
+                return false;
+            } else if (gu instanceof Table) {
+                ((Table) gu).containsKey((Table) gu, ckey);
+            }
+        }
+
+        return true;
+    }
+
+    private void addStatement(NodeStatement statement) throws SemanticException {
         if (statement instanceof NodeInit) {
             addInitNode((NodeInit) statement);
         } else if (statement instanceof NodeConditional ||
@@ -93,21 +119,19 @@ public class Table implements GenericUnit {
         System.out.println(String.format("\n\tTable %s:",
                 nameTable));
 
-        Set<String> id_keys = new TreeSet<>();
         Set<String> table_keys = new TreeSet<>();
 
         for (String key : table.getMainTable().keySet()) {
             if (table.getMainTable().get(key) instanceof IDUnit) {
-                id_keys.add(key);
+                System.out.println(String.format("%s %s",
+                        key,
+                        table.getMainTable().get(key)));
             } else if (table.getMainTable().get(key) instanceof Table) {
+                System.out.println(String.format("%s %s",
+                        key,
+                        table.getMainTable().get(key)));
                 table_keys.add(key);
             }
-        }
-
-        for (String id_key : id_keys) {
-            System.out.println(String.format("%s %s",
-                    id_key,
-                    table.getMainTable().get(id_key)));
         }
 
         for (String table_id : table_keys) {

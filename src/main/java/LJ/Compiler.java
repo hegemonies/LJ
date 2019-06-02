@@ -1,5 +1,6 @@
 package LJ;
 
+import LJ.IdentifierTable.CustomerException.SemanticException;
 import LJ.IdentifierTable.Table;
 import LJ.Lexer.Lexer;
 import LJ.Lexer.ListLexer;
@@ -27,7 +28,11 @@ class Compiler {
         parser.printTreeToFile();
 
         Table identifierTable = new Table();
-        identifierTable.go(root);
+        try {
+            identifierTable.go(root);
+        } catch (SemanticException e) {
+            e.printStackTrace();
+        }
         identifierTable.printTable();
     }
 
