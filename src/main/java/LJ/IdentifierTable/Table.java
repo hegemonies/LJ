@@ -98,7 +98,7 @@ public class Table implements GenericUnit {
         for (String key : mainTable.keySet()) {
             GenericUnit gu = mainTable.get(key);
 
-            if (gu instanceof ID && key.equals(ckey)) {
+            if (key.equals(ckey)) {
                 return true;
             }
         }
