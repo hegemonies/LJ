@@ -12,10 +12,6 @@ public class Test {
         return min;
     }
 
-    int getMin() {
-
-    }
-
     public static void main(String[] args) {
         int[] array = new int[3];
         array[0] = 2;

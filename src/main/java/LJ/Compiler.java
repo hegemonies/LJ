@@ -33,6 +33,7 @@ class Compiler {
         } catch (SemanticException e) {
             System.out.println(String.format("\nERROR [semantic]: %s\n",
                     e.getMessage()));
+            return;
         }
         identifierTable.printTable();
     }
