@@ -18,6 +18,10 @@ public class NodeLoop extends NodeStatement {
         this.expression = expression;
     }
 
+    public NodeExpression getExpression() {
+        return expression;
+    }
+
     public void addStatement(NodeStatement statement) {
         statementList.add(statement);
     }

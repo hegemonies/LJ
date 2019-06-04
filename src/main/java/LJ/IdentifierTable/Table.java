@@ -1,14 +1,18 @@
 package LJ.IdentifierTable;
 
 import LJ.IdentifierTable.CustomerException.SemanticException;
+import LJ.Parser.AST.ArrayMember.ArrayMember;
+import LJ.Parser.AST.ArrayMember.ArrayMemberID;
+import LJ.Parser.AST.ArrayMember.ArrayMemberNumber;
 import LJ.Parser.AST.Else.NodeJustElse;
 import LJ.Parser.AST.Inits.*;
 import LJ.Parser.AST.Node;
 import LJ.Parser.AST.NodeClass;
 import LJ.Parser.AST.NodeMainMethod;
-import LJ.Parser.AST.Statement.NodeConditional;
-import LJ.Parser.AST.Statement.NodeLoop;
-import LJ.Parser.AST.Statement.NodeStatement;
+import LJ.Parser.AST.Statement.*;
+import LJ.Parser.AST.Value.Attachment;
+import LJ.Parser.AST.Value.CallArrayMember;
+import LJ.Parser.AST.Value.GenericValue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -115,13 +119,69 @@ public class Table implements GenericUnit {
     private void addStatement(NodeStatement statement) throws SemanticException { // todo: add expression
         if (statement instanceof NodeInit) {
             addInitNode((NodeInit) statement);
-        } else if (statement instanceof NodeConditional ||
-                statement instanceof NodeLoop) {
-            Table newTable = new Table();
-            newTable.setParentTable(this);
-            newTable.next(statement);
-            mainTable.put(statement.toString(), newTable);
+        } else {
+            if (statement instanceof NodeConditional ||
+                    statement instanceof NodeLoop) {
+                Table newTable = new Table();
+                newTable.setParentTable(this);
+                newTable.next(statement);
+                mainTable.put(statement.toString(), newTable);
+            }
+
+            checkExpression(statement);
         }
+    }
+
+    private boolean checkExpression(NodeStatement statement) {
+        boolean result = false;
+        NodeExpression expr = null;
+
+        if (statement instanceof NodeLoop) {
+            expr = ((NodeLoop) statement).getExpression();
+        } else if (statement instanceof NodeConditional) {
+            expr = ((NodeConditional) statement).getExpression();
+        } else if (statement instanceof NodeReturn) {
+            expr = ((NodeReturn) statement).getExpression();
+        } else if (statement instanceof NodeExpression) {
+            expr = (NodeExpression) statement;
+        }
+
+        if (expr != null) {
+            GenericValue gv;
+            if ((gv = expr.getlValue()) != null) {
+                result = containsKey(gv.getValue().getValue());
+                checkGenericValue(gv);
+            }
+            if ((gv = expr.getrValue()) != null) {
+                result = containsKey(gv.getValue().getValue());
+            }
+
+            NodeExpression tmpExpr;
+            if ((tmpExpr = expr.getlExpression()) != null) {
+                result = checkExpression(tmpExpr);
+            }
+            if ((tmpExpr = expr.getrExpression()) != null) {
+                result = checkExpression(tmpExpr);
+            }
+        }
+
+        return result;
+    }
+
+    private boolean checkGenericValue(GenericValue gv) {
+        boolean result = false;
+
+        if (gv instanceof Attachment) {
+            result = checkExpression(((Attachment) gv).getExpression());
+        } else if (gv instanceof CallArrayMember) {
+            ArrayMember am = ((CallArrayMember) gv).getArrayMember();
+
+            if (am instanceof ArrayMemberID) {
+                result = containsKey(((ArrayMemberID) am).getId().getValue());
+            }
+        } // todo: need continue
+
+        return false;
     }
 
     public void printTable() {

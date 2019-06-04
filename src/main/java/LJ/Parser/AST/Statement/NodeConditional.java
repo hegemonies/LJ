@@ -24,6 +24,10 @@ public class NodeConditional extends NodeStatement {
         this.elseNode = elseNode;
     }
 
+    public NodeExpression getExpression() {
+        return expression;
+    }
+
     public void addStatement(NodeStatement statement) {
         statementList.add(statement);
     }

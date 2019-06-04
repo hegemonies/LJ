@@ -9,6 +9,10 @@ public class Attachment extends GenericValue {
         this.expression = expression;
     }
 
+    public NodeExpression getExpression() {
+        return expression;
+    }
+
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
         String nameNode = "ATTACHMENT";
@@ -16,9 +20,10 @@ public class Attachment extends GenericValue {
                 nameNode,
                 index++);
 
-        sb.append(String.format("%s [label=\"%s\"];\n",
+        sb.append(String.format("%s [label=\"%s\\nvalue=%s\"];\n",
                 labelNameNode,
-                nameNode));
+                nameNode,
+                value.getValue()));
 
         index = expression.visit(labelNameNode, index, sb);
 

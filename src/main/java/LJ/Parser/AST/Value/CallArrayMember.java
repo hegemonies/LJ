@@ -10,6 +10,10 @@ public class CallArrayMember extends GenericValue {
         this.arrayMember = arrayMember;
     }
 
+    public ArrayMember getArrayMember() {
+        return arrayMember;
+    }
+
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
         String nameNode = "CALL_AR_MEM";
