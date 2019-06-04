@@ -1,34 +1,34 @@
 digraph AST {
 node [shape="box", style="filled", margin="0.1"];
 "class0" [label="class\nModAccess=public\nid=Test"];
-"init1" [label="INIT\nDataType=int\nid=i\nType=VAR"];
-"VAR2" [label="VAR"];
-"EXPRESSION3" [label="EXPRESSION"];
-"NUMBER4" [label="NUMBER\n3"];
-"EXPRESSION3" -> "NUMBER4";
-"VAR2" -> "EXPRESSION3";
-"init1" -> "VAR2";
-"class0" -> "init1";
-"init5" [label="INIT\nDataType=int\nid=getMin\nType=FUNC"];
-"ARGS6" [label="ARGS"];
-"args7"  [label="DataType=int
+"init1" [label="INIT\nDataType=int\nid=getMin\nType=FUNC"];
+"ARGS2" [label="ARGS"];
+"args3"  [label="DataType=int
 id=arr
 Type=ARRAY"];
-"ARGS6" -> "args7" ;
-"args8"  [label="DataType=int
+"ARGS2" -> "args3" ;
+"args4"  [label="DataType=int
 id=size
 Type=VAR"];
-"ARGS6" -> "args8" ;
-"init5" -> "ARGS6";
-"STATEMENTS9" [label="STATEMENTS"];
-"init10" [label="INIT\nDataType=int\nid=i\nType=VAR"];
-"VAR11" [label="VAR"];
+"ARGS2" -> "args4" ;
+"init1" -> "ARGS2";
+"STATEMENTS5" [label="STATEMENTS"];
+"init6" [label="INIT\nDataType=int\nid=i\nType=VAR"];
+"VAR7" [label="VAR"];
+"EXPRESSION8" [label="EXPRESSION"];
+"NUMBER9" [label="NUMBER\n0"];
+"EXPRESSION8" -> "NUMBER9";
+"VAR7" -> "EXPRESSION8";
+"init6" -> "VAR7";
+"STATEMENTS5" -> "init6";
+"EXPRESSION10" [label="EXPRESSION"];
+"ATTACHMENT11" [label="ATTACHMENT"];
 "EXPRESSION12" [label="EXPRESSION"];
-"NUMBER13" [label="NUMBER\n0"];
+"NUMBER13" [label="NUMBER\n5"];
 "EXPRESSION12" -> "NUMBER13";
-"VAR11" -> "EXPRESSION12";
-"init10" -> "VAR11";
-"STATEMENTS9" -> "init10";
+"ATTACHMENT11" -> "EXPRESSION12";
+"EXPRESSION10" -> "ATTACHMENT11";
+"STATEMENTS5" -> "EXPRESSION10";
 "init14" [label="INIT\nDataType=int\nid=min\nType=VAR"];
 "VAR15" [label="VAR"];
 "EXPRESSION16" [label="EXPRESSION"];
@@ -36,7 +36,7 @@ Type=VAR"];
 "EXPRESSION16" -> "NUMBER17";
 "VAR15" -> "EXPRESSION16";
 "init14" -> "VAR15";
-"STATEMENTS9" -> "init14";
+"STATEMENTS5" -> "init14";
 "WHILE18" [label="WHILE"];
 "<19" [label="<"];
 "ID20" [label="ID\ni"];
@@ -80,15 +80,15 @@ Type=VAR"];
 "ATTACHMENT36" -> "+37";
 "EXPRESSION35" -> "ATTACHMENT36";
 "WHILE18" -> "EXPRESSION35";
-"STATEMENTS9" -> "WHILE18";
+"STATEMENTS5" -> "WHILE18";
 "RETURN40" [label="RETURN"];
 "EXPRESSION41" [label="EXPRESSION"];
 "ID42" [label="ID\nmin"];
 "EXPRESSION41" -> "ID42";
 "RETURN40" -> "EXPRESSION41";
-"STATEMENTS9" -> "RETURN40";
-"init5" -> "STATEMENTS9";
-"class0" -> "init5";
+"STATEMENTS5" -> "RETURN40";
+"init1" -> "STATEMENTS5";
+"class0" -> "init1";
 "MAINMETHOD43" [label="MAINMETHOD"];
 "STATEMENTS44" [label="STATEMENTS"];
 "init45" [label="INIT\nDataType=int\nid=array\nType=ARRAY"];

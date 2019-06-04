@@ -78,7 +78,7 @@ public class Table implements GenericUnit {
             if (!containsKey(tmpNameID)) {
                 mainTable.put(tmpNameID, new ID(nodeInit));
             } else {
-                throw new SemanticException();
+                throw new SemanticException(String.format("%s already init", tmpNameID));
             }
         } else if (tmpForkInit instanceof ForkInitFunc) {
             String tmpNameID = nodeInit.getId().getValue();
@@ -89,7 +89,7 @@ public class Table implements GenericUnit {
                 newTable.next(tmpForkInit);
                 mainTable.put(tmpNameID, newTable);
             } else {
-                throw new SemanticException();
+                throw new SemanticException(String.format("%s already init", tmpNameID));
             }
         }
     }

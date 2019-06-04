@@ -31,7 +31,8 @@ class Compiler {
         try {
             identifierTable.go(root);
         } catch (SemanticException e) {
-            e.printStackTrace();
+            System.out.println(String.format("\nERROR [semantic]: %s\n",
+                    e.getMessage()));
         }
         identifierTable.printTable();
     }
