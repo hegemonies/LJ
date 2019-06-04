@@ -112,7 +112,7 @@ public class Table implements GenericUnit {
         return result;
     }
 
-    private void addStatement(NodeStatement statement) throws SemanticException {
+    private void addStatement(NodeStatement statement) throws SemanticException { // todo: add expression
         if (statement instanceof NodeInit) {
             addInitNode((NodeInit) statement);
         } else if (statement instanceof NodeConditional ||
