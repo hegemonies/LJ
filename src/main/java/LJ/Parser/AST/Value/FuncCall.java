@@ -1,7 +1,5 @@
 package LJ.Parser.AST.Value;
 
-import LJ.Parser.AST.Statement.NodeStatement;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +9,10 @@ public class FuncCall extends GenericValue {
 
     public void setArgsCall(List<GenericValue> argsCall) {
         this.argsCall = argsCall;
+    }
+
+    public List<GenericValue> getArgsCall() {
+        return argsCall;
     }
 
     @Override

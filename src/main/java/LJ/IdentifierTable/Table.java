@@ -12,6 +12,7 @@ import LJ.Parser.AST.NodeMainMethod;
 import LJ.Parser.AST.Statement.*;
 import LJ.Parser.AST.Value.Attachment;
 import LJ.Parser.AST.Value.CallArrayMember;
+import LJ.Parser.AST.Value.FuncCall;
 import LJ.Parser.AST.Value.GenericValue;
 
 import java.util.HashMap;
@@ -116,7 +117,7 @@ public class Table implements GenericUnit {
         return result;
     }
 
-    private void addStatement(NodeStatement statement) throws SemanticException { // todo: add expression
+    private void addStatement(NodeStatement statement) throws SemanticException {
         if (statement instanceof NodeInit) {
             addInitNode((NodeInit) statement);
         } else {
@@ -128,7 +129,9 @@ public class Table implements GenericUnit {
                 mainTable.put(statement.toString(), newTable);
             }
 
-            checkExpression(statement);
+            if (!checkExpression(statement)) {
+                throw new SemanticException(String.format("%s not init", statement));
+            }
         }
     }
 
@@ -154,6 +157,7 @@ public class Table implements GenericUnit {
             }
             if ((gv = expr.getrValue()) != null) {
                 result = containsKey(gv.getValue().getValue());
+                checkGenericValue(gv);
             }
 
             NodeExpression tmpExpr;
@@ -179,9 +183,13 @@ public class Table implements GenericUnit {
             if (am instanceof ArrayMemberID) {
                 result = containsKey(((ArrayMemberID) am).getId().getValue());
             }
-        } // todo: need continue
+        } else if (gv instanceof FuncCall) {
+            for (GenericValue genericValue : ((FuncCall) gv).getArgsCall()) {
+                checkGenericValue(genericValue);
+            }
+        }
 
-        return false;
+        return result;
     }
 
     public void printTable() {

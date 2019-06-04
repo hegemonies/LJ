@@ -86,4 +86,27 @@ public class NodeExpression extends NodeStatement {
 
         return index;
     }
+
+    @Override
+    public String toString() {
+        String str = "";
+
+        if (lValue != null) {
+            str += lValue.getValue().getValue();
+        }
+        if (operator != null) {
+            str += operator.getValue().getValue();
+        }
+        if (rValue != null) {
+            str += " " + rValue.getValue().getValue();
+        }
+        if (lExpression != null) {
+            str += lExpression.toString();
+        }
+        if (rExpression != null) {
+            str += rExpression.toString();
+        }
+
+        return str;
+    }
 }
