@@ -2,10 +2,10 @@ package LJ.IdentifierTable;
 
 import LJ.Parser.AST.Inits.NodeInit;
 
-class IDUnit implements GenericUnit {
+class ID implements GenericUnit {
     private NodeInit node;
 
-    IDUnit(NodeInit node) {
+    ID(NodeInit node) {
         this.node = node;
     }
 

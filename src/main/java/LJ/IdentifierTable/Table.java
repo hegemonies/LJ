@@ -17,6 +17,11 @@ import java.util.TreeSet;
 
 public class Table implements GenericUnit {
     private Map<String, GenericUnit> mainTable = new HashMap<>();
+    private Table parentTable = null;
+
+    public void setParentTable(Table parentTable) {
+        this.parentTable = parentTable;
+    }
 
     public Map<String, GenericUnit> getMainTable() {
         return mainTable;
@@ -33,6 +38,7 @@ public class Table implements GenericUnit {
             }
 
             Table newTable = new Table();
+            newTable.setParentTable(this);
             newTable.next(((NodeClass) node).getMainMethod());
             mainTable.put("MainMethod", newTable);
         } else if (node instanceof ForkInitFunc) {
@@ -69,16 +75,17 @@ public class Table implements GenericUnit {
                 tmpForkInit instanceof ForkInitArray) {
             String tmpNameID = nodeInit.getId().getValue();
 
-            if (!containsKey(this, tmpNameID)) {
-                mainTable.put(tmpNameID, new IDUnit(nodeInit));
+            if (!containsKey(tmpNameID)) {
+                mainTable.put(tmpNameID, new ID(nodeInit));
             } else {
                 throw new SemanticException();
             }
         } else if (tmpForkInit instanceof ForkInitFunc) {
             String tmpNameID = nodeInit.getId().getValue();
 
-            if (!containsKey(this, tmpNameID)) {
+            if (!containsKey(tmpNameID)) {
                 Table newTable = new Table();
+                newTable.setParentTable(this);
                 newTable.next(tmpForkInit);
                 mainTable.put(tmpNameID, newTable);
             } else {
@@ -87,17 +94,22 @@ public class Table implements GenericUnit {
         }
     }
 
-    private boolean containsKey(Table table, String ckey) {
-        for (String key : table.getMainTable().keySet()) {
-            GenericUnit gu = table.getMainTable().get(key);
-            if (gu instanceof IDUnit && key.equals(ckey)) {
-                return false;
-            } else if (gu instanceof Table) {
-                ((Table) gu).containsKey((Table) gu, ckey);
+    private boolean containsKey(String ckey) {
+        for (String key : mainTable.keySet()) {
+            GenericUnit gu = mainTable.get(key);
+
+            if (gu instanceof ID && key.equals(ckey)) {
+                return true;
             }
         }
 
-        return true;
+        boolean result = false;
+
+        if (parentTable != null) {
+            result = parentTable.containsKey(ckey);
+        }
+
+        return result;
     }
 
     private void addStatement(NodeStatement statement) throws SemanticException {
@@ -106,6 +118,7 @@ public class Table implements GenericUnit {
         } else if (statement instanceof NodeConditional ||
                 statement instanceof NodeLoop) {
             Table newTable = new Table();
+            newTable.setParentTable(this);
             newTable.next(statement);
             mainTable.put(statement.toString(), newTable);
         }
@@ -122,7 +135,7 @@ public class Table implements GenericUnit {
         Set<String> table_keys = new TreeSet<>();
 
         for (String key : table.getMainTable().keySet()) {
-            if (table.getMainTable().get(key) instanceof IDUnit) {
+            if (table.getMainTable().get(key) instanceof ID) {
                 System.out.println(String.format("%s %s",
                         key,
                         table.getMainTable().get(key)));
