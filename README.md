@@ -12,9 +12,9 @@
 - Semantic analyzer with Identifier Table
 ```
 
-# To run compiler:
+# To run compiler (the system doesnt metter):
 ```
-# gradle run -Dexec.args="test.lj out_test.lj"
+# ./gradlew run -Dexec.args="test.lj out_test.lj"
 
 (or use Intellij IDEA, because it have presetup settings for run)
 ```
