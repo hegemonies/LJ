@@ -3,10 +3,10 @@ package LJ.IdentifierTable;
 import LJ.IdentifierTable.CustomerException.SemanticException;
 import LJ.Parser.AST.ArrayMember.ArrayMember;
 import LJ.Parser.AST.ArrayMember.ArrayMemberID;
-import LJ.Parser.AST.ArrayMember.ArrayMemberNumber;
 import LJ.Parser.AST.Else.NodeJustElse;
 import LJ.Parser.AST.Inits.*;
 import LJ.Parser.AST.Node;
+import LJ.Parser.AST.NodeArgsInit;
 import LJ.Parser.AST.NodeClass;
 import LJ.Parser.AST.NodeMainMethod;
 import LJ.Parser.AST.Statement.*;
@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class Table implements GenericUnit {
+    private String nameTable;
     private Map<String, GenericUnit> mainTable = new HashMap<>();
     private Table parentTable = null;
 
@@ -28,11 +29,16 @@ public class Table implements GenericUnit {
         this.parentTable = parentTable;
     }
 
+    public void setNameTable(String nameTable) {
+        this.nameTable = nameTable;
+    }
+
     public Map<String, GenericUnit> getMainTable() {
         return mainTable;
     }
 
     public void go(NodeClass root) throws SemanticException {
+        nameTable = "GLOBAL_TABLE";
         next(root);
     }
 
@@ -43,10 +49,14 @@ public class Table implements GenericUnit {
             }
 
             Table newTable = new Table();
+            newTable.setNameTable("MAIN_METHOD");
             newTable.setParentTable(this);
             newTable.next(((NodeClass) node).getMainMethod());
             mainTable.put("MainMethod", newTable);
         } else if (node instanceof ForkInitFunc) {
+            for (NodeArgsInit nodeArgsInit : ((ForkInitFunc) node).getNodeArgsInitList()) {
+                addArgInitNode(nodeArgsInit);
+            }
             for (NodeStatement statement : ((ForkInitFunc) node).getStatementList()) {
                 addStatement(statement);
             }
@@ -73,6 +83,17 @@ public class Table implements GenericUnit {
         }
     }
 
+    private void addArgInitNode(NodeArgsInit nodeArgsInit) throws SemanticException {
+        String tmpNameID = nodeArgsInit.getId().getValue();
+        if (!containsKey(tmpNameID)) {
+            mainTable.put(tmpNameID, new ArgID(nodeArgsInit));
+        } else {
+            throw new SemanticException(String.format("%s already init in talbe <%s>",
+                    tmpNameID,
+                    nameTable));
+        }
+    }
+
     private void addInitNode(NodeInit nodeInit) throws SemanticException {
         ForkInit tmpForkInit = nodeInit.getForkInit();
 
@@ -83,18 +104,23 @@ public class Table implements GenericUnit {
             if (!containsKey(tmpNameID)) {
                 mainTable.put(tmpNameID, new ID(nodeInit));
             } else {
-                throw new SemanticException(String.format("%s already init", tmpNameID));
+                throw new SemanticException(String.format("%s already init in talbe <%s>",
+                                                    tmpNameID,
+                                                    nameTable));
             }
         } else if (tmpForkInit instanceof ForkInitFunc) {
             String tmpNameID = nodeInit.getId().getValue();
 
             if (!containsKey(tmpNameID)) {
                 Table newTable = new Table();
+                newTable.setNameTable(tmpNameID);
                 newTable.setParentTable(this);
                 newTable.next(tmpForkInit);
                 mainTable.put(tmpNameID, newTable);
             } else {
-                throw new SemanticException(String.format("%s already init", tmpNameID));
+                throw new SemanticException(String.format("%s already init in table <%s>",
+                                                            tmpNameID,
+                                                            nameTable));
             }
         }
     }
@@ -124,13 +150,17 @@ public class Table implements GenericUnit {
             if (statement instanceof NodeConditional ||
                     statement instanceof NodeLoop) {
                 Table newTable = new Table();
+                newTable.setNameTable(statement.toString()
+                                        .split("@")[0]);
                 newTable.setParentTable(this);
                 newTable.next(statement);
                 mainTable.put(statement.toString(), newTable);
             }
 
             if (!checkExpression(statement)) {
-                throw new SemanticException(String.format("%s not init", statement));
+                throw new SemanticException(String.format("%s not init in table <%s>",
+                                                        statement,
+                                                        nameTable));
             }
         }
     }
@@ -185,7 +215,7 @@ public class Table implements GenericUnit {
             }
         } else if (gv instanceof FuncCall) {
             for (GenericValue genericValue : ((FuncCall) gv).getArgsCall()) {
-                checkGenericValue(genericValue);
+                result = checkGenericValue(genericValue);
             }
         }
 
@@ -193,10 +223,10 @@ public class Table implements GenericUnit {
     }
 
     public void printTable() {
-        printTable(this, "Global");
+        printTable(this);
     }
 
-    private void printTable(Table table, String nameTable) {
+    private void printTable(Table table) {
         System.out.println(String.format("\n\tTable %s:",
                 nameTable));
 
@@ -216,7 +246,7 @@ public class Table implements GenericUnit {
         }
 
         for (String table_id : table_keys) {
-            printTable((Table) table.getMainTable().get(table_id), table_id);
+            printTable((Table) table.getMainTable().get(table_id));
         }
     }
 }

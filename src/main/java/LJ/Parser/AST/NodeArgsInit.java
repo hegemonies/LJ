@@ -19,6 +19,10 @@ public class NodeArgsInit implements Node {
         this.typeInit = typeInit;
     }
 
+    public Token getId() {
+        return id;
+    }
+
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
         String thisNode = String.format("\"args%d\" ", index++);

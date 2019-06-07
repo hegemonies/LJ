@@ -23,6 +23,10 @@ public class ForkInitFunc extends ForkInit {
         return statementList;
     }
 
+    public List<NodeArgsInit> getNodeArgsInitList() {
+        return nodeArgsInitList;
+    }
+
     @Override
     public void chooseType() {
         type = TypeInit.FUNC;
