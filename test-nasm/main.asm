@@ -1,5 +1,5 @@
 ;
-;     nasm -felf64 hello.asm && ld hello.o && ./a.out
+;     nasm -felf64 main.asm && ld main.o && ./a.out
 ; ----------------------------------------------------------------------------------------
 
 global    _start
@@ -12,8 +12,8 @@ _start:
     mov rdx, 13                 ; number of bytes
     syscall                     ; invoke operating system to do the write
     mov rax, 60                 ; system call for exit
-    xor rdi, rdi                ; exit code 0
-    syscall                           ; invoke operating system to exit
+    mov rdi, 0                  ; exit code 0
+    syscall                     ; invoke operating system to exit
 
 section   .data
 message:  
