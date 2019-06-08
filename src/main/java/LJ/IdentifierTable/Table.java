@@ -181,13 +181,20 @@ public class Table implements GenericUnit {
 
         if (expr != null) {
             GenericValue gv;
+
             if ((gv = expr.getlValue()) != null) {
-                result = containsKey(gv.getValue().getValue());
-                checkGenericValue(gv);
+                if (!gv.getValue().getType().equals("str_literal") &&
+                        !gv.getValue().getType().equals("numeric_constant")) {
+                    result = containsKey(gv.getValue().getValue());
+                }
+                result = checkGenericValue(gv);
             }
             if ((gv = expr.getrValue()) != null) {
-                result = containsKey(gv.getValue().getValue());
-                checkGenericValue(gv);
+                if (!gv.getValue().getType().equals("str_literal") &&
+                        !gv.getValue().getType().equals("numeric_constant")) {
+                    result = containsKey(gv.getValue().getValue());
+                }
+                result = checkGenericValue(gv);
             }
 
             NodeExpression tmpExpr;
@@ -217,23 +224,26 @@ public class Table implements GenericUnit {
             for (GenericValue genericValue : ((FuncCall) gv).getArgsCall()) {
                 result = checkGenericValue(genericValue);
             }
+        } else if (gv != null) {
+            result = true;
         }
 
         return result;
     }
 
     public void printTable() {
-        printTable(this);
+        printTable(this, "GLOBAL_TABLE");
     }
 
-    private void printTable(Table table) {
+    private void printTable(Table table, String nameTable) {
         System.out.println(String.format("\n\tTable %s:",
                 nameTable));
 
         Set<String> table_keys = new TreeSet<>();
 
         for (String key : table.getMainTable().keySet()) {
-            if (table.getMainTable().get(key) instanceof ID) {
+            if (table.getMainTable().get(key) instanceof ID ||
+                    table.getMainTable().get(key) instanceof ArgID) {
                 System.out.println(String.format("%s %s",
                         key,
                         table.getMainTable().get(key)));
@@ -246,7 +256,7 @@ public class Table implements GenericUnit {
         }
 
         for (String table_id : table_keys) {
-            printTable((Table) table.getMainTable().get(table_id));
+            printTable((Table) table.getMainTable().get(table_id), table_id);
         }
     }
 }

@@ -18,3 +18,9 @@
 
 (or use Intellij IDEA, because it have presetup settings for run)
 ```
+
+# How to compile use nasm on linux_x64:
+```
+- nasm -f elf64 main.asm -o main.o
+- ld main.o -o main
+```
