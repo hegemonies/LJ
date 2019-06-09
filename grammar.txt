@@ -131,6 +131,7 @@
     <conditional> |
     <expression> |
     <initInsideFunc> |
+    <print> |
     <return> |
     ;
 
@@ -164,3 +165,6 @@
 
 <firstPriorOper>: * | /
 <secondPriorOper>: + | - | =
+
+
+<print>: println(<expression>);

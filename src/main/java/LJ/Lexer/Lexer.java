@@ -21,10 +21,52 @@ public class Lexer {
         StringBuilder buffer = new StringBuilder();
 
         for (row = 0; row < strings.length; row++) {
+
+            if (buffer.length() > 0) {
+                String token = buffer.toString();
+                row--;
+                if (predictor == PredicationOfTheToken.NUM_CONST) {
+                    String type = "numeric_constant";
+
+                    if (Integer.parseInt(token.split("")[0]) == 0 &&
+                            token.length() > 1) {
+                        type = "unknown";
+                    }
+
+                    tokenList.add(new Token(type,
+                            token,
+                            new Location(row + 1, col + 1 - token.length())));
+                } else if (predictor == PredicationOfTheToken.KWORD) {
+                    if (types.isToken(token)) {
+                        tokenList.add(new Token(types.getTypeOfToken(token),
+                                token,
+                                new Location(row + 1, col + 1 - token.length())));
+                    }
+                } else if (predictor == PredicationOfTheToken.ID) {
+                    tokenList.add(new Token("id",
+                            token,
+                            new Location(row + 1, col + 1 - token.length())));
+                } else if (predictor == PredicationOfTheToken.ID_or_KWORD) {
+                    tokenList.add(new Token(types.getTypeOfToken(token),
+                            token,
+                            new Location(row + 1, col + 1 - token.length())));
+                } else if (predictor == PredicationOfTheToken.ILLEGAL) {
+                    tokenList.add(new Token("unknown",
+                            token,
+                            new Location(row + 1, col + 1 - token.length())));
+                }
+
+                buffer.setLength(0);
+                continue;
+            }
+
             String[] chars = strings[row].split("");
             buffer.setLength(0);
 
             for (col = 0; col < chars.length; col++) {
+                if (chars[col].length() == 0) {
+                    continue;
+                }
                 char cur_char = chars[col].charAt(0);
 
                 if (buffer.length() == 0) {
@@ -183,6 +225,48 @@ public class Lexer {
                         }
                     }
                 }
+            }
+        }
+
+        if (buffer.length() > 0) {
+            row--;
+            if (predictor == PredicationOfTheToken.NUM_CONST) {
+                String token = buffer.toString();
+                String type = "numeric_constant";
+
+                if (Integer.parseInt(token.split("")[0]) == 0 &&
+                        token.length() > 1) {
+                    type = "unknown";
+                }
+
+                tokenList.add(new Token(type,
+                        token,
+                        new Location(row + 1, col + 1 - token.length())));
+            } else if (predictor == PredicationOfTheToken.KWORD) {
+                if (types.isToken(buffer.toString())) {
+                    String token = buffer.toString();
+                    tokenList.add(new Token(types.getTypeOfToken(token),
+                            token,
+                            new Location(row + 1, col + 1 - token.length())));
+                }
+            } else if (predictor == PredicationOfTheToken.ID) {
+                String token = buffer.toString();
+                buffer.setLength(0);
+                tokenList.add(new Token("id",
+                        token,
+                        new Location(row + 1, col + 1 - token.length())));
+            } else if (predictor == PredicationOfTheToken.ID_or_KWORD) {
+                String token = buffer.toString();
+                buffer.setLength(0);
+                tokenList.add(new Token(types.getTypeOfToken(token),
+                        token,
+                        new Location(row + 1, col + 1 - token.length())));
+            } else if (predictor == PredicationOfTheToken.ILLEGAL) {
+                String token = buffer.toString();
+                buffer.setLength(0);
+                tokenList.add(new Token("unknown",
+                        token,
+                        new Location(row + 1, col + 1 - token.length())));
             }
         }
 
