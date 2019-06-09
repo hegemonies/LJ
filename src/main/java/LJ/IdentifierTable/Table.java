@@ -58,11 +58,15 @@ public class Table implements GenericUnit {
                 addArgInitNode(nodeArgsInit);
             }
             for (NodeStatement statement : ((ForkInitFunc) node).getStatementList()) {
-                addStatement(statement);
+                if (statement != null) {
+                    addStatement(statement);
+                }
             }
         } else if (node instanceof NodeConditional) {
             for (NodeStatement statement : ((NodeConditional) node).getStatementList()) {
-                addStatement(statement);
+                if (statement != null) {
+                    addStatement(statement);
+                }
             }
 
             if (((NodeConditional) node).getElseNode() != null) {
@@ -70,15 +74,21 @@ public class Table implements GenericUnit {
             }
         } else if (node instanceof NodeLoop) {
             for (NodeStatement statement : ((NodeLoop) node).getStatementList()) {
-                addStatement(statement);
+                if (statement != null) {
+                    addStatement(statement);
+                }
             }
         } else if (node instanceof NodeJustElse) {
             for (NodeStatement statement : ((NodeJustElse) node).getStatementList()) {
-                addStatement(statement);
+                if (statement != null) {
+                    addStatement(statement);
+                }
             }
         } else if (node instanceof NodeMainMethod) {
             for (NodeStatement statement : ((NodeMainMethod) node).getStatementList()) {
-                addStatement(statement);
+                if (statement != null) {
+                    addStatement(statement);
+                }
             }
         }
     }
@@ -175,6 +185,8 @@ public class Table implements GenericUnit {
             expr = ((NodeConditional) statement).getExpression();
         } else if (statement instanceof NodeReturn) {
             expr = ((NodeReturn) statement).getExpression();
+        } else if (statement instanceof NodePrintln) {
+            expr = ((NodePrintln) statement).getExpression();
         } else if (statement instanceof NodeExpression) {
             expr = (NodeExpression) statement;
         }
