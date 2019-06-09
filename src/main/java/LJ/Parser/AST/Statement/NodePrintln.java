@@ -7,6 +7,10 @@ public class NodePrintln extends NodeStatement {
         this.expression = expression;
     }
 
+    public NodeExpression getExpression() {
+        return expression;
+    }
+
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
         String nameNode = "PRINTLN";

@@ -44,7 +44,9 @@ public class NodeLoop extends NodeStatement {
         index = expression.visit(labelNameNode, index, sb);
 
         for (NodeStatement statement : statementList) {
-            index = statement.visit(labelNameNode, index, sb);
+            if (statement != null) {
+                index = statement.visit(labelNameNode, index, sb);
+            }
         }
 
         sb.append(String.format("%s -> %s;\n", rootNode, labelNameNode));

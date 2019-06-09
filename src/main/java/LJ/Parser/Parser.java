@@ -607,7 +607,8 @@ public class Parser {
                 curTokenType.equals("int") ||
                 curTokenType.equals("char") ||
                 curTokenType.equals("return") ||
-                curTokenType.equals("semicolon")) {
+                curTokenType.equals("semicolon") ||
+                curTokenType.equals("println")) {
             list.add(parseStatement());
             parseStatementList(list);
         }

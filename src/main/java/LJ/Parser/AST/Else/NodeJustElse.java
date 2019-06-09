@@ -36,7 +36,9 @@ public class NodeJustElse extends NodeElse {
                     nameStatementNode));
 
             for (NodeStatement statement : statementList) {
-                index = statement.visit(labelNameStatementNode, index++, sb);
+                if (statement != null) {
+                    index = statement.visit(labelNameStatementNode, index++, sb);
+                }
             }
 
             sb.append(String.format("%s -> %s;\n", labelNameNode, labelNameStatementNode));
