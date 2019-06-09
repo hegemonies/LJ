@@ -1,23 +1,23 @@
 # Java language Compiler on Java
 
-# Complete features:
+## Complete features:
 ```
 - Grammar (grammar.txt)
 - Lexer (src/main/java/LJ/Lexer)
 - Parser with AST (src/main/java/LJ/Parser)
+- Semantic analyzer with Identifier Table (src/main/java/LJ/IdentifierTable)
 ```
 
-# In progress:
+## In progress:
 ```
-- Semantic analyzer with Identifier Table
+- Code Generator
 ```
 
-# To run compiler (the system doesnt metter):
+## To run compiler (the system doesnt metter):
 ```
-# ./gradlew run -Dexec.args="test.lj out_test.lj"
-
+$./gradlew run -Dexec.args="test.lj out_test.lj"
+```
 (or use Intellij IDEA, because it have presetup settings for run)
-```
 
 # How to compile use nasm on linux_x64:
 ```
