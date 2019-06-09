@@ -648,7 +648,24 @@ public class Parser {
             listLexer.match("semicolon");
         } else if (curTypeToken.equals("return")) {
             node = parseReturn();
+        } else if (curTypeToken.equals("println")) {
+            node = parsePrintln();
         }
+
+        return node;
+    }
+
+    /**
+     * <print>: println(<expression>);
+     * @return
+     */
+    private NodePrintln parsePrintln() throws CriticalProductionException {
+        NodePrintln node = new NodePrintln();
+
+        listLexer.match("println");
+        listLexer.match("l_paren");
+        node.setExpression(parseExpression());
+        listLexer.match("r_paren");
 
         return node;
     }
