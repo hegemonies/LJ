@@ -29,9 +29,10 @@ public class NodeScanln extends NodeStatement {
                 nameNode,
                 index++);
 
-        sb.append(String.format("%s [label=\"%s\"];\n",
-                labelNameNode,
-                nameNode));
+        sb.append(String.format("%s [label=\"%s\\n%s\"];\n",
+                idLabelNameNode,
+                idNameNode,
+                id.getValue()));
 
         sb.append(String.format("%s -> %s;\n", labelNameNode, idLabelNameNode));
 
