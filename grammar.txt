@@ -167,4 +167,5 @@
 <secondPriorOper>: + | - | =
 
 
-<print>: println(<expression>);
+<println>: println(<expression>);
+<scanln>: scanln(id);

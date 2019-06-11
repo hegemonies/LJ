@@ -18,5 +18,7 @@ public class Test {
         array[1] = 0;
         array[2] = 3;
         int min = getMin(array, 3);
+        println(min);
+        scanln(min);
     }
 }

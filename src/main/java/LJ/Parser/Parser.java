@@ -651,7 +651,24 @@ public class Parser {
             node = parseReturn();
         } else if (curTypeToken.equals("println")) {
             node = parsePrintln();
+        } else if (curTypeToken.equals("scanln")) {
+            node = parseScanln();
         }
+
+        return node;
+    }
+
+    private NodeScanln parseScanln() throws CriticalProductionException {
+        NodeScanln node = new NodeScanln();
+
+        listLexer.match("scanln");
+        listLexer.match("l_paren");
+
+        node.setId(listLexer.getLookahead());
+        listLexer.match("id");
+
+        listLexer.match("r_paren");
+        listLexer.match("semicolon");
 
         return node;
     }
@@ -667,6 +684,7 @@ public class Parser {
         listLexer.match("l_paren");
         node.setExpression(parseExpression());
         listLexer.match("r_paren");
+        listLexer.match("semicolon");
 
         return node;
     }

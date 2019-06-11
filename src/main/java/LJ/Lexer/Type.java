@@ -67,6 +67,7 @@ public class Type {
         types.put("new", "new");
 
         types.put("println", "println");
+        types.put("scanln", "scanln");
     }
 
     boolean isToken(String token) {
