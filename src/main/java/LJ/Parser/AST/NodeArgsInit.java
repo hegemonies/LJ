@@ -23,6 +23,10 @@ public class NodeArgsInit implements Node {
         return id;
     }
 
+    public Token getDataType() {
+        return dataType;
+    }
+
     @Override
     public int visit(String rootNode, int index, StringBuilder sb) {
         String thisNode = String.format("\"args%d\" ", index++);

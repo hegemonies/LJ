@@ -6,6 +6,7 @@ import LJ.Parser.AST.Node;
 public class GenericValue implements Node {
     protected Token value;
 
+
     public void setValue(Token value) {
         this.value = value;
     }

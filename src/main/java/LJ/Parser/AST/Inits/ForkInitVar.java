@@ -10,6 +10,10 @@ public class ForkInitVar extends ForkInit {
         this.expression = expression;
     }
 
+    public NodeExpression getExpression() {
+        return expression;
+    }
+
     @Override
     public void chooseType() {
         type = TypeInit.VAR;

@@ -26,7 +26,7 @@ class Compiler {
         NodeClass root = parser.go();
 //        parser.showTree();
         parser.printTreeToFile();
-/*
+
         Table identifierTable = new Table();
         try {
             identifierTable.go(root);
@@ -36,7 +36,6 @@ class Compiler {
             return;
         }
         identifierTable.printTable();
-*/
     }
 
     private static void printSourceCode() {

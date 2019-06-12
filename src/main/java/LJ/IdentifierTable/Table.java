@@ -15,25 +15,31 @@ import LJ.Parser.AST.Value.CallArrayMember;
 import LJ.Parser.AST.Value.FuncCall;
 import LJ.Parser.AST.Value.GenericValue;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Table implements GenericUnit {
     private String nameTable;
     private Map<String, GenericUnit> mainTable = new HashMap<>();
     private Table parentTable = null;
+    private NodeStatement _node;
 
-    public void setParentTable(Table parentTable) {
+    private void setParentTable(Table parentTable) {
         this.parentTable = parentTable;
     }
 
-    public void setNameTable(String nameTable) {
+    private void setNameTable(String nameTable) {
         this.nameTable = nameTable;
     }
 
-    public Map<String, GenericUnit> getMainTable() {
+    public NodeStatement getNode() {
+        return _node;
+    }
+
+    public void setNode(NodeStatement node) {
+        this._node = node;
+    }
+
+    private Map<String, GenericUnit> getMainTable() {
         return mainTable;
     }
 
@@ -114,15 +120,24 @@ public class Table implements GenericUnit {
             if (!containsKey(tmpNameID)) {
                 mainTable.put(tmpNameID, new ID(nodeInit));
             } else {
-                throw new SemanticException(String.format("%s already init in talbe <%s>",
+                throw new SemanticException(String.format("%s already init in table <%s>",
                                                     tmpNameID,
                                                     nameTable));
+            }
+
+            if (tmpForkInit instanceof ForkInitVar) {
+                if (!checkExpression(((ForkInitVar) tmpForkInit).getExpression())) {
+                    throw new SemanticException(String.format("%s not init in table <%s>",
+                            tmpForkInit,
+                            nameTable));
+                }
             }
         } else if (tmpForkInit instanceof ForkInitFunc) {
             String tmpNameID = nodeInit.getId().getValue();
 
             if (!containsKey(tmpNameID)) {
                 Table newTable = new Table();
+                newTable.setNode(nodeInit);
                 newTable.setNameTable(tmpNameID);
                 newTable.setParentTable(this);
                 newTable.next(tmpForkInit);
@@ -137,8 +152,6 @@ public class Table implements GenericUnit {
 
     private boolean containsKey(String ckey) {
         for (String key : mainTable.keySet()) {
-            GenericUnit gu = mainTable.get(key);
-
             if (key.equals(ckey)) {
                 return true;
             }
@@ -167,7 +180,14 @@ public class Table implements GenericUnit {
                 mainTable.put(statement.toString(), newTable);
             }
 
-            if (!checkExpression(statement)) {
+            if (statement instanceof NodeScanln) {
+                String id = ((NodeScanln) statement).getId().getValue();
+                if (!containsKey(id)) {
+                    throw new SemanticException(String.format("%s not init in table <%s>",
+                            id,
+                            nameTable));
+                }
+            } else if (!checkExpression(statement)) {
                 throw new SemanticException(String.format("%s not init in table <%s>",
                                                         statement,
                                                         nameTable));
@@ -175,7 +195,7 @@ public class Table implements GenericUnit {
         }
     }
 
-    private boolean checkExpression(NodeStatement statement) {
+    private boolean checkExpression(NodeStatement statement) throws SemanticException {
         boolean result = false;
         NodeExpression expr = null;
 
@@ -187,7 +207,7 @@ public class Table implements GenericUnit {
             expr = ((NodeReturn) statement).getExpression();
         } else if (statement instanceof NodePrintln) {
             expr = ((NodePrintln) statement).getExpression();
-        } else if (statement instanceof NodeExpression) {
+        }else if (statement instanceof NodeExpression) {
             expr = (NodeExpression) statement;
         }
 
@@ -195,17 +215,9 @@ public class Table implements GenericUnit {
             GenericValue gv;
 
             if ((gv = expr.getlValue()) != null) {
-                if (!gv.getValue().getType().equals("str_literal") &&
-                        !gv.getValue().getType().equals("numeric_constant")) {
-                    result = containsKey(gv.getValue().getValue());
-                }
                 result = checkGenericValue(gv);
             }
             if ((gv = expr.getrValue()) != null) {
-                if (!gv.getValue().getType().equals("str_literal") &&
-                        !gv.getValue().getType().equals("numeric_constant")) {
-                    result = containsKey(gv.getValue().getValue());
-                }
                 result = checkGenericValue(gv);
             }
 
@@ -221,8 +233,17 @@ public class Table implements GenericUnit {
         return result;
     }
 
-    private boolean checkGenericValue(GenericValue gv) {
+    private boolean checkGenericValue(GenericValue gv) throws SemanticException {
         boolean result = false;
+
+        if (!gv.getValue().getType().equals("str_literal") &&
+                !gv.getValue().getType().equals("numeric_constant")) {
+            result = containsKey(gv.getValue().getValue());
+        }
+
+        if (!result) {
+            return false;
+        }
 
         if (gv instanceof Attachment) {
             result = checkExpression(((Attachment) gv).getExpression());
@@ -233,14 +254,85 @@ public class Table implements GenericUnit {
                 result = containsKey(((ArrayMemberID) am).getId().getValue());
             }
         } else if (gv instanceof FuncCall) {
-            for (GenericValue genericValue : ((FuncCall) gv).getArgsCall()) {
-                result = checkGenericValue(genericValue);
+            GenericUnit gu = findIdByName(gv.getValue().getValue());
+            NodeStatement node = null;
+            List<NodeArgsInit> argsInitList = null;
+
+            if (gu != null) {
+                if (gu instanceof Table) {
+                    node = ((Table) gu).getNode();
+                }
+            }
+
+            if (node != null) {
+                if (node instanceof NodeInit) {
+                    ForkInit tmpForkInit = ((NodeInit) node).getForkInit();
+
+                    if (tmpForkInit instanceof ForkInitFunc) {
+                        argsInitList = ((ForkInitFunc) tmpForkInit).getNodeArgsInitList();
+                    }
+                }
+            }
+
+//            for (GenericValue genericValue : ((FuncCall) gv).getArgsCall()) {
+//                if (argsInitList != null) {
+//                    boolean isExist = false;
+//                    for (NodeArgsInit nodeArgsInit : argsInitList) {
+//                        if (nodeArgsInit.getDataType().getValue().equals(genericValue.getValue().getType())) {
+//                            isExist = true;
+//                        }
+//                    }
+//
+//                    if (!isExist) {
+//                        throw new SemanticException(String.format("ERROR semantic: invalid args <%s> in %s",
+//                                gv.getValue(),
+//                                nameTable));
+//                    }
+//                }
+//
+//                result = checkGenericValue(genericValue);
+//            }
+
+            if (argsInitList != null) {
+                if (argsInitList.size() != ((FuncCall) gv).getArgsCall().size()) {
+                    throw new SemanticException(String.format("ERROR semantic: invalid count args <%s> in %s",
+                            gv.getValue(),
+                            nameTable));
+                }
+            }
+
+            for (int i = 0; i < ((FuncCall) gv).getArgsCall().size(); i++) {
+                GenericUnit dataType = findIdByName(((FuncCall) gv).getArgsCall().get(i).getValue().getValue());
+                if (!argsInitList.get(i).getDataType().getValue()
+                        .equals(((ID) dataType).getNode().getDataType().getValue()))
+                {
+                    throw new SemanticException(String.format("ERROR semantic: invalid args <%s> in %s",
+                            gv.getValue(),
+                            nameTable));
+                }
+
+                result = checkGenericValue(((FuncCall) gv).getArgsCall().get(i));
             }
         } else if (gv != null) {
             result = true;
         }
 
         return result;
+    }
+
+    private GenericUnit findIdByName(String name) {
+        GenericUnit gu = null;
+        for (String key : mainTable.keySet()) {
+            if (key.equals(name)) {
+                return mainTable.get(key);
+            }
+        }
+
+        if (parentTable != null) {
+            gu = parentTable.findIdByName(name);
+        }
+
+        return gu;
     }
 
     public void printTable() {
